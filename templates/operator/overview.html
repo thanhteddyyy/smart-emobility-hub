@@ -1,0 +1,37 @@
+{# UC8 – Hình 15: tổng quan mạng lưới. Bản cơ bản đã chạy; TV3 làm đẹp theo Figma.
+   Biến: overview (xem docs/DATA_CONTRACT.md, mục "Tổng quan mạng lưới") #}
+{% extends "base_dashboard.html" %}
+{% block heading %}<span data-i18n="dash.overview">Tổng quan mạng lưới</span>{% endblock %}
+{% block content %}
+<div class="stat-grid">
+  <div class="card-x stat-x"><div class="num" data-rt="network.availableVehicles">{{ overview.availableVehicles }}</div><div class="text-muted-2" data-i18n="stat.vehicles">Xe sẵn sàng</div></div>
+  <div class="card-x stat-x"><div class="num" data-rt="network.emptySpots">{{ overview.emptySpots }}</div><div class="text-muted-2" data-i18n="stat.spots">Chỗ đỗ trống</div></div>
+  <div class="card-x stat-x"><div class="num" data-rt="network.availablePorts">{{ overview.availablePorts }}</div><div class="text-muted-2" data-i18n="stat.ports">Cổng sạc trống</div></div>
+  <div class="card-x stat-x"><div class="num" data-rt="network.openIncidents">{{ overview.openIncidents }}</div><div class="text-muted-2" data-i18n="stat.incidents">Sự cố đang mở</div></div>
+</div>
+<div class="text-muted-2 small">Cập nhật: <span data-rt="network.updatedAt">{{ overview.updatedAt }}</span></div>
+
+<div class="card-x p-3" style="overflow-x:auto">
+  <h2 class="h6" data-i18n="dash.hubUsage">Mức sử dụng Hub</h2>
+  <table class="table-x">
+    <thead><tr>
+      <th data-i18n="table.hub">Hub</th><th data-i18n="table.status">Trạng thái</th>
+      <th data-i18n="table.vehicles">Xe</th><th data-i18n="table.spots">Chỗ trống</th>
+      <th data-i18n="table.ports">Cổng sạc</th><th data-i18n="table.usage">Mức sử dụng</th>
+    </tr></thead>
+    <tbody>
+    {% for hub in overview.hubs %}
+      <tr>
+        <td>{{ hub.name }}</td>
+        <td><span class="badge {{ 'badge-ok' if hub.status == 'ACTIVE' else 'badge-danger' }}">{{ hub.status }}</span></td>
+        <td data-rt="hubs.{{ hub.hubId }}.availableVehicles">{{ hub.availableVehicles }}</td>
+        <td data-rt="hubs.{{ hub.hubId }}.emptySpots">{{ hub.emptySpots }}</td>
+        <td data-rt="hubs.{{ hub.hubId }}.availablePorts">{{ hub.availablePorts }}</td>
+        <td><span class="badge {{ 'badge-danger' if hub.usageRate >= 0.95 else 'badge-warn' if hub.usageRate >= 0.8 else 'badge-ok' }}">{{ (hub.usageRate * 100) | round | int }}%</span></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="todo-box">TODO (TV3): danh sách "Warnings &amp; Alerts", ô lọc Hub, 4 thẻ màu theo <b>Hình 15</b>.</div>
+{% endblock %}

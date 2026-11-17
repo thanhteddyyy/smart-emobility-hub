@@ -1,0 +1,20 @@
+{# UC3, UC4 – Hình 2–5: modal xác nhận đặt xe / chỗ đỗ + 3 trạng thái lỗi.
+   TODO(TV1):
+   - 2 tab E-Bike Rental / Parking Slot (Hình 2)
+   - Nút Confirm gọi  POST /api/bookings/vehicle  với {vehicleId}
+   - Theo mã lỗi trả về, hiện đúng trạng thái:
+       VEHICLE_CONFLICT -> Hình 3,  HUB_FULL -> Hình 4,  HOLD_EXPIRED -> Hình 5 #}
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content card-x">
+      <div class="modal-body d-grid gap-3">
+        <h2 class="h5 m-0" id="bookingModalTitle">Confirm your booking</h2>
+        <div class="todo-box">TODO (TV1): nội dung modal theo <b>Hình 2–5</b>.</div>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn-outline-x flex-fill" data-bs-dismiss="modal" data-i18n="action.cancel">Hủy</button>
+          <button type="button" class="btn-primary-x flex-fill" data-i18n="action.confirm">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1011 @@
+{
+ "hubs": [
+  {
+   "id": "H1",
+   "name": "Ga Metro ĐHQG",
+   "area": "Metro",
+   "lat": 10.8664,
+   "lng": 106.801,
+   "parkingCapacity": 20,
+   "status": "ACTIVE",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "H2",
+   "name": "KTX Khu A",
+   "area": "Ký túc xá",
+   "lat": 10.8783,
+   "lng": 106.8063,
+   "parkingCapacity": 16,
+   "status": "ACTIVE",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "H3",
+   "name": "KTX Khu B",
+   "area": "Ký túc xá",
+   "lat": 10.8826,
+   "lng": 106.7825,
+   "parkingCapacity": 16,
+   "status": "ACTIVE",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "H4",
+   "name": "ĐH Bách khoa CS2",
+   "area": "Trường đại học",
+   "lat": 10.8806,
+   "lng": 106.8054,
+   "parkingCapacity": 12,
+   "status": "ACTIVE",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "H5",
+   "name": "Nhà văn hóa Sinh viên",
+   "area": "Dịch vụ",
+   "lat": 10.8752,
+   "lng": 106.8007,
+   "parkingCapacity": 12,
+   "status": "ACTIVE",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  }
+ ],
+ "vehicles": [
+  {
+   "id": "EB-201",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 62,
+   "status": "AVAILABLE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-202",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 38,
+   "status": "AVAILABLE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-203",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 15,
+   "status": "CHARGING",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-204",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 74,
+   "status": "AVAILABLE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-205",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 25,
+   "status": "CHARGING",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-206",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 93,
+   "status": "AVAILABLE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-207",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 63,
+   "status": "AVAILABLE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-208",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 72,
+   "status": "AVAILABLE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-209",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 69,
+   "status": "MAINTENANCE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-210",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 45,
+   "status": "AVAILABLE",
+   "hubId": "H1",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-211",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 64,
+   "status": "AVAILABLE",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-212",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 28,
+   "status": "RESERVED",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-213",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 41,
+   "status": "CHARGING",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-214",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 68,
+   "status": "AVAILABLE",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-215",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 49,
+   "status": "CHARGING",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-216",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 65,
+   "status": "CHARGING",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-217",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 20,
+   "status": "AVAILABLE",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-218",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 15,
+   "status": "AVAILABLE",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-219",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 22,
+   "status": "CHARGING",
+   "hubId": "H2",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-220",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 29,
+   "status": "AVAILABLE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-221",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 15,
+   "status": "MAINTENANCE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-222",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 89,
+   "status": "AVAILABLE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-223",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 40,
+   "status": "AVAILABLE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-224",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 25,
+   "status": "AVAILABLE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-225",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 17,
+   "status": "AVAILABLE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-226",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 88,
+   "status": "AVAILABLE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-227",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 40,
+   "status": "AVAILABLE",
+   "hubId": "H3",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-228",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 37,
+   "status": "AVAILABLE",
+   "hubId": "H4",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-229",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 20,
+   "status": "CHARGING",
+   "hubId": "H4",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-230",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 86,
+   "status": "AVAILABLE",
+   "hubId": "H4",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-231",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 34,
+   "status": "AVAILABLE",
+   "hubId": "H4",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-232",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 88,
+   "status": "AVAILABLE",
+   "hubId": "H4",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-233",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 30,
+   "status": "MAINTENANCE",
+   "hubId": "H4",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-234",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 66,
+   "status": "CHARGING",
+   "hubId": "H4",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-235",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 81,
+   "status": "AVAILABLE",
+   "hubId": "H5",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-236",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 26,
+   "status": "AVAILABLE",
+   "hubId": "H5",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-237",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 29,
+   "status": "CHARGING",
+   "hubId": "H5",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-238",
+   "type": "E_SCOOTER",
+   "model": "Xiaomi Scooter 4",
+   "batteryLevel": 89,
+   "status": "CHARGING",
+   "hubId": "H5",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-239",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 41,
+   "status": "AVAILABLE",
+   "hubId": "H5",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "EB-240",
+   "type": "E_BIKE",
+   "model": "VinFast Feliz S",
+   "batteryLevel": 88,
+   "status": "AVAILABLE",
+   "hubId": "H5",
+   "lastUpdatedAt": "2026-11-17T08:00:00"
+  }
+ ],
+ "parkingSpots": [
+  {
+   "id": "H1-P01",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P02",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P03",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P04",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P05",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P06",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P07",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P08",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P09",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P10",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P11",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P12",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P13",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P14",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P15",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P16",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P17",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P18",
+   "hubId": "H1",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H1-P19",
+   "hubId": "H1",
+   "status": "FREE"
+  },
+  {
+   "id": "H1-P20",
+   "hubId": "H1",
+   "status": "FREE"
+  },
+  {
+   "id": "H2-P01",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P02",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P03",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P04",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P05",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P06",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P07",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P08",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P09",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P10",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P11",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P12",
+   "hubId": "H2",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H2-P13",
+   "hubId": "H2",
+   "status": "FREE"
+  },
+  {
+   "id": "H2-P14",
+   "hubId": "H2",
+   "status": "FREE"
+  },
+  {
+   "id": "H2-P15",
+   "hubId": "H2",
+   "status": "FREE"
+  },
+  {
+   "id": "H2-P16",
+   "hubId": "H2",
+   "status": "FREE"
+  },
+  {
+   "id": "H3-P01",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P02",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P03",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P04",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P05",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P06",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P07",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P08",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P09",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P10",
+   "hubId": "H3",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H3-P11",
+   "hubId": "H3",
+   "status": "FREE"
+  },
+  {
+   "id": "H3-P12",
+   "hubId": "H3",
+   "status": "FREE"
+  },
+  {
+   "id": "H3-P13",
+   "hubId": "H3",
+   "status": "FREE"
+  },
+  {
+   "id": "H3-P14",
+   "hubId": "H3",
+   "status": "FREE"
+  },
+  {
+   "id": "H3-P15",
+   "hubId": "H3",
+   "status": "FREE"
+  },
+  {
+   "id": "H3-P16",
+   "hubId": "H3",
+   "status": "FREE"
+  },
+  {
+   "id": "H4-P01",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P02",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P03",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P04",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P05",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P06",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P07",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P08",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P09",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P10",
+   "hubId": "H4",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H4-P11",
+   "hubId": "H4",
+   "status": "FREE"
+  },
+  {
+   "id": "H4-P12",
+   "hubId": "H4",
+   "status": "FREE"
+  },
+  {
+   "id": "H5-P01",
+   "hubId": "H5",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H5-P02",
+   "hubId": "H5",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H5-P03",
+   "hubId": "H5",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H5-P04",
+   "hubId": "H5",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H5-P05",
+   "hubId": "H5",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H5-P06",
+   "hubId": "H5",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H5-P07",
+   "hubId": "H5",
+   "status": "OCCUPIED"
+  },
+  {
+   "id": "H5-P08",
+   "hubId": "H5",
+   "status": "FREE"
+  },
+  {
+   "id": "H5-P09",
+   "hubId": "H5",
+   "status": "FREE"
+  },
+  {
+   "id": "H5-P10",
+   "hubId": "H5",
+   "status": "FREE"
+  },
+  {
+   "id": "H5-P11",
+   "hubId": "H5",
+   "status": "FREE"
+  },
+  {
+   "id": "H5-P12",
+   "hubId": "H5",
+   "status": "FREE"
+  }
+ ],
+ "chargingPorts": [
+  {
+   "id": "H1-C01",
+   "hubId": "H1",
+   "powerKw": 3.3,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H1-C02",
+   "hubId": "H1",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H1-C03",
+   "hubId": "H1",
+   "powerKw": 3.3,
+   "status": "IN_USE"
+  },
+  {
+   "id": "H1-C04",
+   "hubId": "H1",
+   "powerKw": 7.4,
+   "status": "OUT_OF_ORDER"
+  },
+  {
+   "id": "H2-C01",
+   "hubId": "H2",
+   "powerKw": 3.3,
+   "status": "IN_USE"
+  },
+  {
+   "id": "H2-C02",
+   "hubId": "H2",
+   "powerKw": 7.4,
+   "status": "IN_USE"
+  },
+  {
+   "id": "H2-C03",
+   "hubId": "H2",
+   "powerKw": 3.3,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H2-C04",
+   "hubId": "H2",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H3-C01",
+   "hubId": "H3",
+   "powerKw": 3.3,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H3-C02",
+   "hubId": "H3",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H3-C03",
+   "hubId": "H3",
+   "powerKw": 3.3,
+   "status": "IN_USE"
+  },
+  {
+   "id": "H3-C04",
+   "hubId": "H3",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H4-C01",
+   "hubId": "H4",
+   "powerKw": 3.3,
+   "status": "OUT_OF_ORDER"
+  },
+  {
+   "id": "H4-C02",
+   "hubId": "H4",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H4-C03",
+   "hubId": "H4",
+   "powerKw": 3.3,
+   "status": "IN_USE"
+  },
+  {
+   "id": "H4-C04",
+   "hubId": "H4",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H5-C01",
+   "hubId": "H5",
+   "powerKw": 3.3,
+   "status": "IN_USE"
+  },
+  {
+   "id": "H5-C02",
+   "hubId": "H5",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  },
+  {
+   "id": "H5-C03",
+   "hubId": "H5",
+   "powerKw": 3.3,
+   "status": "IN_USE"
+  },
+  {
+   "id": "H5-C04",
+   "hubId": "H5",
+   "powerKw": 7.4,
+   "status": "AVAILABLE"
+  }
+ ],
+ "incidents": [
+  {
+   "id": "INC-001",
+   "hubId": "H1",
+   "resourceType": "CHARGING_PORT",
+   "resourceId": "H1-C02",
+   "description": "Cổng sạc mất kết nối",
+   "priority": "HIGH",
+   "status": "OPEN",
+   "operator": null,
+   "createdAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "INC-002",
+   "hubId": "H1",
+   "resourceType": "HUB",
+   "resourceId": "H1",
+   "description": "Hub sắp quá tải",
+   "priority": "HIGH",
+   "status": "IN_PROGRESS",
+   "operator": "Matthew",
+   "createdAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "INC-003",
+   "hubId": "H3",
+   "resourceType": "VEHICLE",
+   "resourceId": "EB-221",
+   "description": "GPS lệch vị trí",
+   "priority": "LOW",
+   "status": "RESOLVED",
+   "operator": "Liam",
+   "createdAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "INC-004",
+   "hubId": "H4",
+   "resourceType": "CHARGING_PORT",
+   "resourceId": "H4-C01",
+   "description": "Cổng sạc lỗi chập chờn",
+   "priority": "MEDIUM",
+   "status": "OPEN",
+   "operator": null,
+   "createdAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "INC-005",
+   "hubId": "H2",
+   "resourceType": "VEHICLE",
+   "resourceId": "EB-213",
+   "description": "Mất tín hiệu GPS",
+   "priority": "LOW",
+   "status": "RESOLVED",
+   "operator": "Liam",
+   "createdAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "INC-006",
+   "hubId": "H5",
+   "resourceType": "HUB",
+   "resourceId": "H5",
+   "description": "Hub mất kết nối chập chờn",
+   "priority": "MEDIUM",
+   "status": "IN_PROGRESS",
+   "operator": "Jack",
+   "createdAt": "2026-11-17T08:00:00"
+  }
+ ],
+ "users": [
+  {
+   "id": "2413148",
+   "name": "Sinh viên Demo",
+   "email": "student@hcmut.edu.vn",
+   "password": "123456",
+   "role": "STUDENT"
+  },
+  {
+   "id": "OP001",
+   "name": "Matthew",
+   "email": "operator@ehub.vn",
+   "password": "123456",
+   "role": "OPERATOR"
+  },
+  {
+   "id": "G001",
+   "name": "Khách",
+   "email": "guest@gmail.com",
+   "password": "123456",
+   "role": "GUEST"
+  }
+ ]
+}

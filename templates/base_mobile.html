@@ -1,0 +1,40 @@
+{# Layout mobile cho Sinh viên. Trang con dùng:
+     {% extends "base_mobile.html" %}
+     {% block content %} ... {% endblock %}
+   TV1 hoàn thiện cho khớp Figma. #}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  {% include "_head.html" %}
+  <link href="{{ url_for('static', filename='css/mobile.css') }}" rel="stylesheet">
+  <title>{% block title %}{{ BRAND_NAME }}{% endblock %}</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+<div class="phone">
+  <header class="phone-top">
+    <a class="phone-brand" href="{{ url_for('student.search') }}">{{ BRAND_NAME }}</a>
+    {% include "_switches.html" %}
+  </header>
+
+  <main class="phone-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block nav %}
+  <nav class="phone-nav">
+    <a href="{{ url_for('student.search') }}" class="{{ 'active' if request.endpoint == 'student.search' }}"><i class="bi bi-compass"></i><span data-i18n="nav.explore">Khám phá</span></a>
+    <a href="{{ url_for('student.page', page='ride') }}"><i class="bi bi-bicycle"></i><span data-i18n="nav.ride">Chuyến đi</span></a>
+    <a href="{{ url_for('student.page', page='charging') }}"><i class="bi bi-lightning-charge"></i><span data-i18n="nav.charging">Sạc</span></a>
+    {% if currentUser %}
+    <a href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right"></i><span data-i18n="action.logout">Đăng xuất</span></a>
+    {% else %}
+    <a href="{{ url_for('auth.login') }}"><i class="bi bi-person"></i><span data-i18n="action.login">Đăng nhập</span></a>
+    {% endif %}
+  </nav>
+  {% endblock %}
+</div>
+{% include "_scripts.html" %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

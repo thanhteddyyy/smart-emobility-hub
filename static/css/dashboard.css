@@ -1,0 +1,18 @@
+/* Layout Web Dashboard cho Đơn vị vận hành: sidebar trái + nội dung phải. */
+.dash { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
+.dash-side { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: .25rem; }
+.dash-brand { font-weight: 700; font-size: 1.25rem; margin-bottom: 1rem; color: var(--color-text); text-decoration: none; }
+.dash-side .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--color-muted); margin: .5rem 0 .25rem; }
+.dash-side a.nav-x { display: flex; align-items: center; gap: .6rem; padding: .5rem .75rem; border-radius: 10px; color: var(--color-muted); text-decoration: none; font-size: .92rem; }
+.dash-side a.nav-x:hover { background: var(--color-primary-soft); color: var(--color-primary-strong); }
+.dash-side a.nav-x.active { background: var(--color-primary); color: #fff; }
+.dash-user { margin-top: auto; padding: .75rem; font-size: .88rem; }
+.dash-main { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+.dash-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .75rem; }
+.stat-x { padding: 1rem; }
+.stat-x .num { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.table-x { width: 100%; font-size: .92rem; }
+.table-x th, .table-x td { padding: .6rem .75rem; border-bottom: 1px solid var(--color-border); }
+.table-x th { color: var(--color-muted); font-weight: 600; font-size: .8rem; }
+@media (max-width: 800px) { .dash { grid-template-columns: 1fr; } .dash-side { flex-direction: row; flex-wrap: wrap; } .dash-user { margin: 0; } }

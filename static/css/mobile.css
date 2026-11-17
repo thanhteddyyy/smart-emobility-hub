@@ -1,0 +1,13 @@
+/* Layout mobile cho Sinh viên: nội dung nằm trong khung rộng ~420px giống app điện thoại. */
+.phone { max-width: 420px; min-height: 100vh; margin: 0 auto; background: var(--color-bg); display: flex; flex-direction: column; border-left: 1px solid var(--color-border); border-right: 1px solid var(--color-border); }
+.phone-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .75rem 1rem; }
+.phone-brand { font-weight: 700; color: var(--color-primary); text-decoration: none; letter-spacing: .02em; }
+.phone-main { flex: 1; padding: 0 1rem 1rem; display: flex; flex-direction: column; gap: .75rem; }
+.phone-nav { position: sticky; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--color-surface); border-top: 1px solid var(--color-border); }
+.phone-nav a { text-align: center; padding: .5rem 0; font-size: .72rem; color: var(--color-muted); text-decoration: none; }
+.phone-nav a.active, .phone-nav a:hover { color: var(--color-primary); }
+.phone-nav i { display: block; font-size: 1.15rem; }
+#map { height: 300px; border-radius: var(--radius); border: 1px solid var(--color-border); z-index: 0; }
+.hub-card { padding: 1rem; display: grid; gap: .35rem; }
+.hub-card h3 { font-size: 1rem; margin: 0; font-weight: 700; }
+.hub-meta { font-size: .85rem; color: var(--color-muted); display: flex; flex-wrap: wrap; gap: .25rem .9rem; }
