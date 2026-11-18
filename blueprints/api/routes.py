@@ -7,7 +7,7 @@ Quy ước trả về:
 """
 from flask import Blueprint, jsonify, request, session
 
-from services import booking_service, monitor_service, realtime_service, trip_service, charging_service, dispatch_service, incident_service, schedule_service
+from services import booking_service, monitor_service, realtime_service, trip_service, charging_service, dispatch_service, incident_service, schedule_service, simulation_service
 
 from services.errors import ServiceError
 
@@ -251,29 +251,47 @@ def generateSchedule(hubId):
         status_code = 404 if e.code == "HUB_NOT_FOUND" else 400
         return jsonify(e.toDict()), status_code 
 
-@bp.route("/charging-schedules/<scheduleId>/change", methods=["PATCH"])
-def editSchedule(scheduleId):
+@bp.route("/charging-schedules/change", methods=["PATCH"])
+def editSchedule():
     data = request.get_json(silent=True) or {}
+    schedule = data.get("schedule")
     changes = data.get("changes")
     if not changes:
         return jsonify({"ok": False, "error": "CHANGE_NOT_FOUND", "message": "Thiếu thông tin thay đổi."}), 400
     try:
-        schedule_service.editSchedule(scheduleId, changes)
+        schedule_service.editSchedule(schedule, changes)
         return jsonify({"ok": True, "message": "Đã thay đổi lịch sạc."})
     except ServiceError as e:
         return jsonify(e.toDict()), 400
 
-@bp.route("/charging-schedules/<scheduleId>/approve", methods=["POST"])
-def approveSchedule(scheduleId):
+@bp.route("/charging-schedules/approve", methods=["POST"])
+def approveSchedule():
     user = session.get("user")
     if not user:
         return jsonify({"ok": False, "error": "LOGIN_REQUIRED", "message": "Cần đăng nhập."}), 401
     if user["role"] != "OPERATOR":
         return jsonify({"ok": False, "error": "FORBIDDEN", "message": "Không có quyền truy cập."}), 403
+    data = request.get_json(silent=True) or {}
+    schedule = data.get("schedule")
     try:
-        schedule_service.approveSchedule(user["id"],scheduleId)
+        schedule_service.approveSchedule(user["id"],schedule)
         return jsonify({"ok": True, "message": "Lịch sạc đã được xác nhận."})
     except ServiceError as e:
         return jsonify(e.toDict()), 400
 
 #---------- UC14: Mô phỏng và phân tích kịch bản What-if" ----------
+@bp.route("/what-if/simulate", methods=["POST"])
+def simulateWhatIf():
+    data = request.get_json(silent=True) or {}
+    params = data.get("params")
+    if not params:
+        return jsonify({"ok": False, "error": "MISSING_PARAMS", "message": "Thiếu thông số mô phỏng."}), 400
+    try:
+        simulation_service.validateParameters(params)
+        virtualData = simulation_service.initVirtualEnvironment()
+        impact = simulation_service.calculateImpact(virtualData, params)
+        report = simulation_service.generateReport(impact)
+        return jsonify({"ok": True, "data": report})
+    except ServiceError as e:
+        status_code = 409 if e.code == "INVALID_PARAMETERS" else 400
+        return jsonify(e.toDict()), status_code
