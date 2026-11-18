@@ -1,12 +1,41 @@
-{# UC7 – Hình 11: Xác nhận đặt lịch sạc. Phụ trách: TV2.
-   Cần làm: Rà soát thông tin, xác nhận / hủy.
-   Service liên quan: charging_service.registerCharging #}
+{# UC – Hình 11: Xem lại đặt lịch sạc. Phụ trách: TV2. #}
 {% extends "base_mobile.html" %}
 {% block content %}
-<h1 class="h4 mt-2">Xác nhận đặt lịch sạc</h1>
-<div class="todo-box">
-  <b>TODO (TV2) – UC7 · Hình 11</b><br>
-  Rà soát thông tin, xác nhận / hủy.<br>
-  Service: <code>charging_service.registerCharging</code>
+<!-- Dữ liệu giả lập cho TV2 test UI, xoá khi TV4 ráp API -->
+{% set booking = booking | default({
+    'hub_name': 'Trạm Ký túc xá A',
+    'port': 'Cổng A-03',
+    'vehicle': 'EV-001',
+    'date': '16 Tháng 10 2026',
+    'time': '09:00 - 10:00',
+    'duration': '60 phút'
+}, true) %}
+
+<div class="pt-1 mb-4">
+  <h1 class="h3 fw-bold mb-1" style="color: var(--color-text);" data-i18n="chargingReview.title">Xem lại đặt lịch sạc</h1>
+  <p class="mb-0 small" style="color: var(--color-muted);" data-i18n="chargingReview.subtitle">Xem lại thông tin sạc của bạn</p>
+</div>
+
+<!-- Thẻ thông tin Booking -->
+<article class="card-x p-3 mb-4">
+  <h2 class="h5 fw-bold mb-3" style="color: var(--color-text);">{{ booking.hub_name }} • {{ booking.port }}</h2>
+  <div class="small" style="color: var(--color-muted); line-height: 1.6;">
+    <div><span data-i18n="chargingReview.vehicleLabel">Xe:</span> {{ booking.vehicle }}</div>
+    <div><span data-i18n="chargingReview.dateLabel">Ngày:</span> {{ booking.date }}</div>
+    <div><span data-i18n="chargingReview.timeLabel">Thời gian:</span> {{ booking.time }}</div>
+    <div><span data-i18n="chargingReview.durationLabel">Thời lượng:</span> {{ booking.duration }}</div>
+  </div>
+</article>
+
+<!-- Dòng chú thích nhỏ -->
+<p class="small mb-4" style="color: var(--color-muted);" data-i18n="chargingReview.note">
+  Cổng sạc của bạn chưa được giữ chỗ.<br>
+  Tình trạng cổng trống sẽ được kiểm tra khi xác nhận.
+</p>
+
+<!-- Nút bấm điều hướng -->
+<div class="mt-auto d-flex flex-column gap-2 pt-2">
+  <button type="button" class="btn w-100 btn-primary-x" data-i18n="chargingReview.btnConfirm">Xác nhận đặt lịch</button>
+  <button type="button" class="btn w-100 btn-outline-x" data-i18n="chargingReview.btnCancel">Hủy đặt lịch</button>
 </div>
 {% endblock %}

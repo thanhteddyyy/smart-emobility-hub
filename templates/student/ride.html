@@ -1,12 +1,38 @@
-{# UC5 – Hình 7: Chuyến đi của bạn. Phụ trách: TV2.
-   Cần làm: Bản đồ tuyến đi, pin realtime, nút Trả xe / Sạc khẩn.
-   Service liên quan: realtime (data-rt) #}
+{# UC5 – Hình 7: Chuyến đi của bạn. Phụ trách: TV2. #}
 {% extends "base_mobile.html" %}
 {% block content %}
-<h1 class="h4 mt-2">Chuyến đi của bạn</h1>
-<div class="todo-box">
-  <b>TODO (TV2) – UC5 · Hình 7</b><br>
-  Bản đồ tuyến đi, pin realtime, nút Trả xe / Sạc khẩn.<br>
-  Service: <code>realtime (data-rt)</code>
+{% set vehicle = vehicle | default({'id': 'EB-028', 'battery_percentage': 68}, true) %}
+{% set ride = ride | default({'start_time': '08:30', 'start_hub': {'name': 'Ký túc xá A'}}, true) %}
+
+<div class="pt-1 mb-3">
+  <h1 class="h3 fw-bold mb-1" style="color: var(--color-text);" data-i18n="ride.title">Chuyến đi của bạn</h1>
+  <p class="mb-0 small" style="color: var(--color-muted);" data-i18n="ride.subtitle">Nhận xe thành công • Xe {{ vehicle.id }} đang được sử dụng</p>
+</div>
+
+<div id="map" class="w-100 mb-3" style="height: 300px; background-color: var(--color-primary-soft); border-radius: var(--radius);"></div>
+
+
+<article class="card-x p-3 mb-3">
+  <p class="small fw-semibold text-uppercase mb-3" style="color: var(--color-muted); letter-spacing: .04em;" data-i18n="ride.battery">Pin hiện tại</p>
+  <div class="d-flex align-items-center justify-content-between gap-3">
+    <div class="d-flex align-items-stretch flex-grow-1 gap-2" style="height: 2.75rem; max-width: 12rem;">
+      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
+    </div>
+    <div class="text-end">
+      <div class="fs-2 fw-bold lh-1" style="color: var(--color-text);" data-i18n="ride.batteryPercent">{{ vehicle.battery_percentage }}%</div>
+      <div class="small mt-1" style="color: var(--color-muted);" data-i18n="ride.vehicleCode">Xe {{ vehicle.id }}</div>
+    </div>
+  </div>
+</article>
+
+<div class="mt-auto d-flex flex-column gap-2 pt-2">
+  <p class="small text-center mb-2" style="color: var(--color-muted);" data-i18n="ride.startTimeInfo">Bắt đầu lúc {{ ride.start_time }} • {{ ride.start_hub.name }}</p>
+  
+  <button type="button" class="btn w-100 btn-primary-x" data-i18n="ride.btnReturn">Trả xe</button>
+  <button type="button" class="btn w-100 btn-outline-x" data-i18n="ride.btnEmergencyCharge">Sạc khẩn cấp</button>
 </div>
 {% endblock %}
