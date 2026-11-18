@@ -1,12 +1,11 @@
-{# UC13 – chưa có mockup: Lịch sạc thông minh. Phụ trách: TV4.
-   Cần làm: Bảng lịch theo cổng / khung giờ, chỉnh sửa và phê duyệt.
-   Service liên quan: schedule_service.generateSchedule, approveSchedule #}
+{# UC13 – Lịch sạc (chưa có mockup Figma — placeholder đơn giản). #}
 {% extends "base_dashboard.html" %}
-{% block heading %}Lịch sạc thông minh{% endblock %}
+{% block heading %}<span data-i18n="dash.schedule">Lịch sạc</span>{% endblock %}
+
 {% block content %}
-<div class="todo-box">
-  <b>TODO (TV4) – UC13 · chưa có mockup</b><br>
-  Bảng lịch theo cổng / khung giờ, chỉnh sửa và phê duyệt.<br>
-  Service: <code>schedule_service.generateSchedule, approveSchedule</code>
+<div class="panel-card text-center py-5">
+  <i class="bi bi-calendar-check fs-1 text-primary d-block mb-3" aria-hidden="true"></i>
+  <h2 class="h5 fw-bold mb-2" data-i18n="dash.schedule">Lịch sạc</h2>
+  <p class="text-muted-2 m-0" data-i18n="schedule.underDevelopment">Đang phát triển</p>
 </div>
 {% endblock %}

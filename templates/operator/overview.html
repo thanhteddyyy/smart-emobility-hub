@@ -1,37 +1,182 @@
-{# UC8 – Hình 15: tổng quan mạng lưới. Bản cơ bản đã chạy; TV3 làm đẹp theo Figma.
-   Biến: overview (xem docs/DATA_CONTRACT.md, mục "Tổng quan mạng lưới") #}
+{# UC8 – Hình 15: Tổng quan mạng lưới (OverviewDashboard). #}
 {% extends "base_dashboard.html" %}
 {% block heading %}<span data-i18n="dash.overview">Tổng quan mạng lưới</span>{% endblock %}
-{% block content %}
-<div class="stat-grid">
-  <div class="card-x stat-x"><div class="num" data-rt="network.availableVehicles">{{ overview.availableVehicles }}</div><div class="text-muted-2" data-i18n="stat.vehicles">Xe sẵn sàng</div></div>
-  <div class="card-x stat-x"><div class="num" data-rt="network.emptySpots">{{ overview.emptySpots }}</div><div class="text-muted-2" data-i18n="stat.spots">Chỗ đỗ trống</div></div>
-  <div class="card-x stat-x"><div class="num" data-rt="network.availablePorts">{{ overview.availablePorts }}</div><div class="text-muted-2" data-i18n="stat.ports">Cổng sạc trống</div></div>
-  <div class="card-x stat-x"><div class="num" data-rt="network.openIncidents">{{ overview.openIncidents }}</div><div class="text-muted-2" data-i18n="stat.incidents">Sự cố đang mở</div></div>
-</div>
-<div class="text-muted-2 small">Cập nhật: <span data-rt="network.updatedAt">{{ overview.updatedAt }}</span></div>
 
-<div class="card-x p-3" style="overflow-x:auto">
-  <h2 class="h6" data-i18n="dash.hubUsage">Mức sử dụng Hub</h2>
-  <table class="table-x">
-    <thead><tr>
-      <th data-i18n="table.hub">Hub</th><th data-i18n="table.status">Trạng thái</th>
-      <th data-i18n="table.vehicles">Xe</th><th data-i18n="table.spots">Chỗ trống</th>
-      <th data-i18n="table.ports">Cổng sạc</th><th data-i18n="table.usage">Mức sử dụng</th>
-    </tr></thead>
-    <tbody>
-    {% for hub in overview.hubs %}
-      <tr>
-        <td>{{ hub.name }}</td>
-        <td><span class="badge {{ 'badge-ok' if hub.status == 'ACTIVE' else 'badge-danger' }}">{{ hub.status }}</span></td>
-        <td data-rt="hubs.{{ hub.hubId }}.availableVehicles">{{ hub.availableVehicles }}</td>
-        <td data-rt="hubs.{{ hub.hubId }}.emptySpots">{{ hub.emptySpots }}</td>
-        <td data-rt="hubs.{{ hub.hubId }}.availablePorts">{{ hub.availablePorts }}</td>
-        <td><span class="badge {{ 'badge-danger' if hub.usageRate >= 0.95 else 'badge-warn' if hub.usageRate >= 0.8 else 'badge-ok' }}">{{ (hub.usageRate * 100) | round | int }}%</span></td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+{% block content %}
+<div class="d-flex flex-wrap align-items-center gap-3">
+  <div class="stat-grid flex-grow-1">
+    <div class="stat-card-x stat-card-primary">
+      <i class="bi bi-geo-alt-fill stat-icon" aria-hidden="true"></i>
+      <div class="stat-label" data-i18n="stat.hubs">Hubs</div>
+      <div class="num" data-rt="network.activeHubCount">{{ overview.activeHubCount }}</div>
+    </div>
+    <div class="stat-card-x stat-card-warning">
+      <i class="bi bi-bicycle stat-icon" aria-hidden="true"></i>
+      <div class="stat-label" data-i18n="stat.vehicles">Xe sẵn sàng</div>
+      <div class="num" data-rt="network.availableVehicles">{{ overview.availableVehicles }}</div>
+    </div>
+    <div class="stat-card-x stat-card-secondary">
+      <i class="bi bi-p-square-fill stat-icon" aria-hidden="true"></i>
+      <div class="stat-label" data-i18n="stat.spots">Chỗ đỗ trống</div>
+      <div class="num" data-rt="network.emptySpots">{{ overview.emptySpots }}</div>
+    </div>
+    <div class="stat-card-x stat-card-error">
+      <i class="bi bi-ev-station-fill stat-icon" aria-hidden="true"></i>
+      <div class="stat-label" data-i18n="stat.ports">Cổng sạc trống</div>
+      <div class="num" data-rt="network.availablePorts">{{ overview.availablePorts }}</div>
+    </div>
+  </div>
+  <button type="button" id="overviewRefreshBtn" class="btn btn-outline-secondary rounded-circle p-2" title="Refresh" aria-label="Refresh">
+    <i class="bi bi-arrow-clockwise fs-5"></i>
+  </button>
 </div>
-<div class="todo-box">TODO (TV3): danh sách "Warnings &amp; Alerts", ô lọc Hub, 4 thẻ màu theo <b>Hình 15</b>.</div>
+
+<div class="refresh-row">
+  <span class="status-dot-live" aria-hidden="true"></span>
+  <span><span data-i18n="hub.updated">Cập nhật lúc</span>: <span data-rt="network.updatedAt">{{ overview.updatedAt }}</span></span>
+</div>
+
+<div class="overview-grid">
+  <section class="panel-card d-flex flex-column gap-3">
+    <h2 class="panel-title" data-i18n="dash.warningsAndAlerts">Cảnh báo &amp; Sự cố</h2>
+    <div class="d-flex flex-column gap-2">
+      {% for alert in alerts[:5] %}
+        <div class="alert-feed-item">
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="small">{{ alert.createdAt[11:16] }}</span>
+              <span class="chip-x {{ 'chip-solid-danger' if alert.dangerLevel == 'HIGH' else 'chip-solid-warning' }}"
+                    data-i18n="{{ 'alerts.critical' if alert.dangerLevel == 'HIGH' else 'alerts.warning' }}">
+                {{ 'Critical' if alert.dangerLevel == 'HIGH' else 'Warning' }}
+              </span>
+            </div>
+            {% if alert.dangerLevel == 'HIGH' %}
+              <span class="tag-incident" data-i18n="alerts.incidentTag">Incident</span>
+            {% endif %}
+          </div>
+          <div class="small">
+            <strong>{{ alert.hubName }}</strong> —
+            <span data-i18n="{{ 'alerts.overloadingMsg' if alert.dangerLevel == 'HIGH' else 'alerts.reachingOverloadMsg' }}">
+              {{ 'đang quá tải' if alert.dangerLevel == 'HIGH' else 'sắp đạt ngưỡng quá tải' }}
+            </span> ({{ alert.utilization }}%)
+          </div>
+        </div>
+      {% else %}
+        <div class="text-muted-2 small" data-i18n="alerts.empty">Không có cảnh báo quá tải.</div>
+      {% endfor %}
+    </div>
+    <div>
+      <a class="btn btn-danger btn-sm px-3" href="{{ url_for('operator.alerts') }}" data-i18n="action.viewAll">Xem tất cả</a>
+    </div>
+  </section>
+
+  <section class="panel-card d-flex flex-column gap-3">
+    <h2 class="panel-title" data-i18n="dash.hubUsage">Mức sử dụng Hub</h2>
+
+    <form method="get" action="{{ url_for('operator.overview') }}" class="d-flex flex-wrap align-items-center gap-2">
+      <div class="search-box-x">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="text" class="form-control" id="hubSearchInput" name="q" value="{{ filter.q }}"
+               placeholder="Tìm kiếm Hub..." data-i18n-placeholder="dash.searchHubPlaceholder">
+      </div>
+      <select class="form-select w-auto" name="operationStatus" aria-label="Operating status">
+        <option value="" data-i18n="filter.allStatus">Tất cả trạng thái</option>
+        <option value="ACTIVE" {{ 'selected' if filter.operationStatus == 'ACTIVE' }}>ACTIVE</option>
+        <option value="OFFLINE" {{ 'selected' if filter.operationStatus == 'OFFLINE' }}>OFFLINE</option>
+      </select>
+      <select class="form-select w-auto" name="safetyWarning" aria-label="Safety Warning">
+        <option value="" data-i18n="filter.allWarning">Mọi mức cảnh báo</option>
+        <option value="Safe" {{ 'selected' if filter.safetyWarning == 'Safe' }}>Safe</option>
+        <option value="Danger" {{ 'selected' if filter.safetyWarning == 'Danger' }}>Danger</option>
+        <option value="Overload" {{ 'selected' if filter.safetyWarning == 'Overload' }}>Overload</option>
+      </select>
+      <button type="submit" class="btn-outline-x py-1 px-3" title="Lọc" aria-label="Lọc">
+        <i class="bi bi-funnel"></i>
+      </button>
+    </form>
+
+    <div class="table-responsive">
+      <table class="table-x" id="hubUsageTable">
+        <thead>
+          <tr>
+            <th data-i18n="table.hub">Hub</th>
+            <th data-i18n="table.operatingStatus">Trạng thái hoạt động</th>
+            <th data-i18n="table.safetyWarning">Cảnh báo an toàn</th>
+            <th data-i18n="table.usage">Mức sử dụng</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for hub in overview.hubs %}
+          <tr class="hub-row" data-hub-name="{{ hub.name | lower }} {{ hub.hubId | lower }}">
+            <td>
+              <div class="fw-semibold">{{ hub.name }}</div>
+              <a class="link-view-resources" href="{{ url_for('operator.resources', hubId=hub.hubId) }}" data-i18n="action.viewResources">View resources</a>
+            </td>
+            <td>
+              <span class="chip-x {{ 'chip-solid-success' if hub.status == 'ACTIVE' else 'chip-solid-danger' }}"
+                    data-rt="hubs.{{ hub.hubId }}.status">{{ hub.status }}</span>
+            </td>
+            <td>
+              <span class="fw-medium {{ 'text-danger' if hub.safetyWarning == 'Overload' else 'text-warning' if hub.safetyWarning == 'Danger' else '' }}"
+                    data-rt="hubs.{{ hub.hubId }}.safetyWarning">{{ hub.safetyWarning }}</span>
+            </td>
+            <td class="fw-semibold">
+              <span data-rt="hubs.{{ hub.hubId }}.usagePercent">{{ hub.usagePercent }}</span>%
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted-2 py-4" data-i18n="dash.noHubMatch">Không có Hub nào khớp bộ lọc.</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const searchInput = document.getElementById("hubSearchInput");
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      const q = searchInput.value.trim().toLowerCase();
+      document.querySelectorAll("#hubUsageTable tbody tr.hub-row").forEach(function (row) {
+        row.style.display = !q || row.dataset.hubName.includes(q) ? "" : "none";
+      });
+    });
+  }
+
+  const refreshBtn = document.getElementById("overviewRefreshBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", async function () {
+      try {
+        const res = await fetch("/api/state");
+        const state = await res.json();
+        document.querySelectorAll("[data-rt]").forEach(function (el) {
+          const val = el.dataset.rt.split(".").reduce(function (o, k) {
+            return o == null ? undefined : o[k];
+          }, state);
+          if (val !== undefined) el.textContent = val;
+        });
+        document.dispatchEvent(new CustomEvent("ehub:state", { detail: state }));
+      } catch (err) {
+        console.warn("Refresh failed:", err);
+      }
+    });
+  }
+
+  document.addEventListener("ehub:state", function (ev) {
+    const hubs = (ev.detail && ev.detail.hubs) || {};
+    Object.keys(hubs).forEach(function (hid) {
+      const statusEl = document.querySelector('[data-rt="hubs.' + hid + '.status"]');
+      if (statusEl) {
+        statusEl.className = "chip-x " + (hubs[hid].status === "ACTIVE" ? "chip-solid-success" : "chip-solid-danger");
+      }
+    });
+  });
+})();
+</script>
 {% endblock %}

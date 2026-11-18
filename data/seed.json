@@ -1007,5 +1007,72 @@
    "password": "123456",
    "role": "GUEST"
   }
+ ],
+ "alerts": [
+  {
+   "id": "ALT-001",
+   "hubId": "H1",
+   "hubName": "Ga Metro ĐHQG",
+   "utilizationType": "Parking spots",
+   "utilization": 95,
+   "threshold": 75,
+   "dangerLevel": "HIGH",
+   "location": "Ga Metro ĐHQG - Cửa Đông",
+   "expectedCause": "Rush hour",
+   "status": "ACTIVE",
+   "createdAt": "2026-11-17T09:46:00"
+  },
+  {
+   "id": "ALT-002",
+   "hubId": "H2",
+   "hubName": "KTX Khu A",
+   "utilizationType": "Charging ports",
+   "utilization": 90,
+   "threshold": 80,
+   "dangerLevel": "MEDIUM",
+   "location": "KTX Khu A - Cổng chính",
+   "expectedCause": "Peak charging demand",
+   "status": "ACTIVE",
+   "createdAt": "2026-11-17T09:36:00"
+  },
+  {
+   "id": "ALT-003",
+   "hubId": "H4",
+   "hubName": "ĐH Bách khoa CS2",
+   "utilizationType": "Parking spots",
+   "utilization": 93,
+   "threshold": 75,
+   "dangerLevel": "HIGH",
+   "location": "ĐH Bách khoa CS2 - Nhà xe A",
+   "expectedCause": "Class dismissal peak",
+   "status": "ACTIVE",
+   "createdAt": "2026-11-17T09:26:00"
+  },
+  {
+   "id": "ALT-004",
+   "hubId": "H3",
+   "hubName": "KTX Khu B",
+   "utilizationType": "Parking spots",
+   "utilization": 85,
+   "threshold": 80,
+   "dangerLevel": "MEDIUM",
+   "location": "KTX Khu B - Khu B2",
+   "expectedCause": "Evening return traffic",
+   "status": "ACTIVE",
+   "createdAt": "2026-11-17T09:10:00"
+  },
+  {
+   "id": "ALT-005",
+   "hubId": "H5",
+   "hubName": "Nhà văn hóa Sinh viên",
+   "utilizationType": "Charging ports",
+   "utilization": 82,
+   "threshold": 75,
+   "dangerLevel": "MEDIUM",
+   "location": "Nhà văn hóa Sinh viên - Sảnh B",
+   "expectedCause": "Student event surge",
+   "status": "RESOLVED",
+   "createdAt": "2026-11-17T09:05:00"
+  }
  ]
 }

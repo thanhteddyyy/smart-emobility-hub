@@ -18,6 +18,7 @@ VEHICLES = []
 PARKING_SPOTS = []
 CHARGING_PORTS = []
 INCIDENTS = []
+ALERTS = []
 USERS = []
 
 # Dữ liệu sinh ra khi chạy (ban đầu rỗng)
@@ -28,7 +29,8 @@ AUDIT_LOGS = []              # NFR11
 
 _TABLES = {
     "hubs": HUBS, "vehicles": VEHICLES, "parkingSpots": PARKING_SPOTS,
-    "chargingPorts": CHARGING_PORTS, "incidents": INCIDENTS, "users": USERS,
+    "chargingPorts": CHARGING_PORTS, "incidents": INCIDENTS, "alerts": ALERTS,
+    "users": USERS,
 }
 
 
@@ -37,7 +39,7 @@ def resetData():
     seed = json.loads(SEED_PATH.read_text(encoding="utf-8"))
     with DATA_LOCK:
         for key, table in _TABLES.items():
-            table[:] = seed[key]          # sửa tại chỗ để các module khác vẫn giữ đúng list
+            table[:] = seed.get(key, [])  # sửa tại chỗ để các module khác vẫn giữ đúng list
         for table in (BOOKINGS, CHARGING_REGISTRATIONS, DISPATCH_ORDERS, AUDIT_LOGS):
             table.clear()
 

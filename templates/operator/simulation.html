@@ -1,12 +1,225 @@
-{# UC14 – Hình 21: Mô phỏng What-if. Phụ trách: TV4.
-   Cần làm: Thanh trượt tham số, biểu đồ Chart.js, nút 'Apply to Dispatch'.
-   Service liên quan: simulation_service.runSimulation #}
+{# UC14 – Hình 21: Mô phỏng kịch bản What-if (Simulation). #}
 {% extends "base_dashboard.html" %}
-{% block heading %}Mô phỏng What-if{% endblock %}
+{% block heading %}<span data-i18n="dash.simulation">Mô phỏng What-if</span>{% endblock %}
+
 {% block content %}
-<div class="todo-box">
-  <b>TODO (TV4) – UC14 · Hình 21</b><br>
-  Thanh trượt tham số, biểu đồ Chart.js, nút 'Apply to Dispatch'.<br>
-  Service: <code>simulation_service.runSimulation</code>
+{% if error %}
+  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</div>
+{% endif %}
+
+<div class="sim-grid">
+  <section class="sim-card d-flex flex-column gap-4">
+    <h2 class="h4 fw-bold m-0 text-center" data-i18n="sim.paramsTitle">Tham số mô phỏng</h2>
+
+    <form method="post" action="{{ url_for('operator.simulation') }}" class="d-flex flex-column gap-4">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <label class="fw-medium" for="studentDemandSlider" data-i18n="sim.studentDemand">Nhu cầu sinh viên</label>
+          <span id="studentDemandValue" class="small fw-semibold text-primary">
+            {{ '+' if params.studentDemandPercent >= 0 else '' }}{{ params.studentDemandPercent }}%
+          </span>
+        </div>
+        <input type="range" class="form-range" id="studentDemandSlider" name="studentDemandPercent"
+               min="-50" max="100" step="5" value="{{ params.studentDemandPercent }}">
+      </div>
+
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <label class="fw-medium" for="availableEvSlider" data-i18n="sim.availableEvs">Xe điện sẵn sàng</label>
+          <span id="availableEvValue" class="small fw-semibold text-primary">
+            {{ '+' if params.availableEvDelta >= 0 else '' }}{{ params.availableEvDelta }}
+          </span>
+        </div>
+        <input type="range" class="form-range" id="availableEvSlider" name="availableEvDelta"
+               min="-30" max="30" step="1" value="{{ params.availableEvDelta }}">
+      </div>
+
+      <div>
+        <label class="fw-medium d-block mb-2" for="weatherSelect" data-i18n="sim.weatherImpact">Tác động thời tiết</label>
+        <select class="form-select" id="weatherSelect" name="weather">
+          <option value="HEAVY_RAIN" {{ 'selected' if params.weather == 'HEAVY_RAIN' }} data-i18n="sim.weatherHeavyRain">Mưa lớn</option>
+          <option value="LIGHT_RAIN" {{ 'selected' if params.weather == 'LIGHT_RAIN' }} data-i18n="sim.weatherLightRain">Mưa nhẹ</option>
+          <option value="CLEAR" {{ 'selected' if params.weather == 'CLEAR' }} data-i18n="sim.weatherClear">Trời quang</option>
+          <option value="EXTREME_HEAT" {{ 'selected' if params.weather == 'EXTREME_HEAT' }} data-i18n="sim.weatherExtremeHeat">Nắng nóng</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-pill-primary w-100 mt-2" data-i18n="sim.runBtn">Chạy mô phỏng</button>
+    </form>
+  </section>
+
+  <div class="d-flex flex-column gap-4">
+    <section class="sim-card d-flex flex-column gap-3">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h2 class="h4 fw-bold m-0" data-i18n="sim.resultsTitle">Kết quả mô phỏng</h2>
+        {% if report.maxVehicleDeficit < 0 %}
+          <span class="sim-critical-badge">
+            <span>⚠️</span>
+            <span data-i18n="sim.criticalShortage">Critical Shortage</span>
+            <span>({{ report.peakShortageTime }})</span>
+          </span>
+        {% endif %}
+      </div>
+
+      <div style="position: relative; height: 320px;">
+        <canvas id="simulationChart"></canvas>
+      </div>
+
+      <div class="text-center small text-muted-2" data-i18n="sim.forecastCaption">
+        Dự báo thiếu hụt phương tiện (Khung 9 giờ)
+      </div>
+    </section>
+
+    <div class="sim-results-metrics">
+      <div class="sim-metric-card sim-metric-shortage">
+        <div class="small fw-bold text-muted-2" data-i18n="sim.peakShortageTime">Giờ cao điểm thiếu xe</div>
+        <div class="sim-metric-value-danger">{{ report.peakShortageTime }}</div>
+      </div>
+
+      <div class="sim-metric-card sim-metric-deficit">
+        <div class="small fw-bold text-muted-2" data-i18n="sim.maxDeficit">Mức thiếu hụt tối đa</div>
+        <div class="sim-metric-value-danger">{{ report.maxVehicleDeficit }} EVs</div>
+      </div>
+
+      <div class="sim-metric-card sim-metric-rec">
+        <div class="small fw-bold text-muted-2" data-i18n="sim.recommendation">Khuyến nghị hệ thống</div>
+        <div class="small fw-semibold">{{ report.recommendationText }}</div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-end gap-3">
+      <button type="button" id="saveReportBtn" class="btn-pill-outline" data-i18n="sim.saveReport">Lưu báo cáo</button>
+      <form method="post" action="{{ url_for('operator.applySimulation') }}">
+        <input type="hidden" name="reportId" value="{{ report.reportId }}">
+        <button type="submit" class="btn-pill-primary" data-i18n="sim.applyToDispatch">Áp dụng vào Điều phối</button>
+      </form>
+    </div>
+  </div>
 </div>
+
+<div id="demoToast" class="demo-toast" role="status" aria-live="polite">
+  <i class="bi bi-check-circle-fill text-success"></i>
+  <span data-i18n="sim.savedToast">Đã lưu (demo)</span>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  const demandSlider = document.getElementById("studentDemandSlider");
+  const demandVal = document.getElementById("studentDemandValue");
+  const evSlider = document.getElementById("availableEvSlider");
+  const evVal = document.getElementById("availableEvValue");
+
+  if (demandSlider && demandVal) {
+    demandSlider.addEventListener("input", function () {
+      const v = parseInt(demandSlider.value, 10);
+      demandVal.textContent = (v >= 0 ? "+" : "") + v + "%";
+    });
+  }
+  if (evSlider && evVal) {
+    evSlider.addEventListener("input", function () {
+      const v = parseInt(evSlider.value, 10);
+      evVal.textContent = (v >= 0 ? "+" : "") + v;
+    });
+  }
+
+  const report = {{ report | tojson }};
+  const ctx = document.getElementById("simulationChart");
+  let chartInstance = null;
+
+  function renderSimChart() {
+    if (!ctx || typeof Chart === "undefined") return;
+    const styles = getComputedStyle(document.documentElement);
+    const primary = styles.getPropertyValue("--color-primary").trim();
+    const errorColor = styles.getPropertyValue("--color-error").trim();
+    const textColor = styles.getPropertyValue("--color-text").trim();
+    const gridColor = styles.getPropertyValue("--color-border").trim();
+
+    if (chartInstance) chartInstance.destroy();
+
+    const pointRadii = report.hours.map(function (_, idx) {
+      return idx === report.peakShortageIndex ? 7 : 4;
+    });
+
+    chartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: report.hours,
+        datasets: [
+          {
+            label: "Available EVs",
+            data: report.availableSeries,
+            borderColor: primary,
+            backgroundColor: primary,
+            tension: 0.35,
+            borderWidth: 2.5,
+            pointRadius: 4
+          },
+          {
+            label: "Student Demand",
+            data: report.demandSeries,
+            borderColor: errorColor,
+            backgroundColor: errorColor,
+            tension: 0.35,
+            borderWidth: 2.5,
+            pointRadius: pointRadii
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { color: textColor }
+          },
+          tooltip: {
+            callbacks: {
+              afterLabel: function (item) {
+                if (item.datasetIndex === 1 && item.dataIndex === report.peakShortageIndex && report.maxVehicleDeficit < 0) {
+                  return "Critical Shortage (" + report.maxVehicleDeficit + " EVs)";
+                }
+                return "";
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: textColor },
+            grid: { color: gridColor }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: textColor },
+            grid: { color: gridColor }
+          }
+        }
+      }
+    });
+  }
+
+  renderSimChart();
+  document.querySelectorAll("[data-theme-set]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      setTimeout(renderSimChart, 20);
+    });
+  });
+
+  const saveBtn = document.getElementById("saveReportBtn");
+  const toast = document.getElementById("demoToast");
+  let toastTimer = null;
+  if (saveBtn && toast) {
+    saveBtn.addEventListener("click", function () {
+      toast.classList.add("show");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toast.classList.remove("show");
+      }, 2800);
+    });
+  }
+})();
+</script>
 {% endblock %}

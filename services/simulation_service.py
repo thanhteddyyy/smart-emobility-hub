@@ -7,32 +7,149 @@ Cách chứng minh: chạy mô phỏng xong, số liệu dashboard UC8 không đ
 from data import mock_data as db
 from services.errors import INVALID_PARAMETERS, ServiceError
 
+_REPORTS = {}
+
+_WEATHER_FACTORS = {
+    "HEAVY_RAIN": (1.25, 5),
+    "LIGHT_RAIN": (1.10, 2),
+    "CLEAR": (1.00, 0),
+    "EXTREME_HEAT": (1.15, 3),
+}
+
 
 def initVirtualEnvironment():
-    """TODO(UC14): return db.snapshot()  – bản sao độc lập của dữ liệu hiện tại."""
-    raise NotImplementedError("UC14 initVirtualEnvironment")
+    """Trả bản sao độc lập của toàn bộ dữ liệu để cô lập mô phỏng (NFR07)."""
+    return db.snapshot()
 
 
 def validateParameters(params):
-    """TODO(UC14): params: studentDemandPercent, availableEvPercent, weather... Sai -> INVALID_PARAMETERS."""
-    raise NotImplementedError("UC14 validateParameters")
+    """Kiểm tra tham số mô phỏng: studentDemandPercent, availableEvDelta, weather."""
+    try:
+        demandPct = int(params.get("studentDemandPercent", 20))
+        evDelta = int(params.get("availableEvDelta", -15))
+    except (TypeError, ValueError) as exc:
+        raise ServiceError(INVALID_PARAMETERS, "Tham số số lượng phải là số nguyên hợp lệ.") from exc
+
+    weather = (params.get("weather") or "HEAVY_RAIN").upper()
+    if not (-50 <= demandPct <= 100):
+        raise ServiceError(INVALID_PARAMETERS, "Biến động nhu cầu phải trong khoảng -50% đến +100%.")
+    if not (-50 <= evDelta <= 50):
+        raise ServiceError(INVALID_PARAMETERS, "Biến động số xe sẵn sàng phải trong khoảng -50 đến +50.")
+    if weather not in _WEATHER_FACTORS:
+        raise ServiceError(INVALID_PARAMETERS, "Điều kiện thời tiết không hợp lệ.")
+
+    return {
+        "studentDemandPercent": demandPct,
+        "availableEvDelta": evDelta,
+        "weather": weather,
+    }
 
 
 def calculateImpact(virtualData, params):
-    """TODO(UC14): Tính trên virtualData: giờ thiếu xe cao điểm, số xe thiếu, Hub quá tải."""
-    raise NotImplementedError("UC14 calculateImpact")
+    """Tính chuỗi cung/cầu 9 giờ trên bản sao virtualData mà không đụng dữ liệu thật."""
+    vehicles = virtualData["vehicles"]
+    hubs = virtualData["hubs"]
+    spots = virtualData["parkingSpots"]
+
+    baseAvailable = sum(1 for v in vehicles if v["status"] == "AVAILABLE")
+    demandFactor, supplyPenalty = _WEATHER_FACTORS[params["weather"]]
+
+    hours = [
+        "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
+        "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM",
+    ]
+    baseDemandCurve = [18, 26, 36, 46, 56, 48, 38, 30, 22]
+    baseSupplyOffsets = [8, 5, 2, -2, -5, -3, 1, 4, 6]
+
+    demandMultiplier = (1.0 + params["studentDemandPercent"] / 100.0) * demandFactor
+    effectiveSupplyBase = max(4, baseAvailable + params["availableEvDelta"] - supplyPenalty)
+
+    demandSeries = [max(0, round(val * demandMultiplier)) for val in baseDemandCurve]
+    availableSeries = [max(0, effectiveSupplyBase + off) for off in baseSupplyOffsets]
+    gaps = [avail - dem for avail, dem in zip(availableSeries, demandSeries)]
+
+    peakShortageIdx = gaps.index(min(gaps))
+    maxDeficit = gaps[peakShortageIdx]
+
+    hubMetrics = []
+    for h in hubs:
+        hVehicles = [v for v in vehicles if v["hubId"] == h["id"] and v["status"] == "AVAILABLE"]
+        hSpots = [s for s in spots if s["hubId"] == h["id"]]
+        occupied = sum(1 for s in hSpots if s["status"] == "OCCUPIED")
+        usageRate = (occupied / len(hSpots)) if hSpots else 0.0
+        hubMetrics.append({
+            "hubId": h["id"],
+            "name": h["name"],
+            "availableCount": len(hVehicles),
+            "usageRate": usageRate,
+        })
+
+    sourceHub = max(hubMetrics, key=lambda item: item["availableCount"], default={"hubId": "H3", "name": "KTX Khu B"})
+    destCandidates = [item for item in hubMetrics if item["hubId"] != sourceHub["hubId"]] or hubMetrics
+    destHub = max(destCandidates, key=lambda item: item["usageRate"], default={"hubId": "H1", "name": "Ga Metro ĐHQG"})
+
+    return {
+        "params": params,
+        "hours": hours,
+        "availableSeries": availableSeries,
+        "demandSeries": demandSeries,
+        "peakShortageIndex": peakShortageIdx,
+        "peakShortageTime": hours[peakShortageIdx],
+        "maxVehicleDeficit": maxDeficit,
+        "sourceHub": sourceHub,
+        "destHub": destHub,
+    }
 
 
 def generateReport(impact):
-    """TODO(UC14): Trả dữ liệu cho biểu đồ Chart.js + khuyến nghị (Hình 21)."""
-    raise NotImplementedError("UC14 generateReport")
+    """Tạo báo cáo kết quả mô phỏng cho Chart.js và lưu tạm phục vụ Apply to Dispatch."""
+    reportId = f"SIM-{len(_REPORTS) + 1:03d}"
+    deficit = impact["maxVehicleDeficit"]
+    recommendedCount = min(5, max(2, abs(deficit) // 8)) if deficit < 0 else 0
+    sourceHub = impact["sourceHub"]
+    destHub = impact["destHub"]
+
+    if deficit < 0:
+        recText = (
+            f"Pre-dispatch {recommendedCount} EVs from {sourceHub['name']} "
+            f"to {destHub['name']} before 11:00 AM"
+        )
+    else:
+        recText = "Supply meets projected demand across all hubs."
+
+    report = {
+        "reportId": reportId,
+        "params": impact["params"],
+        "hours": impact["hours"],
+        "availableSeries": impact["availableSeries"],
+        "demandSeries": impact["demandSeries"],
+        "peakShortageIndex": impact["peakShortageIndex"],
+        "peakShortageTime": impact["peakShortageTime"],
+        "maxVehicleDeficit": deficit,
+        "recommendationText": recText,
+        "sourceHubId": sourceHub["hubId"],
+        "destHubId": destHub["hubId"],
+        "recommendedCount": recommendedCount,
+    }
+    _REPORTS[reportId] = report
+    return report
 
 
 def runSimulation(params):
-    """TODO(UC14): validateParameters -> initVirtualEnvironment -> calculateImpact -> generateReport."""
-    raise NotImplementedError("UC14 runSimulation")
+    """Chạy mô phỏng What-if hoàn chỉnh trên bản sao dữ liệu độc lập."""
+    normalized = validateParameters(params)
+    virtualData = initVirtualEnvironment()
+    impact = calculateImpact(virtualData, normalized)
+    return generateReport(impact)
 
 
-def applyRecommendation(reportId):
-    """TODO(UC14): Trả dữ liệu điền sẵn cho màn hình UC11 hoặc UC13."""
-    raise NotImplementedError("UC14 applyRecommendation")
+def applyRecommendation(reportId=None):
+    """Trả dữ liệu gợi ý để điền sẵn cho màn hình Điều phối phương tiện (UC11)."""
+    report = _REPORTS.get(reportId) if reportId else None
+    if not report:
+        report = runSimulation({})
+    return {
+        "sourceHubId": report["sourceHubId"],
+        "destHubId": report["destHubId"],
+        "recommendedCount": report["recommendedCount"],
+    }

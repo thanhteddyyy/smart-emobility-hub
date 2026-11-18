@@ -1,15 +1,18 @@
-{# Layout Web Dashboard cho Đơn vị vận hành. Trang con dùng:
+{# Layout Web Dashboard dùng chung cho Đơn vị vận hành (Sidebar + Topbar chuẩn Figma).
+   Trang con dùng:
      {% extends "base_dashboard.html" %}
-     {% block content %} ... {% endblock %}
-   TV3 hoàn thiện cho khớp Figma (dùng CHUNG cho cả Hình 20–21). #}
-{% macro navItem(endpoint, page, icon, key, label) %}
-  {% set href = url_for(endpoint, page=page) if page else url_for(endpoint) %}
-  <a class="nav-x {{ 'active' if request.path == href }}" href="{{ href }}"><i class="bi bi-{{ icon }}"></i><span data-i18n="{{ key }}">{{ label }}</span></a>
+     {% block content %} ... {% endblock %} #}
+{% macro navItem(href, isActive, icon, key, label) %}
+  <a class="nav-x {{ 'active' if isActive }}" href="{{ href }}">
+    <i class="bi bi-{{ icon }}"></i>
+    <span data-i18n="{{ key }}">{{ label }}</span>
+  </a>
 {% endmacro %}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   {% include "_head.html" %}
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
   <title>{% block title %}{{ BRAND_NAME }} Dashboard{% endblock %}</title>
   {% block head %}{% endblock %}
@@ -17,27 +20,60 @@
 <body>
 <div class="dash">
   <aside class="dash-side">
-    <a class="dash-brand" href="{{ url_for('operator.overview') }}">{{ BRAND_NAME }}</a>
-    <div class="label" data-i18n="dash.workspace">Không gian làm việc</div>
-    {{ navItem('operator.overview', none, 'grid-1x2', 'dash.overview', 'Tổng quan mạng lưới') }}
-    {{ navItem('operator.page', 'resources', 'ev-station', 'dash.resources', 'Tài nguyên') }}
-    {{ navItem('operator.page', 'alerts', 'bell', 'dash.alerts', 'Cảnh báo') }}
-    {{ navItem('operator.page', 'incidents', 'exclamation-triangle', 'dash.incidents', 'Sự cố') }}
-    {{ navItem('operator.page', 'dispatch', 'truck', 'dash.dispatch', 'Điều phối') }}
-    {{ navItem('operator.page', 'simulation', 'graph-up', 'dash.simulation', 'Mô phỏng What-if') }}
-    {{ navItem('operator.page', 'schedule', 'calendar-check', 'dash.schedule', 'Lịch sạc') }}
-    <div class="dash-user card-x">
-      <div class="fw-semibold">{{ currentUser.name if currentUser else '' }}</div>
-      <a href="{{ url_for('auth.logout') }}" data-i18n="action.logout">Đăng xuất</a>
+    <div class="dash-brand-wrap">
+      <a class="dash-brand" href="{{ url_for('operator.overview') }}">{{ BRAND_NAME }}</a>
+    </div>
+
+    <div class="dash-nav-group">
+      <div class="label" data-i18n="dash.workspace">Không gian làm việc</div>
+      <nav class="dash-nav-list">
+        {{ navItem(url_for('operator.overview'), request.path in ('/operator/', '/operator/overview') or request.path.startswith('/operator/resources'), 'grid-1x2', 'dash.overview', 'Tổng quan mạng lưới') }}
+        {{ navItem(url_for('operator.dispatch'), request.path.startswith('/operator/dispatch'), 'truck', 'dash.dispatch', 'Điều phối phương tiện') }}
+        {{ navItem(url_for('operator.simulation'), request.path.startswith('/operator/simulation'), 'graph-up', 'dash.simulation', 'Mô phỏng What-if') }}
+        {{ navItem(url_for('operator.incidents'), request.path.startswith('/operator/incidents'), 'exclamation-triangle', 'dash.incidents', 'Xử lý sự cố') }}
+        {{ navItem(url_for('operator.alerts'), request.path.startswith('/operator/alerts'), 'bell', 'dash.alerts', 'Cảnh báo') }}
+        {{ navItem(url_for('operator.schedule'), request.path.startswith('/operator/schedule'), 'calendar-check', 'dash.schedule', 'Lịch sạc') }}
+      </nav>
+    </div>
+
+    <div class="dash-user-wrap">
+      {% set displayName = currentUser.name if currentUser and currentUser.name else 'Matthew' %}
+      {% set avatarInitial = (displayName[0] | upper) if displayName else 'M' %}
+      <div class="dash-user-card">
+        <div class="dash-user-info">
+          <div class="avatar-initials" aria-hidden="true">{{ avatarInitial }}</div>
+          <div class="text-truncate">
+            <div class="dash-user-name text-truncate">{{ displayName }}</div>
+            <div class="dash-user-role" data-i18n="dash.roleOperator">Operator</div>
+          </div>
+        </div>
+        <a class="dash-logout-btn" href="{{ url_for('auth.logout') }}" title="Đăng xuất" aria-label="Đăng xuất">
+          <i class="bi bi-power"></i>
+        </a>
+      </div>
     </div>
   </aside>
-  <main class="dash-main">
-    <div class="dash-top">
-      <h1 class="h4 m-0">{% block heading %}{% endblock %}</h1>
-      {% include "_switches.html" %}
-    </div>
-    {% block content %}{% endblock %}
-  </main>
+
+  <div class="dash-content-col">
+    <header class="dash-topbar">
+      <div class="dash-topbar-left">
+        <i class="bi bi-list fs-5 text-muted-2" aria-hidden="true"></i>
+        <h1 class="dash-topbar-title">{% block heading %}{% endblock %}</h1>
+      </div>
+      <div class="dash-topbar-right">
+        {% include "_switches.html" %}
+        <a class="dash-bell-link" href="{{ url_for('operator.alerts') }}" title="Cảnh báo" aria-label="Cảnh báo">
+          <i class="bi bi-bell"></i>
+          <span class="notif-dot"></span>
+        </a>
+        <div class="avatar-initials avatar-sm" title="{{ displayName }}" aria-label="{{ displayName }}">{{ avatarInitial }}</div>
+      </div>
+    </header>
+
+    <main class="dash-main">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
 </div>
 {% include "_scripts.html" %}
 {% block scripts %}{% endblock %}

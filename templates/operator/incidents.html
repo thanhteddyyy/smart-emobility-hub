@@ -1,12 +1,68 @@
-{# UC12 – Hình 18: Báo cáo sự cố. Phụ trách: TV3.
-   Cần làm: Bảng sự cố theo mức ưu tiên.
-   Service liên quan: incident_service.getPrioritizedIncidents #}
+{# UC12 – Hình 18: Danh sách sự cố (IncidentModal1). #}
 {% extends "base_dashboard.html" %}
-{% block heading %}Báo cáo sự cố{% endblock %}
+{% block heading %}<span data-i18n="dash.incidents">Xử lý sự cố</span>{% endblock %}
+
 {% block content %}
-<div class="todo-box">
-  <b>TODO (TV3) – UC12 · Hình 18</b><br>
-  Bảng sự cố theo mức ưu tiên.<br>
-  Service: <code>incident_service.getPrioritizedIncidents</code>
-</div>
+<h2 class="h4 fw-bold m-0" data-i18n="incidents.pageTitle">Báo cáo sự cố</h2>
+
+<section class="panel-card">
+  <div class="table-responsive">
+    <table class="table-x">
+      <thead>
+        <tr>
+          <th data-i18n="table.hub">Hub</th>
+          <th data-i18n="incidents.colDetails">Chi tiết</th>
+          <th data-i18n="incidents.colPriority">Ưu tiên</th>
+          <th data-i18n="incidents.colOperator">Người xử lý</th>
+          <th data-i18n="table.status">Trạng thái</th>
+          <th data-i18n="table.timestamp">Thời gian</th>
+          <th data-i18n="incidents.colActions">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for inc in incidents %}
+        <tr>
+          <td class="fw-semibold">{{ inc.hubName }}</td>
+          <td>
+            <div class="fw-semibold">{{ inc.description }}</div>
+            <div class="small text-muted-2">{{ inc.id }} · {{ inc.resourceId }}</div>
+          </td>
+          <td>
+            <span class="chip-x {{ 'chip-soft-danger' if inc.priority == 'HIGH' else 'chip-soft-warning' if inc.priority == 'MEDIUM' else 'chip-soft-success' }}"
+                  data-i18n="{{ 'priority.high' if inc.priority == 'HIGH' else 'priority.medium' if inc.priority == 'MEDIUM' else 'priority.low' }}">
+              {{ inc.priority | title }}
+            </span>
+          </td>
+          <td>
+            {% if inc.operator %}
+              <div class="d-flex align-items-center gap-2">
+                <span class="avatar-initials avatar-sm" aria-hidden="true">{{ inc.operator[0] | upper }}</span>
+                <span class="fw-medium">{{ inc.operator }}</span>
+              </div>
+            {% else %}
+              <span class="small text-muted-2" data-i18n="incidents.noneOperator">Chưa phân công</span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="chip-x {{ 'chip-soft-danger' if inc.status == 'OPEN' else 'chip-soft-warning' if inc.status == 'IN_PROGRESS' else 'chip-soft-success' }}"
+                  data-rt="network.incidents.{{ inc.id }}.status">
+              {{ inc.status }}
+            </span>
+          </td>
+          <td class="small text-muted-2">{{ inc.createdAt.replace('T', ' ') }}</td>
+          <td>
+            <a class="link-view-resources fw-semibold"
+               href="{{ url_for('operator.incidentDetail', incidentId=inc.id) }}"
+               data-i18n="action.seeDetails">See Details</a>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted-2 py-4" data-i18n="incidents.empty">Chưa có báo cáo sự cố.</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 {% endblock %}

@@ -1,50 +1,103 @@
 /* Màu, font dùng chung. KHÔNG viết mã màu trực tiếp trong file khác – luôn dùng var(--...).
-   TV5 chỉnh các giá trị này cho khớp Figma (docs/UI_GUIDE.md). */
+   Đã cập nhật theo Figma Light & Dark Mode (Free Figma Admin Dashboard UI Kit). */
 :root {
-  --color-bg: #f3f7f5;
+  --color-bg: #f8fafc;
   --color-surface: #ffffff;
-  --color-text: #14201b;
-  --color-muted: #64746d;
-  --color-border: #dce5e0;
-  --color-primary: #10b76f;
-  --color-primary-strong: #0a8f55;
-  --color-primary-soft: #e3f7ed;
-  --color-danger: #d93a34;
-  --color-danger-soft: #fde8e7;
-  --color-warning: #d98a0b;
-  --color-warning-soft: #fdf1d9;
-  --color-info: #2f6fde;
-  --radius: 14px;
-  --font: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-surface-elevated: #ffffff;
+  --color-text: #2a3547;
+  --color-text-strong: #000000;
+  --color-muted: rgba(42, 53, 71, 0.6);
+  --color-subtle: rgba(42, 53, 71, 0.8);
+  --color-faint: rgba(42, 53, 71, 0.4);
+  --color-border: rgba(42, 53, 71, 0.1);
+  --color-border-strong: rgba(42, 53, 71, 0.2);
+  --color-border-soft: rgba(42, 53, 71, 0.05);
+  --color-primary: #548afe;
+  --color-primary-strong: #3b6fe8;
+  --color-primary-soft: rgba(93, 135, 255, 0.1);
+  --color-primary-20: rgba(93, 135, 255, 0.2);
+  --color-secondary: #49beff;
+  --color-secondary-soft: rgba(73, 190, 255, 0.1);
+  --color-success: #13deb9;
+  --color-success-strong: #14ae5c;
+  --color-success-soft: rgba(19, 222, 185, 0.1);
+  --color-warning: #ffae1f;
+  --color-warning-soft: rgba(255, 174, 31, 0.25);
+  --color-danger: #fa896b;
+  --color-error: #ff383c;
+  --color-danger-soft: rgba(255, 56, 60, 0.1);
+  --color-info: #539bff;
+  --color-info-soft: rgba(83, 155, 255, 0.1);
+  --color-link: #1b07ff;
+  --color-on-primary: #ffffff;
+  --color-alert-panel-bg: #fff5f5;
+  --color-sim-shortage-bg: #fff1f0;
+  --color-sim-deficit-bg: #fff7e6;
+  --color-sim-rec-bg: #f6ffed;
+  --color-shadow: rgba(70, 109, 174, 0.08);
+  --radius: 12px;
+  --font: "DM Sans", "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Plus Jakarta Sans", "Be Vietnam Pro", system-ui, sans-serif;
 }
+
 :root[data-theme="dark"] {
-  --color-bg: #0f1613;
-  --color-surface: #18211d;
-  --color-text: #e7efeb;
-  --color-muted: #9aaba3;
-  --color-border: #2a3631;
-  --color-primary: #2fd48a;
-  --color-primary-strong: #25b575;
-  --color-primary-soft: #16352a;
-  --color-danger: #ff7068;
-  --color-danger-soft: #3a1f1e;
-  --color-warning: #f0b048;
-  --color-warning-soft: #3a2d15;
-  --color-info: #7da7f2;
+  --color-bg: #2a3447;
+  --color-surface: #2a3547;
+  --color-surface-elevated: #202936;
+  --color-text: #ffffff;
+  --color-text-strong: #ffffff;
+  --color-muted: rgba(255, 255, 255, 0.6);
+  --color-subtle: rgba(255, 255, 255, 0.8);
+  --color-faint: rgba(255, 255, 255, 0.4);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.2);
+  --color-border-soft: rgba(255, 255, 255, 0.05);
+  --color-primary: #548afe;
+  --color-primary-strong: #6e9eff;
+  --color-primary-soft: rgba(93, 135, 255, 0.15);
+  --color-primary-20: rgba(93, 135, 255, 0.25);
+  --color-secondary: #49beff;
+  --color-secondary-soft: rgba(73, 190, 255, 0.15);
+  --color-success: #13deb9;
+  --color-success-strong: #14ae5c;
+  --color-success-soft: rgba(19, 222, 185, 0.15);
+  --color-warning: #ffae1f;
+  --color-warning-soft: rgba(255, 174, 31, 0.25);
+  --color-danger: #fa896b;
+  --color-error: #ff383c;
+  --color-danger-soft: rgba(250, 137, 107, 0.2);
+  --color-info: #539bff;
+  --color-info-soft: rgba(83, 155, 255, 0.15);
+  --color-link: #9e95f8;
+  --color-on-primary: #ffffff;
+  --color-alert-panel-bg: rgba(250, 137, 107, 0.12);
+  --color-sim-shortage-bg: rgba(255, 56, 60, 0.15);
+  --color-sim-deficit-bg: rgba(255, 174, 31, 0.15);
+  --color-sim-rec-bg: rgba(19, 222, 185, 0.15);
+  --color-shadow: rgba(0, 0, 0, 0.25);
 }
-body { background: var(--color-bg); color: var(--color-text); font-family: var(--font); }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font);
+}
+
 .text-muted-2 { color: var(--color-muted); }
 .card-x { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); }
-.btn-primary-x { background: var(--color-primary); border: 0; color: #fff; border-radius: 999px; padding: .55rem 1.2rem; font-weight: 600; }
-.btn-primary-x:hover { background: var(--color-primary-strong); color: #fff; }
-.btn-outline-x { background: transparent; border: 1.5px solid var(--color-primary); color: var(--color-primary); border-radius: 999px; padding: .5rem 1.2rem; font-weight: 600; }
-.badge-ok { background: var(--color-primary-soft); color: var(--color-primary-strong); }
+.btn-primary-x { background: var(--color-primary); border: 0; color: var(--color-on-primary); border-radius: 8px; padding: .55rem 1.2rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; }
+.btn-primary-x:hover { background: var(--color-primary-strong); color: var(--color-on-primary); }
+.btn-outline-x { background: transparent; border: 1.5px solid var(--color-primary); color: var(--color-primary); border-radius: 8px; padding: .5rem 1.2rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; }
+.btn-outline-x:hover { background: var(--color-primary-soft); color: var(--color-primary); }
+.badge-ok { background: var(--color-success-soft); color: var(--color-success-strong); }
 .badge-warn { background: var(--color-warning-soft); color: var(--color-warning); }
-.badge-danger { background: var(--color-danger-soft); color: var(--color-danger); }
+.badge-danger { background: var(--color-danger-soft); color: var(--color-error); }
+.badge-info-x { background: var(--color-info-soft); color: var(--color-info); }
 .alert-x { border-radius: var(--radius); padding: .75rem 1rem; border: 1px solid; }
-.alert-x.danger { background: var(--color-danger-soft); color: var(--color-danger); border-color: var(--color-danger); }
+.alert-x.danger { background: var(--color-danger-soft); color: var(--color-error); border-color: var(--color-error); }
+.alert-x.success { background: var(--color-success-soft); color: var(--color-success-strong); border-color: var(--color-success); }
 .todo-box { border: 2px dashed var(--color-border); border-radius: var(--radius); padding: 1.25rem; color: var(--color-muted); background: var(--color-surface); }
 .todo-box code { color: var(--color-primary-strong); }
 .seg { display: inline-flex; border: 1px solid var(--color-border); border-radius: 999px; overflow: hidden; background: var(--color-surface); }
 .seg button { border: 0; background: transparent; color: var(--color-muted); padding: .2rem .6rem; font-size: .8rem; font-weight: 600; }
-.seg button.active { background: var(--color-primary); color: #fff; }
+.seg button.active { background: var(--color-primary); color: var(--color-on-primary); }

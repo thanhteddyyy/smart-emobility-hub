@@ -1,12 +1,151 @@
-{# UC9 – Hình 16: Theo dõi tài nguyên. Phụ trách: TV3.
-   Cần làm: Thẻ tổng của một Hub + bảng xe / cổng sạc.
-   Service liên quan: alert_service.getHubResources #}
+{# UC9 – Hình 16: Theo dõi tài nguyên của một Hub (ResourceDashboard). #}
 {% extends "base_dashboard.html" %}
-{% block heading %}Theo dõi tài nguyên{% endblock %}
+{% block heading %}<span data-i18n="dash.resources">Tài nguyên</span>{% endblock %}
+
 {% block content %}
-<div class="todo-box">
-  <b>TODO (TV3) – UC9 · Hình 16</b><br>
-  Thẻ tổng của một Hub + bảng xe / cổng sạc.<br>
-  Service: <code>alert_service.getHubResources</code>
-</div>
+{% if error %}
+  <div class="alert-x danger d-flex align-items-center justify-content-between">
+    <span><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</span>
+    <a class="btn-outline-x btn-sm" href="{{ url_for('operator.overview') }}" data-i18n="action.back">Quay lại</a>
+  </div>
+{% else %}
+  <div class="resource-banner">
+    <div class="d-flex align-items-center gap-3">
+      <a class="back-icon-btn" href="{{ url_for('operator.overview') }}" title="Back" aria-label="Back">
+        <i class="bi bi-arrow-return-left"></i>
+      </a>
+      <div>
+        <h2 class="panel-title mb-1" data-i18n="resources.bannerTitle">Giám sát tài nguyên Hub</h2>
+        <div class="small">
+          <span class="text-muted-2" data-i18n="resources.selectedHub">Hub đang chọn:</span>
+          <strong class="ms-1">{{ data.hub.name }} ({{ data.hub.hubId }})</strong>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <label class="small text-muted-2" for="hubSwitcher" data-i18n="resources.switchHub">Đổi Hub:</label>
+      <select id="hubSwitcher" class="form-select form-select-sm w-auto"
+              onchange="window.location.href='/operator/resources/' + this.value;">
+        {% for h in data.allHubs %}
+          <option value="{{ h.id }}" {{ 'selected' if h.id == data.hub.hubId }}>{{ h.name }} ({{ h.id }})</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card-x stat-card-primary-20">
+      <div class="num" data-rt="hubs.{{ data.hub.hubId }}.availableVehicles">{{ data.hub.availableVehicles }}</div>
+      <div class="stat-label" data-i18n="resources.availableVehicles">Xe khả dụng</div>
+    </div>
+    <div class="stat-card-x stat-card-warning">
+      <div class="num" data-rt="hubs.{{ data.hub.hubId }}.emptySpots">{{ data.hub.emptySpots }}</div>
+      <div class="stat-label" data-i18n="resources.availableSpots">Chỗ đỗ trống</div>
+    </div>
+    <div class="stat-card-x stat-card-success">
+      <div class="num" data-rt="hubs.{{ data.hub.hubId }}.availablePorts">{{ data.hub.availablePorts }}</div>
+      <div class="stat-label" data-i18n="resources.availablePorts">Cổng sạc trống</div>
+    </div>
+    <div class="stat-card-x stat-card-error">
+      <div class="num fs-6" data-rt="hubs.{{ data.hub.hubId }}.lastUpdatedAt">{{ data.hub.lastUpdatedAt }}</div>
+      <div class="stat-label" data-i18n="resources.lastUpdated">Cập nhật lần cuối</div>
+    </div>
+  </div>
+
+  <div>
+    <button type="button" id="refreshResourcesBtn" class="btn btn-link text-decoration-none p-0 text-success fw-medium d-inline-flex align-items-center gap-2">
+      <i class="bi bi-arrow-clockwise"></i>
+      <span data-i18n="resources.refreshInfo">Làm mới thông tin</span>
+    </button>
+  </div>
+
+  <section class="panel-card d-flex flex-column gap-3">
+    <h3 class="panel-title" data-i18n="resources.detailsTitle">Chi tiết tài nguyên</h3>
+
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <div class="search-box-x">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="text" class="form-control" id="resourceSearchInput"
+               placeholder="Tìm kiếm tài nguyên..." data-i18n-placeholder="resources.searchPlaceholder">
+      </div>
+      <select id="resourceTypeFilter" class="form-select w-auto" aria-label="Resource Type">
+        <option value="" data-i18n="filter.allTypes">Tất cả loại</option>
+        <option value="VEHICLE">Vehicle</option>
+        <option value="CHARGING_PORT">Charging Port</option>
+        <option value="PARKING_SPOT">Parking Spot</option>
+      </select>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table-x" id="resourcesTable">
+        <thead>
+          <tr>
+            <th data-i18n="resources.colType">Loại</th>
+            <th data-i18n="resources.colName">Tên / Mã</th>
+            <th data-i18n="table.operatingStatus">Trạng thái hoạt động</th>
+            <th data-i18n="table.timestamp">Thời gian</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in data.resources %}
+          <tr class="resource-row" data-category="{{ r.category }}" data-search="{{ r.name | lower }} {{ r.typeLabel | lower }} {{ r.status | lower }}">
+            <td class="fw-semibold">{{ r.typeLabel }}</td>
+            <td>{{ r.name }}</td>
+            <td>
+              <span class="chip-x {{ 'chip-solid-success' if r.displayStatus == 'Available' else 'chip-solid-danger' if r.displayStatus == 'Faulty' else 'chip-solid-warning' }}"
+                    data-rt="network.resources.{{ r.id }}.status">{{ r.status }}</span>
+            </td>
+            <td class="text-muted-2" data-rt="network.resources.{{ r.id }}.lastUpdatedAt">{{ r.lastUpdatedAt }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted-2 py-4" data-i18n="resources.empty">Hub này chưa có tài nguyên.</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const searchInput = document.getElementById("resourceSearchInput");
+  const typeSelect = document.getElementById("resourceTypeFilter");
+
+  function filterRows() {
+    const q = (searchInput ? searchInput.value : "").trim().toLowerCase();
+    const cat = typeSelect ? typeSelect.value : "";
+    document.querySelectorAll("#resourcesTable tbody tr.resource-row").forEach(function (row) {
+      const matchSearch = !q || row.dataset.search.includes(q);
+      const matchCat = !cat || row.dataset.category === cat;
+      row.style.display = (matchSearch && matchCat) ? "" : "none";
+    });
+  }
+
+  if (searchInput) searchInput.addEventListener("input", filterRows);
+  if (typeSelect) typeSelect.addEventListener("change", filterRows);
+
+  const refreshBtn = document.getElementById("refreshResourcesBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", async function () {
+      try {
+        const res = await fetch("/api/state");
+        const state = await res.json();
+        document.querySelectorAll("[data-rt]").forEach(function (el) {
+          const val = el.dataset.rt.split(".").reduce(function (o, k) {
+            return o == null ? undefined : o[k];
+          }, state);
+          if (val !== undefined) el.textContent = val;
+        });
+        document.dispatchEvent(new CustomEvent("ehub:state", { detail: state }));
+      } catch (err) {
+        console.warn("Refresh resources failed:", err);
+      }
+    });
+  }
+})();
+</script>
 {% endblock %}

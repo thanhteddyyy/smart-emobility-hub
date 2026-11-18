@@ -37,6 +37,21 @@ Tên trường và mã trạng thái mà giao diện (TV1–TV3) và logic (TV4)
 `id` (`INC-001`), `hubId`, `resourceType` (`HUB`, `VEHICLE`, `CHARGING_PORT`), `resourceId`, `description`,
 `priority` (`HIGH`, `MEDIUM`, `LOW`), `status` (`OPEN`, `IN_PROGRESS`, `RESOLVED`), `operator`, `createdAt`
 
+### Alert (cảnh báo)
+| Trường | Kiểu | Ví dụ | Ghi chú |
+|---|---|---|---|
+| id | string | `ALT-001` | Mã định danh cảnh báo |
+| hubId | string | `H1` | Mã Hub phát sinh cảnh báo |
+| hubName | string | `Ga Metro ĐHQG` | Tên Hub hiển thị |
+| utilizationType | string | `Parking spots` | Loại tài nguyên (`Parking spots`, `Charging ports`) |
+| utilization | int | `95` | Mức sử dụng thực tế (%) |
+| threshold | int | `75` | Ngưỡng cảnh báo (%) |
+| dangerLevel | string | `HIGH` | Mức độ nguy hiểm (`HIGH`, `MEDIUM`) |
+| location | string | `Ga Metro ĐHQG - Cửa Đông` | Vị trí cụ thể của Hub |
+| expectedCause | string | `Rush hour` | Nguyên nhân dự kiến gây quá tải |
+| status | string | `ACTIVE` | Trạng thái xử lý (`ACTIVE`, `RESOLVED`) |
+| createdAt | string | `2026-11-17T09:46:00` | Thời điểm phát sinh (ISO 8601) |
+
 ### User
 `id`, `name`, `email`, `password`, `role` (`STUDENT`, `OPERATOR`; `GUEST` chỉ để demo lỗi không đủ quyền)
 

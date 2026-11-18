@@ -1,12 +1,105 @@
-{# UC12 – Hình 19: Chi tiết sự cố. Phụ trách: TV3.
-   Cần làm: Form tạm ngưng tài nguyên, cập nhật tiến độ.
-   Service liên quan: incident_service.handlePauseResource, completeIncident #}
+{# UC12 – Hình 19: Chi tiết & xử lý 1 sự cố (IncidentModal2 - trang riêng). #}
 {% extends "base_dashboard.html" %}
-{% block heading %}Chi tiết sự cố{% endblock %}
+{% block heading %}<span data-i18n="incidentDetail.pageTitle">Chi tiết sự cố</span>{% endblock %}
+
 {% block content %}
-<div class="todo-box">
-  <b>TODO (TV3) – UC12 · Hình 19</b><br>
-  Form tạm ngưng tài nguyên, cập nhật tiến độ.<br>
-  Service: <code>incident_service.handlePauseResource, completeIncident</code>
+<div class="d-flex align-items-center gap-3">
+  <a class="back-icon-btn" href="{{ url_for('operator.incidents') }}" title="Back" aria-label="Back">
+    <i class="bi bi-arrow-return-left"></i>
+  </a>
+  <h2 class="h4 fw-bold m-0" data-i18n="incidentDetail.pageTitle">Chi tiết sự cố</h2>
 </div>
+
+{% if error %}
+  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</div>
+{% endif %}
+{% if savedMessage == 'paused' %}
+  <div class="alert-x success"><i class="bi bi-check-circle me-2"></i><span data-i18n="incidentDetail.pausedSuccess">Đã tạm ngưng tài nguyên và chuyển sự cố sang IN_PROGRESS.</span></div>
+{% elif savedMessage == 'updated' %}
+  <div class="alert-x success"><i class="bi bi-check-circle me-2"></i><span data-i18n="incidentDetail.updatedSuccess">Đã cập nhật tiến độ xử lý sự cố.</span></div>
+{% endif %}
+
+{% if incident %}
+<section class="panel-card">
+  <h3 class="panel-title mb-3" data-i18n="incidentDetail.resourceDetails">Thông tin tài nguyên</h3>
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="detail-field-label" data-i18n="incidentDetail.affectedHub">Hub bị ảnh hưởng:</div>
+      <div class="detail-field-value">{{ incident.hubName }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="detail-field-label" data-i18n="alerts.location">Vị trí</div>
+      <div class="detail-field-value">{{ incident.location }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="detail-field-label" data-i18n="incidentDetail.resourceType">Loại tài nguyên:</div>
+      <div class="detail-field-value">{{ incident.resourceType }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="detail-field-label" data-i18n="table.status">Trạng thái</div>
+      <div class="detail-field-value">
+        <span data-rt="network.resources.{{ incident.resourceId }}.status">{{ incident.resourceStatus }}</span>
+        <span class="text-muted-2 small">({{ incident.status }})</span>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="detail-field-label" data-i18n="incidents.colDetails">Chi tiết</div>
+      <div class="detail-field-value">{{ incident.description }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="detail-field-label" data-i18n="incidentDetail.priorityLevel">Mức độ ưu tiên:</div>
+      <div class="detail-field-value">{{ incident.priority }}</div>
+    </div>
+  </div>
+</section>
+
+<form method="post" action="{{ url_for('operator.incidentDetail', incidentId=incident.id) }}" class="d-flex flex-column gap-4">
+  <section class="panel-card d-flex flex-column gap-3">
+    <h3 class="panel-title" data-i18n="incidentDetail.analyzedDetails">Phân tích sự cố</h3>
+    <div>
+      <label class="form-label small" for="reason" data-i18n="incidentDetail.reasoning">Nguyên nhân</label>
+      <textarea class="form-control" id="reason" name="reason" rows="2"
+                placeholder="Nhập nguyên nhân sự cố..." data-i18n-placeholder="incidentDetail.commentPlaceholder">{{ incident.reason }}</textarea>
+    </div>
+    <div>
+      <label class="form-label error-field-label" for="fixingMethod" data-i18n="incidentDetail.fixingMethod">Phương án xử lý:</label>
+      <textarea class="form-control error-field-input" id="fixingMethod" name="fixingMethod" rows="2" required
+                placeholder="Nhập phương án xử lý..." data-i18n-placeholder="incidentDetail.commentPlaceholder">{{ incident.fixingMethod }}</textarea>
+    </div>
+  </section>
+
+  <section class="panel-card d-flex flex-column gap-3">
+    <h3 class="panel-title" data-i18n="incidentDetail.progress">Tiến độ:</h3>
+    <div>
+      <div class="small mb-2" data-i18n="incidentDetail.setResourceStatus">Cập nhật trạng thái tài nguyên:</div>
+      <div class="d-flex flex-wrap gap-4">
+        <label class="form-check-label d-flex align-items-center gap-2">
+          <input class="form-check-input" type="radio" name="resourceStatus" value="MAINTENANCE"
+                 {{ 'checked' if incident.resourceStatus in ('MAINTENANCE', 'OUT_OF_ORDER', 'OFFLINE') }}>
+          <span data-i18n="status.maintenance">Bảo trì</span>
+        </label>
+        <label class="form-check-label d-flex align-items-center gap-2">
+          <input class="form-check-input" type="radio" name="resourceStatus" value="AVAILABLE"
+                 {{ 'checked' if incident.resourceStatus in ('AVAILABLE', 'ACTIVE', 'FREE') }}>
+          <span data-i18n="status.available">Sẵn sàng</span>
+        </label>
+        <label class="form-check-label d-flex align-items-center gap-2">
+          <input class="form-check-input" type="radio" name="resourceStatus" value="UNAVAILABLE">
+          <span data-i18n="status.unavailable">Không khả dụng</span>
+        </label>
+      </div>
+    </div>
+    <div>
+      <label class="form-label small" for="updateDetails" data-i18n="incidentDetail.updateDetails">Chi tiết cập nhật (Tùy chọn):</label>
+      <textarea class="form-control" id="updateDetails" name="updateDetails" rows="2"
+                placeholder="Ghi chú thêm..." data-i18n-placeholder="incidentDetail.commentPlaceholder">{{ incident.updateDetails }}</textarea>
+    </div>
+  </section>
+
+  <div class="d-flex flex-wrap gap-3">
+    <button type="submit" name="action" value="pause" class="btn-pause-ops" data-i18n="incidentDetail.pauseBtn">Tạm ngưng vận hành tài nguyên</button>
+    <button type="submit" name="action" value="update" formnovalidate class="btn-update-progress" data-i18n="incidentDetail.updateBtn">Cập nhật tiến độ</button>
+  </div>
+</form>
+{% endif %}
 {% endblock %}

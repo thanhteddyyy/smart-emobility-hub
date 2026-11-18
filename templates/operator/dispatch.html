@@ -1,12 +1,239 @@
-{# UC11 – Hình 20: Điều phối phương tiện. Phụ trách: TV3.
-   Cần làm: Bản đồ Hub, danh sách xe có checkbox, Hub nguồn / đích.
-   Service liên quan: dispatch_service.processDispatch, cancelDispatchOrder #}
+{# UC11 – Hình 20: Điều phối phương tiện (Dispatch). #}
 {% extends "base_dashboard.html" %}
-{% block heading %}Điều phối phương tiện{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+{% block heading %}<span data-i18n="dash.dispatch">Điều phối phương tiện</span>{% endblock %}
+
 {% block content %}
-<div class="todo-box">
-  <b>TODO (TV3) – UC11 · Hình 20</b><br>
-  Bản đồ Hub, danh sách xe có checkbox, Hub nguồn / đích.<br>
-  Service: <code>dispatch_service.processDispatch, cancelDispatchOrder</code>
+<div class="stat-grid">
+  <div class="stat-card-x stat-card-primary">
+    <i class="bi bi-bicycle stat-icon" aria-hidden="true"></i>
+    <div class="stat-label" data-i18n="dispatch.totalVehicles">Tổng số xe</div>
+    <div class="num" data-rt="network.totalVehicles">{{ data.stats.totalVehicles }}</div>
+  </div>
+  <div class="stat-card-x stat-card-success">
+    <i class="bi bi-check-circle-fill stat-icon" aria-hidden="true"></i>
+    <div class="stat-label" data-i18n="dispatch.available">Sẵn sàng</div>
+    <div class="num" data-rt="network.availableVehicles">{{ data.stats.available }}</div>
+  </div>
+  <div class="stat-card-x stat-card-warning">
+    <i class="bi bi-geo-alt-fill stat-icon" aria-hidden="true"></i>
+    <div class="stat-label" data-i18n="dispatch.inUse">Đang sử dụng</div>
+    <div class="num" data-rt="network.inUseVehicles">{{ data.stats.inUse }}</div>
+  </div>
+  <div class="stat-card-x stat-card-error">
+    <i class="bi bi-ev-station-fill stat-icon" aria-hidden="true"></i>
+    <div class="stat-label" data-i18n="dispatch.charging">Đang sạc</div>
+    <div class="num" data-rt="network.chargingVehicles">{{ data.stats.charging }}</div>
+  </div>
+  <div class="stat-card-x stat-card-info">
+    <i class="bi bi-wrench-adjustable-circle-fill stat-icon" aria-hidden="true"></i>
+    <div class="stat-label" data-i18n="dispatch.maintenance">Bảo trì</div>
+    <div class="num" data-rt="network.maintenanceVehicles">{{ data.stats.maintenance }}</div>
+  </div>
 </div>
+
+{% if error %}
+  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</div>
+{% endif %}
+{% if successMessage %}
+  <div class="alert-x success"><i class="bi bi-check-circle me-2"></i>{{ successMessage }}</div>
+{% endif %}
+
+<section class="panel-card p-3">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h2 class="panel-title" data-i18n="dispatch.mapTitle">Bản đồ mạng lưới Hub</h2>
+    <span class="small text-muted-2" data-i18n="dispatch.mapHint">Nhấp marker trên bản đồ để xem tài nguyên hoặc chọn Hub nguồn/đích</span>
+  </div>
+  <div id="dispatchMap"></div>
+</section>
+
+<section class="panel-card">
+  <form method="post" action="{{ url_for('operator.dispatch') }}" class="d-flex flex-column gap-3">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <h2 class="panel-title" data-i18n="dispatch.vehicleList">Danh sách phương tiện</h2>
+
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <div class="d-flex align-items-center gap-1">
+          <label class="small text-muted-2 mb-0" for="sourceHubSelect" data-i18n="dispatch.fromHub">Từ:</label>
+          <select id="sourceHubSelect" name="sourceHubId" class="form-select form-select-sm w-auto"
+                  onchange="window.location.href='{{ url_for('operator.dispatch') }}?sourceHubId=' + encodeURIComponent(this.value) + '&destHubId=' + encodeURIComponent(document.getElementById('destHubSelect').value);">
+            <option value="" data-i18n="dispatch.allHubs">Tất cả Hub</option>
+            {% for h in data.hubs %}
+              <option value="{{ h.hubId }}" {{ 'selected' if data.selectedSourceHubId == h.hubId }}>
+                {{ h.name }} ({{ h.availableVehicles }} xe)
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="d-flex align-items-center gap-1">
+          <label class="small text-muted-2 mb-0" for="destHubSelect" data-i18n="dispatch.toHub">Đến:</label>
+          <select id="destHubSelect" name="destHubId" class="form-select form-select-sm w-auto">
+            {% for h in data.hubs %}
+              <option value="{{ h.hubId }}" {{ 'selected' if data.selectedDestHubId == h.hubId }}>
+                {{ h.name }} ({{ h.emptySpots }} chỗ trống)
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" name="action" value="dispatch" class="btn-pill-primary" data-i18n="dispatch.submitBtn">
+          Điều phối xe
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table-x">
+        <thead>
+          <tr>
+            <th style="width: 42px;"></th>
+            <th data-i18n="dispatch.colVehicleId">Mã xe</th>
+            <th data-i18n="dispatch.colLocation">Vị trí hiện tại</th>
+            <th data-i18n="dispatch.colBattery">Pin (%)</th>
+            <th data-i18n="table.status">Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for v in data.vehicles %}
+          <tr data-vehicle-id="{{ v.id }}">
+            <td>
+              <input class="form-check-input" type="checkbox" name="vehicleIds" value="{{ v.id }}"
+                     aria-label="Select {{ v.id }}">
+            </td>
+            <td class="fw-semibold">
+              <div>{{ v.id }}</div>
+              <div class="small text-muted-2">{{ v.model }}</div>
+            </td>
+            <td data-rt="network.vehicles.{{ v.id }}.hubName">{{ v.hubName }}</td>
+            <td>
+              <span class="chip-x {{ 'chip-solid-danger' if v.batteryLevel < 20 else 'chip-solid-success' if v.batteryLevel >= 70 else 'chip-solid-secondary' }}">
+                <span data-rt="network.vehicles.{{ v.id }}.batteryLevel">{{ v.batteryLevel }}</span>%
+              </span>
+            </td>
+            <td>
+              <span class="badge {{ 'badge-ok' if v.status == 'AVAILABLE' else 'badge-warn' if v.status in ('IN_USE', 'RESERVED', 'CHARGING') else 'badge-danger' }}"
+                    data-rt="network.vehicles.{{ v.id }}.status">{{ v.status }}</span>
+              <span class="badge badge-warn ms-1 low-battery-badge {{ '' if v.isLowBattery else 'd-none' }}"
+                    data-i18n="dispatch.lowBattery">Low Battery</span>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="5" class="text-center text-muted-2 py-4" data-i18n="dispatch.emptyVehicles">Không có xe tại Hub nguồn này.</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </form>
+</section>
+
+{% if data.orders %}
+<section class="panel-card">
+  <h3 class="panel-title mb-3" data-i18n="dispatch.ordersTitle">Lệnh điều phối gần đây</h3>
+  <div class="table-responsive">
+    <table class="table-x">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th data-i18n="dispatch.fromHub">Từ</th>
+          <th data-i18n="dispatch.toHub">Đến</th>
+          <th data-i18n="table.vehicles">Xe</th>
+          <th data-i18n="table.status">Trạng thái</th>
+          <th data-i18n="incidents.colActions">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for o in data.orders %}
+        <tr>
+          <td class="fw-semibold">{{ o.id }}</td>
+          <td>{{ o.sourceHubId }}</td>
+          <td>{{ o.destHubId }}</td>
+          <td>{{ o.vehicleIds | join(', ') }}</td>
+          <td><span class="badge {{ 'badge-warn' if o.status == 'PENDING' else 'badge-danger' }}">{{ o.status }}</span></td>
+          <td>
+            {% if o.status == 'PENDING' %}
+              <form method="post" action="{{ url_for('operator.dispatch') }}" class="d-inline">
+                <input type="hidden" name="action" value="cancel">
+                <input type="hidden" name="orderId" value="{{ o.id }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger" data-i18n="action.cancel">Hủy</button>
+              </form>
+            {% else %}
+              <span class="text-muted-2 small">—</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function () {
+  const mapView = {{ data.mapView | tojson }};
+  const styles = getComputedStyle(document.documentElement);
+  const primaryColor = styles.getPropertyValue("--color-primary").trim();
+  const dangerColor = styles.getPropertyValue("--color-error").trim();
+
+  if (mapView && mapView.center) {
+    const map = L.map("dispatchMap").setView([mapView.center.lat, mapView.center.lng], 14);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap" }).addTo(map);
+
+    mapView.markers.forEach(function (m) {
+      const markerColor = m.status === "ACTIVE" ? primaryColor : dangerColor;
+      const circle = L.circleMarker([m.lat, m.lng], {
+        radius: 10,
+        color: markerColor,
+        fillColor: markerColor,
+        fillOpacity: 0.75,
+        weight: 2
+      }).addTo(map);
+
+      const popupHtml =
+        "<div class='small'>" +
+        "<strong>" + m.name + " (" + m.hubId + ")</strong><br>" +
+        "Xe sẵn sàng: " + m.availableVehicles + "<br>" +
+        "Chỗ đỗ trống: " + m.emptySpots + "<br>" +
+        "Cổng sạc trống: " + m.availablePorts +
+        "<div class='mt-2 d-flex gap-1'>" +
+        "<button type='button' class='btn btn-sm btn-outline-primary' onclick=\"selectMapHub('source','" + m.hubId + "')\">Chọn nguồn</button>" +
+        "<button type='button' class='btn btn-sm btn-primary' onclick=\"selectMapHub('dest','" + m.hubId + "')\">Chọn đích</button>" +
+        "</div></div>";
+      circle.bindPopup(popupHtml);
+    });
+  }
+
+  window.selectMapHub = function (role, hubId) {
+    const sourceSel = document.getElementById("sourceHubSelect");
+    const destSel = document.getElementById("destHubSelect");
+    if (role === "dest" && destSel) {
+      destSel.value = hubId;
+    } else if (role === "source" && sourceSel) {
+      const destVal = destSel ? destSel.value : "";
+      window.location.href = "{{ url_for('operator.dispatch') }}?sourceHubId=" + encodeURIComponent(hubId) + "&destHubId=" + encodeURIComponent(destVal);
+    }
+  };
+
+  document.addEventListener("ehub:state", function (ev) {
+    const vehicles = (ev.detail && ev.detail.network && ev.detail.network.vehicles) || {};
+    document.querySelectorAll("tr[data-vehicle-id]").forEach(function (row) {
+      const vid = row.dataset.vehicleId;
+      const info = vehicles[vid];
+      if (!info) return;
+      const badge = row.querySelector(".low-battery-badge");
+      if (badge) {
+        badge.classList.toggle("d-none", !(info.status === "AVAILABLE" && info.batteryLevel < 20));
+      }
+    });
+  });
+})();
+</script>
 {% endblock %}

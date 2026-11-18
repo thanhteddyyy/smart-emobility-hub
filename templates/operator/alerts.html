@@ -1,12 +1,107 @@
-{# UC10 – Hình 17: Cảnh báo. Phụ trách: TV3.
-   Cần làm: Bảng cảnh báo + panel chi tiết, nút sang Điều phối.
-   Service liên quan: alert_service.evaluateHubLoad #}
+{# UC10 – Hình 17: Cảnh báo quá tải (AlertDashboard). #}
 {% extends "base_dashboard.html" %}
-{% block heading %}Cảnh báo{% endblock %}
+{% block heading %}<span data-i18n="dash.alerts">Cảnh báo</span>{% endblock %}
+
 {% block content %}
-<div class="todo-box">
-  <b>TODO (TV3) – UC10 · Hình 17</b><br>
-  Bảng cảnh báo + panel chi tiết, nút sang Điều phối.<br>
-  Service: <code>alert_service.evaluateHubLoad</code>
+<div class="d-flex align-items-center gap-3">
+  <a class="back-icon-btn" href="{{ url_for('operator.overview') }}" title="Back" aria-label="Back">
+    <i class="bi bi-arrow-return-left"></i>
+  </a>
+  <h2 class="h4 fw-bold m-0" data-i18n="alerts.pageTitle">Tất cả cảnh báo</h2>
+</div>
+
+{% if error %}
+  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</div>
+{% endif %}
+{% if resolved %}
+  <div class="alert-x success"><i class="bi bi-check-circle me-2"></i><span data-i18n="alerts.resolvedSuccess">Đã đánh dấu xử lý cảnh báo thành công.</span></div>
+{% endif %}
+
+<div class="alerts-grid">
+  <section class="panel-card">
+    <div class="table-responsive">
+      <table class="table-x">
+        <thead>
+          <tr>
+            <th data-i18n="table.hub">Hub</th>
+            <th data-i18n="alerts.colUtilization">Mức sử dụng</th>
+            <th data-i18n="alerts.colDanger">Mức độ nguy hiểm</th>
+            <th data-i18n="table.timestamp">Thời gian</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for a in alerts %}
+          <tr class="alert-row-selectable {{ 'is-selected' if selectedAlert and selectedAlert.id == a.id }}"
+              onclick="window.location.href='{{ url_for('operator.alerts', alertId=a.id) }}'">
+            <td>
+              <div class="fw-semibold">{{ a.hubName }}</div>
+              {% if a.status == 'RESOLVED' %}
+                <span class="chip-x chip-soft-success mt-1" data-i18n="alerts.statusResolved">Resolved</span>
+              {% endif %}
+            </td>
+            <td>{{ a.utilizationType }}: {{ a.utilization }}%</td>
+            <td>
+              <span class="chip-x {{ 'chip-solid-danger' if a.dangerLevel == 'HIGH' else 'chip-solid-warning' }}"
+                    data-i18n="{{ 'priority.high' if a.dangerLevel == 'HIGH' else 'priority.medium' }}">
+                {{ 'High' if a.dangerLevel == 'HIGH' else 'Medium' }}
+              </span>
+            </td>
+            <td class="text-muted-2 small">{{ a.createdAt.replace('T', ' ') }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted-2 py-4" data-i18n="alerts.empty">Không có cảnh báo quá tải.</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <aside class="alert-detail-panel">
+    <h3 class="panel-title" data-i18n="alerts.detailsTitle">Chi tiết cảnh báo</h3>
+    {% if selectedAlert %}
+      <div class="row g-3">
+        <div class="col-6">
+          <div class="detail-field-label" data-i18n="table.hub">Hub</div>
+          <div class="detail-field-value">{{ selectedAlert.hubName }}</div>
+        </div>
+        <div class="col-6">
+          <div class="detail-field-label" data-i18n="alerts.utilizationType">Loại tài nguyên</div>
+          <div class="detail-field-value">{{ selectedAlert.utilizationType }}</div>
+        </div>
+        <div class="col-6">
+          <div class="detail-field-label" data-i18n="table.usage">Mức sử dụng</div>
+          <div class="detail-field-value fw-bold">{{ selectedAlert.utilization }}%</div>
+        </div>
+        <div class="col-6">
+          <div class="detail-field-label" data-i18n="alerts.threshold">Ngưỡng cảnh báo</div>
+          <div class="detail-field-value">{{ selectedAlert.threshold }}%</div>
+        </div>
+        <div class="col-12">
+          <div class="detail-field-label" data-i18n="alerts.location">Vị trí</div>
+          <div class="detail-field-value">{{ selectedAlert.location }}</div>
+        </div>
+        <div class="col-12">
+          <div class="detail-field-label" data-i18n="alerts.expectedCause">Nguyên nhân dự kiến:</div>
+          <div class="detail-field-value">{{ selectedAlert.expectedCause }}</div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-3 border-top">
+        <a class="btn-outline-x" href="{{ url_for('operator.dispatch', destHubId=selectedAlert.hubId) }}" data-i18n="alerts.goToDispatch">Điều phối xe</a>
+        {% if selectedAlert.status != 'RESOLVED' %}
+          <form method="post" action="{{ url_for('operator.alerts') }}">
+            <input type="hidden" name="alertId" value="{{ selectedAlert.id }}">
+            <button type="submit" class="btn-primary-x" data-i18n="alerts.resolveBtn">Xử lý xong</button>
+          </form>
+        {% else %}
+          <span class="chip-x chip-soft-success" data-i18n="alerts.statusResolved">Resolved</span>
+        {% endif %}
+      </div>
+    {% else %}
+      <p class="text-muted-2 small m-0" data-i18n="alerts.selectPrompt">Chọn một cảnh báo để xem chi tiết.</p>
+    {% endif %}
+  </aside>
 </div>
 {% endblock %}
