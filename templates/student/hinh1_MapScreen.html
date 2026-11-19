@@ -1,0 +1,29 @@
+{% extends "base_mobile.html" %}
+{% block phoneClass %}explorer{% endblock %}
+{% block head %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">{% endblock %}
+{% block header %}<header class="tools"><input id="query" type="search" aria-label="Search" data-i18n-placeholder="search.placeholder" placeholder="Tìm trạm hoặc xe điện…">{% include "_switches.html" %}</header>{% endblock %}
+{% block content %}
+<div class="map-art"><div id="liveMap" hidden></div></div>
+<section class="station-sheet"><div class="handle"></div>
+<div class="line"><h2 data-i18n="search.nearest">Trạm gần nhất</h2><button id="mapToggle" class="minor" data-i18n="tv.map">Bản đồ</button><button id="filters" class="minor" data-i18n="tv.filter">Bộ lọc</button></div>
+<form id="criteria" hidden method="get"><label><span data-i18n="search.radius">Bán kính (km)</span><input name="radiusKm" type="number" min=".1" max="10" step=".1" value="{{criteria.radiusKm}}"></label><label><span data-i18n="search.minBattery">Pin tối thiểu (%)</span><input name="minBatteryLevel" type="number" min="0" max="100" value="{{criteria.minBatteryLevel}}"></label><button data-i18n="search.submit">Tìm</button></form>
+<select id="stations" aria-label="Hub">{% for h in results %}<option value="{{loop.index0}}">{{h.name}}</option>{% endfor %}</select>
+{% if error %}<p role="alert">{{error.message}}</p>{% endif %}
+<p id="empty" data-i18n="search.empty" hidden>Không có trạm phù hợp.</p>
+{% for h in results %}
+<article class="station" data-index="{{loop.index0}}" {% if not loop.first %}hidden{% endif %}>
+<div class="line"><h1>{{h.name}}</h1><span class="pill" data-i18n="tv.{{'open' if h.availableVehicles else 'noBike'}}"></span></div>
+<p class="meta">⌖ {{h.distanceKm}} km　 ·　{{h.walkMinutes}} <span data-i18n="hub.mins">phút đi bộ</span></p>
+{% for key,icon,label in [('availableVehicles','🛵','hub.bikes'),('emptySpots','🅿️','hub.slots'),('availablePorts','⚡','hub.ports')] %}
+<div>{{icon}}　<b data-rt="hubs.{{h.hubId}}.{{key}}">{{h[key]}}</b> <span data-i18n="{{label}}"></span></div>{% endfor %}
+<small>◷ <span data-i18n="hub.updated"></span> {{h.lastUpdatedAt[11:19] if h.lastUpdatedAt else '—'}}</small>
+<div class="actions"><a class="outline" href="{{url_for('student.page',page='resource',hubId=h.hubId)}}" data-i18n="action.viewDetails">Xem chi tiết</a><button class="primary" data-book data-i18n="action.book">Đặt xe</button></div></article>{% endfor %}
+</section>
+{% include "student/_booking_modal.html" %}
+{% endblock %}
+{% block scripts %}
+<script id="hubData" type="application/json">{{results|tojson}}</script>
+<script id="userData" type="application/json">{{currentUser|tojson}}</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{url_for('static',filename='tv1/search.js')}}"></script>
+{% endblock %}

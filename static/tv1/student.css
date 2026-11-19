@@ -1,0 +1,32 @@
+:root{--tv-green:#00b76a;--tv-soft:#e6f7ee;--tv-bg:#fff;--tv-ink:#17221f;--tv-muted:#52616a;--tv-line:#e0e6e5;--tv-well:#f3f5f5;--tv-danger:#a42728;--tv-pink:#fff0ee;--tv-warn:#fff2c5;--tv-amber:#865200}
+[data-theme=dark]{--tv-soft:#153f30;--tv-bg:#222325;--tv-ink:#f6f7f8;--tv-muted:#c2c5c9;--tv-line:#404245;--tv-well:#343538;--tv-pink:#482828;--tv-danger:#ffb7ae;--tv-warn:#474029;--tv-amber:#ffdb81}
+.phone{box-sizing:border-box;max-width:420px;width:100%;min-height:100dvh;margin:auto;display:flex;flex-direction:column;font:15px/1.45 'Be Vietnam Pro',system-ui,sans-serif;background:var(--tv-bg);color:var(--tv-ink)}
+.phone *, .phone *:before{box-sizing:border-box}.phone [hidden]{display:none!important}
+.explorer,.auth-screen{position:relative}.explorer .phone-main{display:flex;flex:1;flex-direction:column;padding:0;gap:0}
+.tools,.modal-tools,.line,.actions,.seg,.tools>div,.modal-tools>div,.phone-top>div{display:flex;align-items:center;gap:6px}
+.tools{position:absolute;z-index:2;top:18px;left:12px;right:12px}
+.phone input,.phone select{font:inherit;color:inherit;background:var(--tv-bg);border:1px solid var(--tv-line);border-radius:12px;padding:9px;max-width:100%}
+.phone button,.phone .actions a{cursor:pointer;font:inherit;font-weight:600;border:0;padding:9px 12px;background:var(--tv-well);color:var(--tv-ink);border-radius:24px;text-decoration:none;text-align:center}
+.phone .seg,.tools input{border-radius:30px;background:var(--tv-bg);padding:3px;box-shadow:0 3px 18px #0002}.tools input{min-width:0;flex:1;padding:12px;border:0}
+.phone .seg button{padding:7px;background:transparent;font-size:12px}.phone .seg .active,.phone .primary,.phone #tabs .chosen{background:var(--tv-green);color:white}
+.phone [data-theme-set=light]:before{content:'☀'}.phone [data-theme-set=dark]:before{content:'☾'}.phone .seg i{display:none}
+[data-theme=light] .phone [data-theme-set=light],[data-theme=dark] .phone [data-theme-set=dark]{display:none}
+.map-art{position:relative;flex:1;min-height:42dvh;background:#eee url(campus.webp) center/cover}
+[data-theme=dark] .map-art{background-blend-mode:multiply;background-color:#73777a}
+#liveMap{position:absolute;inset:0;z-index:1}.station-sheet{position:relative;margin-top:-16px;padding:10px 16px 14px;border-radius:26px 26px 0 0;background:var(--tv-bg);z-index:1}
+.handle{width:40px;height:5px;border-radius:8px;background:var(--tv-line);margin:0 auto 12px}.line h2{margin:0 auto 0 0;font-size:18px}.phone .minor{font-size:11px;padding:5px 8px}
+#stations{margin:8px 0;font-size:12px;width:100%}.station{border:1px solid var(--tv-line);border-radius:20px;padding:15px;box-shadow:0 5px 18px #0001;color:var(--tv-muted)}.station h1,.signin h1{font-size:21px;color:var(--tv-ink);margin:0}.station .line{justify-content:space-between}.pill{border-radius:18px;background:var(--tv-soft);color:var(--tv-ink);padding:4px 8px;font-size:11px;white-space:nowrap}
+.meta{border-bottom:1px solid var(--tv-line);padding-bottom:10px}.station small{font-style:italic}.actions{margin-top:12px;gap:8px}.actions>*{flex:1}.phone .outline{color:var(--tv-green);border:1px solid;background:transparent}
+.phone-nav{position:relative;display:flex;justify-content:space-around;padding:6px;background:var(--tv-bg)}.phone-nav a{font-size:11px;color:var(--tv-muted)}
+#booking{position:fixed;inset:auto 0 20px;width:min(386px,calc(100% - 28px));max-height:92dvh;overflow:auto;border:1px solid var(--tv-line);margin:0 auto;padding:20px;border-radius:22px;background:var(--tv-bg);color:var(--tv-ink);box-shadow:0 15px 60px #0003}
+#booking::backdrop{background:#0006}.modal-tools{justify-content:flex-end}#booking h2{font-size:20px;margin:8px 0}#tabs button{background:var(--tv-soft)}#selection{margin-top:14px}#selection select{font-weight:bold;width:100%}#selection p{margin:5px 0;color:var(--tv-muted)}.note,#feedback,.auth-error{border-radius:14px;padding:14px;margin:14px 0;background:var(--tv-well)}#feedback[data-state=VEHICLE_CONFLICT],.auth-error{background:var(--tv-pink);color:var(--tv-danger)}#feedback[data-state=HUB_FULL],#feedback[data-state=HOLD_EXPIRED]{background:var(--tv-warn);color:var(--tv-amber)}
+.auth-screen .phone-main{padding:16px 24px;display:flex;flex-direction:column;flex:1}.signin{margin:auto 0}.bike-icon{display:inline-block;padding:12px;background:var(--tv-soft);border-radius:14px;margin-bottom:16px}.signin form{display:grid;gap:8px}.signin input{padding:14px;margin-bottom:10px}.signin p,.auth-screen footer{color:var(--tv-muted)}.auth-screen footer{text-align:center;font-size:12px;margin-bottom:18px}.signin button{margin-top:12px}
+.phone-top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}.phone-brand{font-weight:750;color:var(--tv-green);text-decoration:none}.auth-screen .phone-top .seg{box-shadow:none;border:1px solid var(--tv-line)}.phone label{display:block}.station div:not(.actions){margin-bottom:4px}.station .primary,.station .outline,#booking .actions button{padding-block:11px}
+
+/* Figma frame at 1x: 414 × 896 CSS pixels. */
+.phone.explorer,.phone.auth-screen{max-width:414px}
+.explorer .station-sheet{padding-inline:16px}
+#booking{width:min(382px,calc(100% - 32px));bottom:clamp(12px,4.7dvh,42px)}
+#feedback h3{font-size:18px;margin:8px 0}
+.state-icon{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--tv-bg);font-size:20px}
+#booking:has([data-state="HOLD_EXPIRED"]:not([hidden])){inset:0;margin:auto;height:fit-content;text-align:center}

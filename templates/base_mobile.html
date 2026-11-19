@@ -7,15 +7,16 @@
 <head>
   {% include "_head.html" %}
   <link href="{{ url_for('static', filename='css/mobile.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='tv1/student.css') }}">
   <title>{% block title %}{{ BRAND_NAME }}{% endblock %}</title>
   {% block head %}{% endblock %}
 </head>
 <body>
-<div class="phone">
-  <header class="phone-top">
+<div class="phone {% block phoneClass %}{% endblock %}">
+  {% block header %}<header class="phone-top">
     <a class="phone-brand" href="{{ url_for('student.search') }}">{{ BRAND_NAME }}</a>
     {% include "_switches.html" %}
-  </header>
+  </header>{% endblock %}
 
   <main class="phone-main">
     {% block content %}{% endblock %}
