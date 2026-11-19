@@ -140,6 +140,8 @@ def registerCharging():
         status_code = 409 if e.code == "PORT_UNAVAILABLE" else 400
         return jsonify(e.toDict()), status_code
 
+
+
 #---------- UC11: Điều phối phương tiện" ----------
 @bp.route("/dispatch/hub-data", methods=["GET"])
 def getDispatchHubData():
@@ -191,13 +193,6 @@ def cancelDispatchOrder(orderId):
         return jsonify(e.toDict()), status_code
 
 #---------- UC12: Điều phối phương tiện" ----------
-@bp.route("/incidents", methods=["GET"])
-def getPrioritizedIncidents():
-    try:
-        result = incident_service.getPrioritizedIncidents()
-        return jsonify({"ok": True, "data": result})
-    except ServiceError as e:
-        return jsonify(e.toDict()), 400
 
 @bp.route("/incidents/<incidentId>/handling", methods = ["POST"])
 def handlePauseResource(incidentId):
@@ -242,7 +237,7 @@ def isolateDisconnectedHub(hubId):
         return jsonify(e.toDict()), status_code 
 
 #---------- UC13: Điều phối phương tiện" ----------
-@bp.route("/charging-schedules/generate/<hubId>", methods=["POST"])
+@bp.route("/hubs/<hubId>/charging-schedules/generate", methods=["POST"])
 def generateSchedule(hubId):
     try:
         result = schedule_service.generateSchedule(hubId)
