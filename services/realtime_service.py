@@ -10,10 +10,26 @@ from datetime import datetime
 
 import config
 from data import mock_data as db
+from services.errors import ServiceError, INVALID_PARAMETERS
+from copy import deepcopy
 
 PACKET_LOG = []          # log các gói bị loại, hiển thị trên dashboard khi demo
 _simulatorStarted = False
 
+RESOURCE_COLLECTIONS = {
+    "HUB": db.HUBS,
+    "VEHICLE": db.VEHICLES,
+    "CHARGING_PORT": db.CHARGING_PORTS
+}
+
+VALID_STATUSES = {
+    "HUB": ["ACTIVE", "OFFLINE"],
+    "VEHICLE": [
+        "AVAILABLE", "RESERVED", "IN_USE",
+        "CHARGING", "MAINTENANCE"
+    ],
+    "CHARGING_PORT": ["AVAILABLE", "IN_USE", "OUT_OF_ORDER"]
+}
 
 def isOutdatedPacket(packetTimestamp, currentTimestamp):
     """True nếu gói tin cũ hơn (hoặc bằng) trạng thái đang lưu."""
@@ -21,27 +37,116 @@ def isOutdatedPacket(packetTimestamp, currentTimestamp):
 
 
 def validatePacket(packet):
-    """TODO(UC16): kiểm tra packet có đủ resourceType, resourceId, timestamp và giá trị hợp lệ."""
-    raise NotImplementedError("UC16 validatePacket")
+    """UC16: Validate incoming telemetry packet."""
+
+    if not isinstance(packet, dict):
+        raise ServiceError(INVALID_PARAMETERS)
+
+    requiredFields = ["resourceType", "resourceId", "timestamp", "status"]
+
+    for field in requiredFields:
+        if field not in packet or packet[field] is None:
+            raise ServiceError(INVALID_PARAMETERS)
+
+    resourceType = packet["resourceType"]
+
+    if resourceType not in RESOURCE_COLLECTIONS:
+        raise ServiceError(INVALID_PARAMETERS)
+
+    if not isinstance(packet["resourceId"], str) or not packet["resourceId"].strip():
+        raise ServiceError(INVALID_PARAMETERS)
+
+    if not isinstance(packet["status"], str):
+        raise ServiceError(INVALID_PARAMETERS)
+
+    if packet["status"] not in VALID_STATUSES[resourceType]:
+        raise ServiceError(INVALID_PARAMETERS)
+
+    # Timestamp must be a valid ISO 8601 datetime.
+    if not isinstance(packet["timestamp"], str):
+        raise ServiceError(INVALID_PARAMETERS)
+
+    try:
+        datetime.fromisoformat(packet["timestamp"].replace("Z", "+00:00"))
+    except ValueError:
+        raise ServiceError(INVALID_PARAMETERS)
+
+    # Optional vehicle battery level must be between 0 and 100.
+    if "batteryLevel" in packet:
+        batteryLevel = packet["batteryLevel"]
+
+        if (
+            resourceType != "VEHICLE"
+            or isinstance(batteryLevel, bool)
+            or not isinstance(batteryLevel, (int, float))
+            or not 0 <= batteryLevel <= 100
+        ):
+            raise ServiceError(INVALID_PARAMETERS)
+
+    return True
 
 
 def upsertSimulatedState(packet):
-    """TODO(UC16): ghi trạng thái mới vào mock_data (nhớ dùng `with db.DATA_LOCK:`)."""
-    raise NotImplementedError("UC16 upsertSimulatedState")
+    """UC16: Update simulated resource state."""
+
+    with db.DATA_LOCK:
+        collection = RESOURCE_COLLECTIONS[packet["resourceType"]]
+
+        resource = db.findById(collection, packet["resourceId"])
+
+        if not resource:
+            raise ServiceError("RESOURCE_NOT_FOUND")
+
+        resource["status"] = packet["status"]
+        resource["lastUpdatedAt"] = packet["timestamp"]
+
+        if packet["resourceType"] == "VEHICLE":
+            if "batteryLevel" in packet:
+                resource["batteryLevel"] = packet["batteryLevel"]
+
+        return resource
 
 
 def ingestResourceStatus(packet):
-    """TODO(UC16) – DEMO BẮT BUỘC lọc gói trễ:
-    1. validatePacket(packet)
-    2. Nếu isOutdatedPacket(packet['timestamp'], <lastUpdatedAt hiện tại>) -> thêm vào PACKET_LOG, bỏ qua
-    3. Ngược lại upsertSimulatedState(packet)
-    """
-    raise NotImplementedError("UC16 ingestResourceStatus")
+    """UC16: Validate, filter outdated packets, and update resource state."""
+
+    validatePacket(packet)
+
+    with db.DATA_LOCK:
+        collection = RESOURCE_COLLECTIONS[packet["resourceType"]]
+
+        resource = db.findById(collection, packet["resourceId"])
+
+        if not resource:
+            raise ServiceError("RESOURCE_NOT_FOUND")
+
+        currentTimestamp = resource["lastUpdatedAt"]
+
+        if isOutdatedPacket(packet["timestamp"], currentTimestamp):
+            PACKET_LOG.append({
+                "packet": deepcopy(packet),
+                "reason": "OUTDATED_PACKET",
+                "receivedAt": datetime.now().isoformat(timespec="seconds")
+            })
+
+            return {
+                "updated": False,
+                "reason": "OUTDATED_PACKET",
+                "resourceId": packet["resourceId"]
+            }
+
+        updatedResource = upsertSimulatedState(packet)
+
+        return {
+            "updated": True,
+            "resource": updatedResource
+        }
 
 
 def receiveTelemetryPacket(packet):
-    """TODO(UC16): điểm nhận gói tin từ /api/telemetry -> gọi ingestResourceStatus."""
-    raise NotImplementedError("UC16 receiveTelemetryPacket")
+    """UC16: Entry point for /api/telemetry."""
+
+    return ingestResourceStatus(packet)
 
 
 # ---------- Bộ giả lập IoT (đã chạy được) ----------
