@@ -20,7 +20,7 @@
 <article class="card-x p-3 mb-3">
   <p class="small fw-semibold text-uppercase mb-3" style="color: var(--color-muted); letter-spacing: .04em;" data-i18n="ride.battery">Pin hiện tại</p>
   <div class="d-flex align-items-center justify-content-between gap-3">
-    <div class="d-flex align-items-stretch flex-grow-1 gap-2" style="height: 2.75rem; max-width: 12rem;">
+    <div id="rideBatteryBars" class="d-flex align-items-stretch flex-grow-1 gap-2" style="height: 2.75rem; max-width: 12rem;">
       {% for i in range(1, 6) %}
       <span class="flex-fill rounded-3" style="background: {{ 'var(--color-primary)' if i <= bars else 'var(--color-primary-soft)' }};"></span>
       {% endfor %}
@@ -71,6 +71,43 @@
     {% endif %}
     window.addEventListener("ehub:viewchange", function () { setTimeout(function () { map.invalidateSize(); }, 80); });
   }
+
+  // Cập nhật % pin & 5 vạch pin realtime mỗi 5 giây khi có sự kiện ehub:state
+  const targetVehicleId = {{ vehicle.id | tojson }};
+  const batteryTextEl = document.getElementById("rideBattery");
+  const batteryBarsEl = document.getElementById("rideBatteryBars");
+
+  function updateBatteryUI(level) {
+    if (typeof level !== "number" || isNaN(level)) return;
+    const clamped = Math.max(0, Math.min(100, Math.round(level)));
+    if (batteryTextEl) {
+      batteryTextEl.textContent = clamped + "%";
+    }
+    if (batteryBarsEl) {
+      const activeBars = Math.ceil(clamped / 20);
+      const spans = batteryBarsEl.querySelectorAll("span");
+      spans.forEach(function (span, idx) {
+        span.style.background = (idx + 1 <= activeBars)
+          ? "var(--color-primary)"
+          : "var(--color-primary-soft)";
+      });
+    }
+  }
+
+  window.addEventListener("ehub:state", function (e) {
+    const state = e.detail;
+    if (!state || !state.vehicles) return;
+    let vData = null;
+    if (Array.isArray(state.vehicles)) {
+      vData = state.vehicles.find(function (v) { return v && v.id === targetVehicleId; });
+    } else if (typeof state.vehicles === "object") {
+      vData = state.vehicles[targetVehicleId];
+    }
+    if (vData) {
+      const lvl = vData.batteryLevel !== undefined ? vData.batteryLevel : vData.battery_percentage;
+      if (lvl !== undefined) updateBatteryUI(Number(lvl));
+    }
+  });
 })();
 </script>
 {% endif %}
