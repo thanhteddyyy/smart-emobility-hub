@@ -24,7 +24,7 @@ def overview():
         "area": request.args.get("area", ""),
     }
     overviewData = monitor_service.getNetworkOverview(filterCriteria)
-    alerts = alert_service.evaluateHubLoad()
+    alerts = alert_service.evaluateHubLoad(includeSeeded=True)
     return render_template(
         "operator/overview.html",
         overview=overviewData,
@@ -64,7 +64,7 @@ def alerts():
         except ServiceError as e:
             error = e
 
-    alertsList = alert_service.evaluateHubLoad()
+    alertsList = alert_service.evaluateHubLoad(includeSeeded=True)
     selectedId = request.args.get("alertId")
     selectedAlert = next((a for a in alertsList if a["id"] == selectedId), None)
     if not selectedAlert and alertsList:
@@ -175,7 +175,11 @@ def simulation():
         report = simulation_service.runSimulation(params)
     except ServiceError as e:
         error = e
-        report = simulation_service.runSimulation({})
+        report = simulation_service.runSimulation({
+            "studentDemandPercent": 20,
+            "availableEvDelta": -15,
+            "weather": "HEAVY_RAIN",
+        })
 
     return render_template(
         "operator/simulation.html",

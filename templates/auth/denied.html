@@ -4,5 +4,9 @@
   <b data-i18n="denied.title">Không đủ quyền truy cập</b><br>
   <span data-i18n="denied.body">Tài khoản của bạn không được phép mở trang này.</span>
 </div>
-<a class="btn-outline-x text-center text-decoration-none" href="{{ url_for('auth.logout') }}" data-i18n="action.logout">Đăng xuất</a>
+<div class="d-grid gap-2 mt-3">
+  <a class="btn-primary-x text-center text-decoration-none" href="{{ url_for('student.search') }}" data-i18n="auth.backToMap">← Tiếp tục xem bản đồ</a>
+  <a class="btn-outline-x text-center text-decoration-none" href="{{ url_for('auth.logout', portal='operator') }}" data-i18n="auth.switchToOperator">Đăng nhập Cổng Vận hành</a>
+  <a class="btn-outline-x text-center text-decoration-none" href="{{ url_for('auth.logout') }}" data-i18n="action.logout">Đăng xuất</a>
+</div>
 {% endblock %}

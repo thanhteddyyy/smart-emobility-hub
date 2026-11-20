@@ -5,7 +5,7 @@ Hệ thống điều phối phương tiện điện trong Khu đô thị ĐHQG-H
 
 Đây là bản **MVP để demo**: giao diện làm theo mockup Submission 2, logic làm theo Class diagram và Method description Submission 3, **dữ liệu giả lập, không dùng database**.
 
-> **Trạng thái hiện tại: bộ khung.** Đã chạy được: trang tìm Hub (UC1), đăng nhập (UC17), dashboard tổng quan cơ bản (UC8), đổi Sáng/Tối và VN/EN, số liệu tự cập nhật mỗi 5 giây. Các màn hình khác đang là ô "TODO" ghi rõ ai làm, làm gì.
+> **Trạng thái hiện tại: đã tích hợp MVP trên `main`.** Đã hoàn thiện hai cổng đăng nhập tách biệt cho Sinh viên (Mobile) và Đơn vị vận hành (Desktop), luồng tìm Hub (UC1), đặt/nhận/trả xe & sạc (UC2–UC7 UI + một phần service), toàn bộ Web Dashboard vận hành (UC8–UC14), đổi Sáng/Tối & VN/EN (UC15), cập nhật tự động mỗi 5 giây (UC16) và phân quyền (UC17). Các phần còn lại đang được hoàn thiện theo `docs/FIX_LOG_TV1.md`.
 
 ---
 
@@ -16,15 +16,26 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Mở http://127.0.0.1:5000 (hoặc bấm đúp `run.bat` trên Windows, `./run.sh` trên macOS/Linux).
+Hoặc bấm đúp `run.bat` trên Windows, `./run.sh` trên macOS/Linux.
 
-| Vai trò | Email | Mật khẩu |
+### Hai cổng truy cập tách biệt (Dual-Portal Login)
+
+| Cổng | Đường dẫn | Trải nghiệm & Luồng đăng nhập |
 |---|---|---|
-| Sinh viên | `student@hcmut.edu.vn` | `123456` |
-| Đơn vị vận hành | `operator@ehub.vn` | `123456` |
-| Không đủ quyền (để demo lỗi) | `guest@gmail.com` | `123456` |
+| **Cổng Sinh viên (Mobile UI)** | http://127.0.0.1:5000 (hoặc `/student/search`) | **Không bắt đăng nhập ngay**: sinh viên tự do tìm Hub, xem xe/trạm trên bản đồ. Khi xác nhận **Đặt xe / Đặt chỗ** hoặc vào màn hình chuyến đi/sạc (`UC3–UC7`), hệ thống mới chuyển sang trang đăng nhập Mobile SSO (`/login`). Đăng xuất sẽ quay về `/student/search`. |
+| **Cổng Đơn vị vận hành (Desktop UI)** | http://127.0.0.1:5000/operator/login (hoặc `/operator/`) | **Bắt buộc đăng nhập ngay** với giao diện Desktop quản trị riêng (chỉ chấp nhận tài khoản vai trò `OPERATOR`). Đăng nhập xong vào thẳng `/operator/overview`; đăng xuất sẽ quay về `/operator/login`. |
 
-_TODO: viết lại phần hướng dẫn chạy chi tiết trước khi nộp (phiên bản Python, kịch bản demo)._
+> Ở chân mỗi trang đăng nhập đều có liên kết chuyển nhanh giữa **Cổng Sinh viên** và **Cổng Đơn vị vận hành** để tiện trình bày khi demo.
+
+### Tài khoản demo
+
+| Vai trò | Email | Mật khẩu | Cổng đăng nhập |
+|---|---|---|---|
+| Sinh viên | `student@hcmut.edu.vn` | `123456` | `/login` |
+| Đơn vị vận hành | `operator@ehub.vn` | `123456` | `/operator/login` |
+| Không đủ quyền (để demo lỗi) | `guest@gmail.com` | `123456` | Cả 2 cổng đều báo `ACCESS_DENIED` |
+
+_TODO: bổ sung phiên bản Python khuyến nghị và kịch bản demo chi tiết trước khi nộp._
 
 ---
 
@@ -69,7 +80,7 @@ smart-emobility-hub/
 │
 ├── services/              LOGIC NGHIỆP VỤ – tên hàm giống Method description Submission 3
 ├── blueprints/            ROUTE – nối đường dẫn web với service và template
-│   ├── auth/              /login, /logout
+│   ├── auth/              /login (Sinh viên), /operator/login (Vận hành), /logout, /denied
 │   ├── student/           /student/...   (màn hình mobile)
 │   ├── operator/          /operator/...  (web dashboard)
 │   └── api/               /api/...       (trả JSON cho realtime và nút bấm)
@@ -77,7 +88,9 @@ smart-emobility-hub/
 ├── templates/             GIAO DIỆN (HTML)
 │   ├── base_mobile.html       Khung chung cho màn hình Sinh viên
 │   ├── base_dashboard.html    Khung chung cho dashboard Vận hành
-│   ├── auth/  student/  operator/
+│   ├── auth/                  login.html (Mobile SSO), operator_login.html (Desktop), denied.html
+│   ├── student/               Màn hình mobile Sinh viên (UC1–UC7)
+│   └── operator/              Màn hình dashboard Vận hành (UC8–UC14)
 │
 ├── static/
 │   ├── css/tokens.css     Bảng màu sáng/tối – mọi màu lấy từ đây

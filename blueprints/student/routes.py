@@ -68,12 +68,6 @@ def ride():
 
 
 # ---------- UC6 - Return (Hình 8) ----------
-@bp.route("/return")
-@loginRequired("STUDENT")
-def returnPage():
-    return render_template("student/return.html")
-
-
 @bp.route("/return", methods=["GET", "POST"])
 @loginRequired("STUDENT")
 def returnPage():
@@ -165,3 +159,12 @@ def chargingSuggest():
         suggestedHub=suggestedHub,
         error=error
     )
+
+
+@bp.route("/<page>")
+def page(page):
+    if page not in PAGES:
+        abort(404)
+    template, needLogin = PAGES[page]
+    view = lambda: render_template(template)
+    return loginRequired("STUDENT")(view)() if needLogin else view()

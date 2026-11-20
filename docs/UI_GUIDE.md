@@ -27,3 +27,4 @@ Mockup đang dùng lẫn `E-HUB`, `E-Mobility`, `E-Hub`. **Chốt một tên**, 
 - Hình 20–21 dùng sidebar khác → code dùng chung `base_dashboard.html`.
 - Hình 5–12 chỉ có bản sáng → bản tối sinh từ `tokens.css`.
 - Form đăng nhập email/mật khẩu = trang SSO giả lập; bỏ nút Sign up.
+- Tách 2 cổng đăng nhập theo đúng thiết bị thực tế: `/login` (Mobile SSO cho Sinh viên, không bắt đăng nhập khi mới vào xem bản đồ/xe) và `/operator/login` (Desktop Portal cho Đơn vị vận hành, bắt đăng nhập ngay khi mở `/operator/...`).

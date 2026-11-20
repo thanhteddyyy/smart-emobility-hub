@@ -24,6 +24,8 @@ def initVirtualEnvironment():
 
 def validateParameters(params):
     """Kiểm tra tham số mô phỏng: studentDemandPercent, availableEvDelta, weather."""
+    if not isinstance(params, dict) or not params:
+        raise ServiceError(INVALID_PARAMETERS, "Thiếu tham số mô phỏng.")
     try:
         demandPct = int(params.get("studentDemandPercent", 20))
         evDelta = int(params.get("availableEvDelta", -15))
@@ -147,7 +149,7 @@ def applyRecommendation(reportId=None):
     """Trả dữ liệu gợi ý để điền sẵn cho màn hình Điều phối phương tiện (UC11)."""
     report = _REPORTS.get(reportId) if reportId else None
     if not report:
-        report = runSimulation({})
+        report = runSimulation({"studentDemandPercent": 20, "availableEvDelta": -15, "weather": "HEAVY_RAIN"})
     return {
         "sourceHubId": report["sourceHubId"],
         "destHubId": report["destHubId"],

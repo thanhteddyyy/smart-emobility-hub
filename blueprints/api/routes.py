@@ -58,10 +58,10 @@ def bookParking():
     if not user:
         return jsonify({"ok": False, "error": "LOGIN_REQUIRED", "message": "Cần đăng nhập."}), 401
     
-    data = request.get_json(silent=True)
+    data = request.get_json(silent=True) or {}
     hubId = data.get("hubId")
     timeSlot = data.get("timeSlot")
-    if not (hubId or timeSlot):
+    if not (hubId and timeSlot):
         return jsonify({"ok": False, "error": "MISSING_FIELDS", "message": "Thiếu thông tin đặt chỗ."}), 400
     try: 
         booking = booking_service.bookParking(user["id"], hubId, timeSlot)
@@ -105,7 +105,7 @@ def returnVehicle(bookingId):
     user = session.get("user")
     if not user:
         return jsonify({"ok": False, "error": "LOGIN_REQUIRED", "message": "Cần đăng nhập."}), 401
-    data = request.get_json(silent=True)
+    data = request.get_json(silent=True) or {}
     hubId = data.get("hubId")
     if not hubId:
         return jsonify({"ok": False, "error": "MISSING_HUB_ID", "message": "Thiếu thông tin Hub."}), 400
@@ -126,18 +126,18 @@ def registerCharging():
     user = session.get("user")
     if not user:
         return jsonify({"ok": False, "error": "LOGIN_REQUIRED", "message": "Cần đăng nhập."}), 401
-    data = request.get_json(silent=True)
+    data = request.get_json(silent=True) or {}
     hubId = data.get("hubId")
     portId = data.get("portId")
     timeSlot = data.get("timeSlot")
     batteryLevel = data.get("batteryLevel")
-    if not (hubId and portId and timeSlot and batteryLevel):
+    if not (hubId and portId and timeSlot and batteryLevel is not None):
         return jsonify({"ok": False, "error": "MISSING_FIELDS", "message": "Thiếu thông tin đặt sạc."}), 400
     try:
         registration = charging_service.registerCharging(user["id"], hubId, portId, timeSlot, batteryLevel)
         return jsonify({"ok": True, "registration": registration})
     except ServiceError as e:
-        status_code = 409 if e.code == "PORT_UNAVAILABLE" else 400
+        status_code = 409 if e.code == "NO_PORT_AVAILABLE" else 400
         return jsonify(e.toDict()), status_code
 
 
@@ -236,17 +236,31 @@ def isolateDisconnectedHub(hubId):
         status_code = 404 if e.code == "HUB_NOT_FOUND" else 400
         return jsonify(e.toDict()), status_code 
 
-#---------- UC13: Điều phối phương tiện" ----------
+#---------- UC13: Lịch sạc thông minh ----------
 @bp.route("/hubs/<hubId>/charging-schedules/generate", methods=["POST"])
+@bp.route("/hubs/<hubId>/charging-schedule/generate", methods=["POST"])
 def generateSchedule(hubId):
     try:
         result = schedule_service.generateSchedule(hubId)
         return jsonify({"ok": True, "data": result})
     except ServiceError as e:
-        status_code = 404 if e.code == "HUB_NOT_FOUND" else 400
-        return jsonify(e.toDict()), status_code 
+        status_code = 404 if e.code in ("HUB_NOT_FOUND", "RESOURCE_NOT_FOUND") else 400
+        return jsonify(e.toDict()), status_code
+
+
+@bp.route("/charging-schedules/validate", methods=["POST"])
+@bp.route("/charging-schedule/validate", methods=["POST"])
+def validateSchedule():
+    data = request.get_json(silent=True) or {}
+    schedule = data.get("schedule") or []
+    isValid = schedule_service.validateSchedule(schedule)
+    if not isValid:
+        return jsonify({"ok": False, "error": "INVALID_SCHEDULE", "message": "Lịch sạc bị trùng cổng/khung giờ hoặc cổng lỗi."}), 400
+    return jsonify({"ok": True, "message": "Lịch sạc hợp lệ."})
+
 
 @bp.route("/charging-schedules/change", methods=["PATCH"])
+@bp.route("/charging-schedule/edit", methods=["PATCH"])
 def editSchedule():
     data = request.get_json(silent=True) or {}
     schedule = data.get("schedule")
@@ -254,12 +268,14 @@ def editSchedule():
     if not changes:
         return jsonify({"ok": False, "error": "CHANGE_NOT_FOUND", "message": "Thiếu thông tin thay đổi."}), 400
     try:
-        schedule_service.editSchedule(schedule, changes)
-        return jsonify({"ok": True, "message": "Đã thay đổi lịch sạc."})
+        edited = schedule_service.editSchedule(schedule, changes)
+        return jsonify({"ok": True, "data": edited, "message": "Đã thay đổi lịch sạc."})
     except ServiceError as e:
         return jsonify(e.toDict()), 400
 
+
 @bp.route("/charging-schedules/approve", methods=["POST"])
+@bp.route("/charging-schedule/approve", methods=["POST"])
 def approveSchedule():
     user = session.get("user")
     if not user:
@@ -269,8 +285,8 @@ def approveSchedule():
     data = request.get_json(silent=True) or {}
     schedule = data.get("schedule")
     try:
-        schedule_service.approveSchedule(user["id"],schedule)
-        return jsonify({"ok": True, "message": "Lịch sạc đã được xác nhận."})
+        approved = schedule_service.approveSchedule(user["id"], schedule)
+        return jsonify({"ok": True, "data": approved, "message": "Lịch sạc đã được xác nhận."})
     except ServiceError as e:
         return jsonify(e.toDict()), 400
 

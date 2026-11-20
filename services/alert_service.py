@@ -32,9 +32,12 @@ def getHubResources(hubId):
         raise ServiceError(RESOURCE_NOT_FOUND, "Không tìm thấy Hub.")
 
     hubStatus = status_service.buildHubStatus(hub)
+    hubStatus["id"] = hub["id"]
+    vehicles = db.vehiclesOfHub(hubId)
+    chargingPorts = db.portsOfHub(hubId)
     resources = []
 
-    for v in db.vehiclesOfHub(hubId):
+    for v in vehicles:
         resources.append({
             "id": v["id"],
             "category": "VEHICLE",
@@ -46,7 +49,7 @@ def getHubResources(hubId):
             "lastUpdatedAt": v.get("lastUpdatedAt", hub["lastUpdatedAt"]),
         })
 
-    for p in db.portsOfHub(hubId):
+    for p in chargingPorts:
         resources.append({
             "id": p["id"],
             "category": "CHARGING_PORT",
@@ -72,37 +75,78 @@ def getHubResources(hubId):
 
     return {
         "hub": hubStatus,
+        "vehicles": vehicles,
+        "chargingPorts": chargingPorts,
         "resources": resources,
         "allHubs": list(db.HUBS),
     }
 
 
-def evaluateHubLoad():
-    """Kết hợp dữ liệu từ db.ALERTS và mức sử dụng thực tế của các Hub."""
-    liveHubUsage = {
-        h["id"]: monitor_service.computeHubUsage(h)
-        for h in db.HUBS
-    }
-    alerts = []
-    for alert in db.ALERTS:
-        item = dict(alert)
-        hubUsage = liveHubUsage.get(item["hubId"])
-        if hubUsage:
-            item["hubName"] = hubUsage["name"]
-            if item.get("utilizationType") == "Parking spots":
-                item["utilization"] = hubUsage["usagePercent"]
-                if hubUsage["usageRate"] >= config.OVERLOAD_CRITICAL_RATE:
-                    item["dangerLevel"] = "HIGH"
-        alerts.append(item)
+def evaluateHubLoad(includeSeeded=False):
+    """Đánh giá tải của từng Hub theo ngưỡng WARNING/CRITICAL.
+    includeSeeded=True kết hợp thêm dữ liệu cảnh báo mẫu từ db.ALERTS cho màn hình Dashboard."""
+    if includeSeeded:
+        liveHubUsage = {
+            h["id"]: monitor_service.computeHubUsage(h)
+            for h in db.HUBS
+        }
+        alerts = []
+        for alert in db.ALERTS:
+            item = dict(alert)
+            hubUsage = liveHubUsage.get(item["hubId"])
+            if hubUsage:
+                item["hubName"] = hubUsage["name"]
+                if item.get("utilizationType") == "Parking spots":
+                    item["utilization"] = hubUsage["usagePercent"]
+                    if hubUsage["usageRate"] >= config.OVERLOAD_CRITICAL_RATE:
+                        item["dangerLevel"] = "HIGH"
+            item["severity"] = "CRITICAL" if item.get("dangerLevel") == "HIGH" else "WARNING"
+            alerts.append(item)
 
-    statusOrder = {"ACTIVE": 0, "RESOLVED": 1}
-    dangerOrder = {"HIGH": 0, "MEDIUM": 1}
-    alerts.sort(key=lambda a: (
-        statusOrder.get(a.get("status", "ACTIVE"), 9),
-        dangerOrder.get(a.get("dangerLevel", "MEDIUM"), 9),
-        a.get("id", ""),
-    ))
-    return alerts
+        statusOrder = {"ACTIVE": 0, "RESOLVED": 1}
+        dangerOrder = {"HIGH": 0, "MEDIUM": 1}
+        alerts.sort(key=lambda a: (
+            statusOrder.get(a.get("status", "ACTIVE"), 9),
+            dangerOrder.get(a.get("dangerLevel", "MEDIUM"), 9),
+            a.get("id", ""),
+        ))
+        return alerts
+
+    dynamicAlerts = []
+    for hub in db.HUBS:
+        capacity = hub.get("parkingCapacity") or 0
+        if capacity <= 0:
+            continue
+        activeVehiclesAtHub = [
+            v for v in db.VEHICLES
+            if v["hubId"] == hub["id"] and v["status"] in ("AVAILABLE", "CHARGING")
+        ]
+        loadRate = len(activeVehiclesAtHub) / capacity
+        if loadRate >= config.OVERLOAD_CRITICAL_RATE:
+            severity = "CRITICAL"
+            dangerLevel = "HIGH"
+        elif loadRate >= config.OVERLOAD_WARNING_RATE:
+            severity = "WARNING"
+            dangerLevel = "MEDIUM"
+        else:
+            continue
+
+        dynamicAlerts.append({
+            "id": f"LOAD-{hub['id']}",
+            "hubId": hub["id"],
+            "hubName": hub["name"],
+            "utilizationType": "Parking spots",
+            "utilization": int(round(loadRate * 100)),
+            "threshold": int(round(config.OVERLOAD_WARNING_RATE * 100)),
+            "severity": severity,
+            "dangerLevel": dangerLevel,
+            "location": hub.get("area", ""),
+            "expectedCause": "High vehicle density",
+            "status": "ACTIVE",
+            "createdAt": hub.get("lastUpdatedAt", ""),
+        })
+
+    return dynamicAlerts
 
 
 def resolveAlert(operatorId, alertId):

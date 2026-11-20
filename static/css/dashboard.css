@@ -641,3 +641,247 @@
     margin-top: 0;
   }
 }
+
+/* ---------- Operator Portal Desktop Login (/operator/login) ---------- */
+.op-auth-body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+.op-auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.op-auth-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.op-auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--color-text-strong);
+  text-decoration: none;
+}
+
+.op-auth-brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
+
+.op-auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.op-auth-shell {
+  width: 100%;
+  max-width: 960px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px var(--color-shadow);
+}
+
+.op-auth-hero {
+  background: var(--color-primary-soft);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  border-right: 1px solid var(--color-border);
+}
+
+.op-auth-pill {
+  align-self: flex-start;
+}
+
+.op-auth-hero-title {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-text-strong);
+  margin: 0;
+}
+
+.op-auth-hero-desc {
+  color: var(--color-subtle);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.op-auth-features {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.op-auth-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.op-auth-features i {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.op-auth-card {
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.op-auth-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  margin: 0 0 6px;
+}
+
+.op-auth-subtitle {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.op-auth-alert {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.op-auth-inline-link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.op-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.op-auth-field .form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.op-auth-field .form-control {
+  height: 44px;
+  border-radius: 10px;
+}
+
+.op-auth-submit {
+  height: 44px;
+  margin-top: 4px;
+  border-radius: 10px;
+}
+
+.op-auth-demo {
+  background: var(--color-secondary-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.82rem;
+}
+
+.op-auth-demo-label {
+  color: var(--color-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.op-auth-demo-creds {
+  color: var(--color-text);
+}
+
+.op-auth-demo-creds code {
+  color: var(--color-primary-strong);
+  font-weight: 600;
+}
+
+.op-auth-footer {
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+  text-align: center;
+}
+
+.op-auth-switch-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.op-auth-switch-link:hover {
+  color: var(--color-primary-strong);
+  text-decoration: underline;
+}
+
+@media (max-width: 860px) {
+  .op-auth-shell {
+    grid-template-columns: 1fr;
+    max-width: 460px;
+  }
+  .op-auth-hero {
+    display: none;
+  }
+  .op-auth-topbar {
+    padding: 16px 20px;
+  }
+  .op-auth-card {
+    padding: 28px 24px;
+  }
+}

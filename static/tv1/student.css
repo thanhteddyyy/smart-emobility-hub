@@ -30,3 +30,6 @@
 #feedback h3{font-size:18px;margin:8px 0}
 .state-icon{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--tv-bg);font-size:20px}
 #booking:has([data-state="HOLD_EXPIRED"]:not([hidden])){inset:0;margin:auto;height:fit-content;text-align:center}
+.portal-switch{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;padding-top:14px;border-top:1px solid var(--tv-line);font-size:12px}
+.portal-switch a{color:var(--tv-green);text-decoration:none;font-weight:600}
+.portal-switch a:hover{text-decoration:underline}

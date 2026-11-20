@@ -193,5 +193,16 @@
   "tv.SSO_UNAVAILABLE": "Authentication service is currently unavailable. Please try again later.",
   "tv.INVALID_CREDENTIALS": "Incorrect email or password.",
   "tv.ACCESS_DENIED": "This account does not have access.",
-  "denied.body": "Your account is not allowed to open this page."
+  "opLogin.badge": "Operator Portal",
+  "opLogin.heroTitle": "EV Network Operations Center",
+  "opLogin.heroDesc": "Sign in with an Operator account to monitor real-time Hub status, dispatch vehicles, and handle network incidents.",
+  "opLogin.title": "Operator Sign In",
+  "opLogin.subtitle": "Restricted area — authorized operations staff only.",
+  "opLogin.submit": "Sign in to Dashboard",
+  "opLogin.demoHint": "Demo operator account",
+  "opLogin.accessDenied": "This portal is restricted to Operator accounts only.",
+  "auth.goOperatorPortal": "Operator Portal →",
+  "auth.goStudentPortal": "Back to Student Portal (browse map & book)",
+  "auth.backToMap": "← Continue browsing map",
+  "auth.switchToOperator": "Sign in to Operator Portal"
 }

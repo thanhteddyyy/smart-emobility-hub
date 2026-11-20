@@ -50,12 +50,21 @@ def getDispatchHubData(sourceHubId=None, destHubId=None):
         ],
     }
 
+    availableSourceVehicles = [v for v in vehicles if v["status"] == "AVAILABLE"]
+    destFreeSpots = (
+        [s for s in db.spotsOfHub(selectedDestHubId) if s["status"] == "FREE"]
+        if selectedDestHubId
+        else [s for s in db.PARKING_SPOTS if s["status"] == "FREE"]
+    )
+
     return {
         "stats": stats,
         "hubs": hubStatuses,
         "selectedSourceHubId": selectedSourceHubId,
         "selectedDestHubId": selectedDestHubId,
         "vehicles": vehicles,
+        "Available vehicles": availableSourceVehicles,
+        "Available parking spots": destFreeSpots,
         "mapView": mapView,
         "orders": list(reversed(db.DISPATCH_ORDERS)),
     }
@@ -111,7 +120,7 @@ def processDispatch(operatorId, sourceHubId, destHubId, vehicleIds):
 
     audit_service.record(
         operatorId,
-        "DISPATCH_VEHICLES",
+        "CREATE_DISPATCH_ORDER",
         destHubId,
         f"Điều phối {', '.join(vehicleIds)} -> {destHubId}",
     )
@@ -128,5 +137,5 @@ def cancelDispatchOrder(operatorId, orderId):
 
     with db.DATA_LOCK:
         order["status"] = "CANCELLED"
-    audit_service.record(operatorId, "CANCEL_DISPATCH", orderId, "Hủy lệnh điều phối")
+    audit_service.record(operatorId, "CANCEL_DISPATCH_ORDER", orderId, "Hủy lệnh điều phối")
     return order

@@ -8,6 +8,11 @@
   <aside class="auth-error" role="alert"><span data-i18n="tv.{{error.code}}">{{error.message}}</span></aside>
 {% endif %}
 <section class="signin"><span class="bike-icon">🚲</span><h1 data-i18n="login.welcome">Chào mừng trở lại</h1><p data-i18n="login.subtitle"></p>
-<form method="post"><label for="email" data-i18n="login.email">Email</label><input id="email" type="email" name="email" autocomplete="username" required value="{{request.form.get('email','')}}" placeholder="name@hcmut.edu.vn"><label for="password" data-i18n="login.password">Mật khẩu</label><input id="password" name="password" type="password" autocomplete="current-password" required><button class="primary" data-i18n="action.login">Đăng nhập</button></form></section>
+<form method="post"><label for="email" data-i18n="login.email">Email</label><input id="email" type="email" name="email" autocomplete="username" required value="{{request.form.get('email','')}}" placeholder="name@hcmut.edu.vn"><label for="password" data-i18n="login.password">Mật khẩu</label><input id="password" name="password" type="password" autocomplete="current-password" required><button class="primary" data-i18n="action.login">Đăng nhập</button></form>
+<div class="portal-switch">
+  <a href="{{ url_for('student.search') }}" data-i18n="auth.backToMap">← Tiếp tục xem bản đồ</a>
+  <a href="{{ url_for('auth.operatorLogin') }}" data-i18n="auth.goOperatorPortal">Cổng Đơn vị vận hành →</a>
+</div>
+</section>
 <footer data-i18n="brand.tagline"></footer>
 {% endblock %}

@@ -4,10 +4,10 @@ Trước khi quay: khởi động lại server để dữ liệu về trạng th
 
 | # | Nội dung | Tài khoản | Use case | Thời lượng |
 |---|---|---|---|---|
-| 1 | Tìm Hub trên bản đồ, xem chi tiết | chưa đăng nhập | UC1, UC2 | |
-| 2 | Đăng nhập, đặt xe, nhận xe, trả xe | Sinh viên | UC17, UC3, UC5, UC6 | |
+| 1 | Tìm Hub trên bản đồ, xem chi tiết (`/student/search`) | chưa đăng nhập | UC1, UC2 | |
+| 2 | Bấm đặt xe → đăng nhập tại `/login`, đặt xe, nhận xe, trả xe | Sinh viên | UC17, UC3, UC5, UC6 | |
 | 3 | Đặt chỗ đỗ, đăng ký sạc | Sinh viên | UC4, UC7 | |
-| 4 | Dashboard, tài nguyên, cảnh báo quá tải | Vận hành | UC8, UC9, UC10 | |
+| 4 | Mở `/operator/login` (giao diện Desktop) → đăng nhập, xem Dashboard, tài nguyên, cảnh báo quá tải | Vận hành | UC17, UC8, UC9, UC10 | |
 | 5 | Điều phối xe, xử lý sự cố | Vận hành | UC11, UC12 | |
 | 6 | Lịch sạc, What-if → áp dụng sang điều phối | Vận hành | UC13, UC14 | |
 | 7 | Đổi Sáng/Tối, VN/EN khi đang nhập form | bất kỳ | UC15 | |

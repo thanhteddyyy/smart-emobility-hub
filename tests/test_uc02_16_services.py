@@ -276,11 +276,10 @@ def test_uc08_overview_summarizes_seeded_network():
     assert len(overview["hubs"]) == len(db.HUBS)
 
 
-@pytest.mark.xfail(strict=True, reason="UC8 overview filtering is still a pass-through TODO")
 def test_uc08_overview_filter_limits_hubs_by_area():
     overview = monitor_service.getNetworkOverview({"area": "Metro"})
 
-    assert [hub["id"] for hub in overview["hubs"]] == ["H1"]
+    assert [hub["hubId"] for hub in overview["hubs"]] == ["H1"]
 
 
 def test_uc09_get_hub_resources_returns_vehicles_and_ports():
@@ -295,7 +294,7 @@ def test_uc09_missing_hub_raises_service_error():
     with pytest.raises(ServiceError) as error:
         alert_service.getHubResources("missing")
 
-    assert error.value.code == "HUB_NOT_FOUND"
+    assert error.value.code == RESOURCE_NOT_FOUND
 
 
 def test_uc10_critical_hub_load_creates_critical_alert():
@@ -314,11 +313,6 @@ def test_uc10_critical_hub_load_creates_critical_alert():
     assert alerts[0]["severity"] == "CRITICAL"
 
 
-@pytest.mark.xfail(
-    raises=UnboundLocalError,
-    strict=True,
-    reason="UC10 currently fails to handle hubs below the warning threshold",
-)
 def test_uc10_hubs_below_warning_threshold_produce_no_alerts():
     alerts = alert_service.evaluateHubLoad()
 
@@ -458,11 +452,6 @@ def test_uc14_virtual_environment_is_an_isolated_snapshot():
     assert db.VEHICLES[0]["status"] == initial_status
 
 
-@pytest.mark.xfail(
-    raises=NotImplementedError,
-    strict=True,
-    reason="UC14 parameter validation is still TODO",
-)
 def test_uc14_invalid_simulation_parameters_raise_service_error():
     with pytest.raises(ServiceError) as error:
         simulation_service.validateParameters({})

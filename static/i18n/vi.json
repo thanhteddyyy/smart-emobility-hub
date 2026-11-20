@@ -193,5 +193,16 @@
   "tv.SSO_UNAVAILABLE": "Dịch vụ xác thực hiện không khả dụng. Vui lòng thử lại sau.",
   "tv.INVALID_CREDENTIALS": "Sai email hoặc mật khẩu.",
   "tv.ACCESS_DENIED": "Tài khoản chưa được cấp quyền truy cập.",
-  "denied.body": "Tài khoản của bạn không được phép mở trang này."
+  "opLogin.badge": "Cổng quản trị vận hành",
+  "opLogin.heroTitle": "Trung tâm điều hành mạng lưới xe điện",
+  "opLogin.heroDesc": "Đăng nhập bằng tài khoản Đơn vị vận hành để theo dõi trạng thái Hub theo thời gian thực, điều phối phương tiện và xử lý sự cố.",
+  "opLogin.title": "Đăng nhập vận hành",
+  "opLogin.subtitle": "Khu vực giới hạn — chỉ dành cho nhân viên vận hành được cấp quyền.",
+  "opLogin.submit": "Đăng nhập vào Dashboard",
+  "opLogin.demoHint": "Tài khoản vận hành demo",
+  "opLogin.accessDenied": "Cổng quản trị chỉ dành cho tài khoản Đơn vị vận hành.",
+  "auth.goOperatorPortal": "Cổng Đơn vị vận hành →",
+  "auth.goStudentPortal": "Quay lại Cổng Sinh viên (xem bản đồ & đặt xe)",
+  "auth.backToMap": "← Tiếp tục xem bản đồ",
+  "auth.switchToOperator": "Đăng nhập Cổng Vận hành"
 }

@@ -29,7 +29,8 @@ def loginRequired(role=None):
         def wrapper(*args, **kwargs):
             user = session.get("user")
             if not user:
-                return redirect(url_for("auth.login", next=request.path))
+                loginEndpoint = "auth.operatorLogin" if role == "OPERATOR" else "auth.login"
+                return redirect(url_for(loginEndpoint, next=request.path))
             if role and user["role"] != role:
                 return redirect(url_for("auth.denied"))
             return view(*args, **kwargs)

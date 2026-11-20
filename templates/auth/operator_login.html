@@ -1,0 +1,128 @@
+{# UC17 – Cổng đăng nhập Desktop riêng cho Đơn vị vận hành (Operator Portal).
+   Dùng chung hệ màu tokens.css và font dashboard.css, hỗ trợ Sáng/Tối & VN/EN. #}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  {% include "_head.html" %}
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+  <title>{{ BRAND_NAME }} — Operator Portal</title>
+</head>
+<body class="op-auth-body">
+<div class="op-auth-page">
+  <header class="op-auth-topbar">
+    <a class="op-auth-brand" href="{{ url_for('auth.operatorLogin') }}">
+      <span class="op-auth-brand-icon" aria-hidden="true"><i class="bi bi-ev-front-fill"></i></span>
+      <span>{{ BRAND_NAME }}</span>
+    </a>
+    {% include "_switches.html" %}
+  </header>
+
+  <main class="op-auth-main">
+    <section class="op-auth-shell" aria-labelledby="opLoginHeading">
+      <aside class="op-auth-hero">
+        <span class="chip-x chip-solid-primary op-auth-pill" data-i18n="opLogin.badge">Cổng quản trị vận hành</span>
+        <h2 class="op-auth-hero-title" data-i18n="opLogin.heroTitle">Trung tâm điều hành mạng lưới xe điện</h2>
+        <p class="op-auth-hero-desc" data-i18n="opLogin.heroDesc">
+          Đăng nhập bằng tài khoản Đơn vị vận hành để theo dõi trạng thái Hub theo thời gian thực, điều phối phương tiện và xử lý sự cố.
+        </p>
+        <ul class="op-auth-features">
+          <li>
+            <i class="bi bi-grid-1x2"></i>
+            <span data-i18n="dash.overview">Tổng quan mạng lưới</span>
+          </li>
+          <li>
+            <i class="bi bi-truck"></i>
+            <span data-i18n="dash.dispatch">Điều phối phương tiện</span>
+          </li>
+          <li>
+            <i class="bi bi-exclamation-triangle"></i>
+            <span data-i18n="dash.incidents">Xử lý sự cố</span>
+          </li>
+          <li>
+            <i class="bi bi-graph-up"></i>
+            <span data-i18n="dash.simulation">Mô phỏng What-if</span>
+          </li>
+        </ul>
+      </aside>
+
+      <div class="op-auth-card">
+        <div class="op-auth-card-head">
+          <h1 id="opLoginHeading" class="op-auth-title" data-i18n="opLogin.title">Đăng nhập vận hành</h1>
+          <p class="op-auth-subtitle" data-i18n="opLogin.subtitle">Khu vực giới hạn — chỉ dành cho nhân viên vận hành được cấp quyền.</p>
+        </div>
+
+        {% if (error and error.code == 'SSO_UNAVAILABLE') or (request.method == 'GET' and request.args.get('ui') == 'H14') %}
+          <div class="alert-x danger op-auth-alert" role="alert">
+            <div class="d-flex align-items-start gap-2">
+              <i class="bi bi-exclamation-octagon-fill mt-1"></i>
+              <div>
+                <div data-i18n="tv.SSO_UNAVAILABLE">Dịch vụ xác thực hiện không khả dụng. Vui lòng thử lại sau.</div>
+                <a class="op-auth-inline-link" href="{{ url_for('auth.operatorLogin') }}" data-i18n="tv.retry">Thử lại</a>
+              </div>
+            </div>
+          </div>
+        {% elif error %}
+          <div class="alert-x danger op-auth-alert" role="alert">
+            <div class="d-flex align-items-start gap-2">
+              <i class="bi bi-shield-exclamation mt-1"></i>
+              <span data-i18n="{{ 'opLogin.accessDenied' if error.code == 'ACCESS_DENIED' else 'tv.' ~ error.code }}">{{ error.message }}</span>
+            </div>
+          </div>
+        {% endif %}
+
+        <form method="post" class="op-auth-form">
+          <div class="op-auth-field">
+            <label for="opEmail" class="form-label" data-i18n="login.email">Email</label>
+            <input
+              id="opEmail"
+              type="email"
+              name="email"
+              class="form-control"
+              autocomplete="username"
+              required
+              value="{{ request.form.get('email', '') }}"
+              placeholder="operator@ehub.vn"
+            >
+          </div>
+
+          <div class="op-auth-field">
+            <label for="opPassword" class="form-label" data-i18n="login.password">Mật khẩu</label>
+            <input
+              id="opPassword"
+              type="password"
+              name="password"
+              class="form-control"
+              autocomplete="current-password"
+              required
+              placeholder="••••••"
+            >
+          </div>
+
+          <button type="submit" class="btn-primary-x w-100 op-auth-submit">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span data-i18n="opLogin.submit">Đăng nhập vào Dashboard</span>
+          </button>
+        </form>
+
+        <div class="op-auth-demo">
+          <div class="op-auth-demo-label" data-i18n="opLogin.demoHint">Tài khoản vận hành demo</div>
+          <div class="op-auth-demo-creds">
+            <code>operator@ehub.vn</code> · <code>123456</code>
+          </div>
+        </div>
+
+        <div class="op-auth-footer">
+          <a class="op-auth-switch-link" href="{{ url_for('student.search') }}">
+            <i class="bi bi-arrow-left"></i>
+            <span data-i18n="auth.goStudentPortal">Quay lại Cổng Sinh viên (xem bản đồ & đặt xe)</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+{% include "_scripts.html" %}
+</body>
+</html>
+

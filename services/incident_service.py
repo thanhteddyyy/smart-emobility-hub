@@ -88,7 +88,7 @@ def handlePauseResource(operatorId, incidentId, reason, fixingMethod):
             ):
                 booking["status"] = "CANCELLED"
 
-    audit_service.record(operatorId, "PAUSE_RESOURCE", incidentId, f"Tạm ngưng {resType}:{resId}")
+    audit_service.record(operatorId, "HANDLE_INCIDENT", incidentId, f"Tạm ngưng {resType}:{resId}")
     return _enrichIncident(inc)
 
 
@@ -134,9 +134,10 @@ def completeIncident(operatorId, incidentId, resourceStatus="AVAILABLE", updateD
                     hub["status"] = "OFFLINE"
             inc["status"] = "IN_PROGRESS"
 
+    actionName = "RESOLVE_INCIDENT" if normalizedStatus == "AVAILABLE" else "UPDATE_INCIDENT"
     audit_service.record(
         operatorId,
-        "UPDATE_INCIDENT",
+        actionName,
         incidentId,
         f"Trạng thái tài nguyên -> {normalizedStatus}",
     )
@@ -144,11 +145,14 @@ def completeIncident(operatorId, incidentId, resourceStatus="AVAILABLE", updateD
 
 
 def isolateDisconnectedHub(hubId):
-    """Hub mất kết nối: status -> OFFLINE, không nhận đặt chỗ mới (NFR05)."""
+    """Hub mất kết nối: status -> OFFLINE, hủy các đặt chỗ HOLDING liên quan (NFR05)."""
     hub = db.getHub(hubId)
     if not hub:
         raise ServiceError(INCIDENT_NOT_FOUND, "Không tìm thấy Hub.")
     with db.DATA_LOCK:
         hub["status"] = "OFFLINE"
+        for booking in db.BOOKINGS:
+            if booking.get("hubId") == hubId and booking.get("status") == "HOLDING":
+                booking["status"] = "CANCELLED"
     audit_service.record("SYSTEM", "ISOLATE_HUB", hubId, "Cô lập Hub mất kết nối")
     return hub
