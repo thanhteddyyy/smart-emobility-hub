@@ -13,6 +13,7 @@ from services.errors import (
     BOOKING_NOT_FOUND,
     HOLD_EXPIRED,
     HUB_FULL,
+    INVALID_PARAMETERS,
     RESOURCE_NOT_FOUND,
     VEHICLE_CONFLICT,
     ServiceError,
@@ -73,6 +74,21 @@ def bookVehicle(userId, vehicleId):
 
 def bookParking(userId, hubId, timeSlot):
     """UC4: Hub hết chỗ FREE -> ServiceError(HUB_FULL) (Hình 4)."""
+    if not timeSlot:
+        raise ServiceError(INVALID_PARAMETERS, "Thiếu thời gian đặt chỗ.")
+    try:
+        slotText = str(timeSlot).strip()
+        if len(slotText) == 5 and slotText[2] == ":":
+            datetime.strptime(slotText, "%H:%M")
+            slotTime = None
+        else:
+            slotTime = datetime.fromisoformat(slotText.replace("Z", "+00:00"))
+        if slotTime is not None and slotTime.tzinfo:
+            slotTime = slotTime.replace(tzinfo=None)
+        if slotTime is not None and slotTime < datetime.now():
+            raise ServiceError(INVALID_PARAMETERS, "Không thể đặt chỗ trong quá khứ.")
+    except ValueError:
+        raise ServiceError(INVALID_PARAMETERS, "Thời gian đặt chỗ không hợp lệ.")
     with db.DATA_LOCK:
         hub = db.getHub(hubId)
         if not hub or hub["status"] != "ACTIVE":

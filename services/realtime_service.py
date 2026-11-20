@@ -13,7 +13,19 @@ from data import mock_data as db
 from services.errors import ServiceError, INVALID_PARAMETERS
 from copy import deepcopy
 
-PACKET_LOG = []          # log các gói bị loại, hiển thị trên dashboard khi demo
+PACKET_LOG = [
+    {
+        "packet": {
+            "resourceType": "VEHICLE",
+            "resourceId": "EB-201",
+            "timestamp": "2026-11-17T07:55:00",
+            "status": "AVAILABLE",
+        },
+        "reason": "OUTDATED_PACKET",
+        "receivedAt": "2026-11-20T20:16:00",
+        "demo": True,
+    }
+]          # log các gói bị loại, hiển thị trên dashboard khi demo
 _simulatorStarted = False
 
 RESOURCE_COLLECTIONS = {

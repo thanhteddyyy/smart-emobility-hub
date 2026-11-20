@@ -3,6 +3,24 @@
 {% block heading %}<span data-i18n="dash.overview">Tổng quan mạng lưới</span>{% endblock %}
 
 {% block content %}
+<section class="panel-card mb-3" id="packetLogPanel">
+  <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+    <h2 class="panel-title m-0">Nhật ký gói dữ liệu trễ (PACKET_LOG)</h2>
+    <small class="text-muted-2">Lọc gói có timestamp cũ</small>
+  </div>
+  <div class="table-responsive">
+    <table class="table-x">
+      <thead><tr><th>Tài nguyên</th><th>Trạng thái gói</th><th>Timestamp</th><th>Lý do</th></tr></thead>
+      <tbody id="packetLogBody">
+        {% for entry in packetLog %}
+        <tr><td>{{ entry.packet.resourceType }} / {{ entry.packet.resourceId }}</td><td>{{ entry.packet.status }}</td><td>{{ entry.packet.timestamp }}</td><td>{{ entry.reason }}</td></tr>
+        {% else %}
+        <tr><td colspan="4" class="text-muted-2 small">Chưa có gói trễ. Gửi gói qua /api/telemetry để demo.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 <div class="d-flex flex-wrap align-items-center gap-3">
   <div class="stat-grid flex-grow-1">
     <div class="stat-card-x stat-card-primary">
@@ -139,6 +157,31 @@
 {% block scripts %}
 <script>
 (function () {
+  async function refreshPacketLog() {
+    const body = document.getElementById("packetLogBody");
+    if (!body) return;
+    try {
+      const res = await fetch("/api/telemetry/packet-log");
+      if (!res.ok) return;
+      const data = await res.json();
+      const entries = data.packetLog || [];
+      if (!entries.length) {
+        body.innerHTML = '<tr><td colspan="4" class="text-muted-2 small">Chưa có gói trễ. Gửi gói qua /api/telemetry để demo.</td></tr>';
+        return;
+      }
+      body.innerHTML = entries.slice().reverse().map(function (entry) {
+        const packet = entry.packet || {};
+        return "<tr><td>" + (packet.resourceType || "") + " / " + (packet.resourceId || "") +
+          "</td><td>" + (packet.status || "") + "</td><td>" + (packet.timestamp || "") +
+          "</td><td>" + (entry.reason || "") + (entry.demo ? " · demo" : "") + "</td></tr>";
+      }).join("");
+    } catch (err) {
+      console.warn("Không thể tải PACKET_LOG:", err);
+    }
+  }
+  refreshPacketLog();
+  setInterval(refreshPacketLog, 5000);
+
   const searchInput = document.getElementById("hubSearchInput");
   if (searchInput) {
     searchInput.addEventListener("input", function () {
@@ -174,6 +217,12 @@
       const statusEl = document.querySelector('[data-rt="hubs.' + hid + '.status"]');
       if (statusEl) {
         statusEl.className = "chip-x " + (hubs[hid].status === "ACTIVE" ? "chip-solid-success" : "chip-solid-danger");
+      }
+      const safetyEl = document.querySelector('[data-rt="hubs.' + hid + '.safetyWarning"]');
+      if (safetyEl) {
+        const warning = hubs[hid].safetyWarning;
+        safetyEl.textContent = warning;
+        safetyEl.className = "fw-medium " + (warning === "Overload" ? "text-danger" : warning === "Danger" ? "text-warning" : "");
       }
     });
   });

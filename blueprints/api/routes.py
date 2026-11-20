@@ -29,7 +29,8 @@ def handleNotImplemented(e):
 def state():
     overview = monitor_service.getNetworkOverview()
     hubs = {h["hubId"]: h for h in overview.pop("hubs")}
-    return jsonify({"ok": True, "network": overview, "hubs": hubs})
+    vehicles = overview.pop("vehicles")
+    return jsonify({"ok": True, "network": overview, "hubs": hubs, "vehicles": vehicles})
 
 
 # ---------- UC16: nhận gói tin IoT giả lập (demo lọc gói trễ) ----------
@@ -37,6 +38,11 @@ def state():
 def telemetry():
     result = realtime_service.receiveTelemetryPacket(request.get_json(force=True))
     return jsonify({"ok": True, "result": result})
+
+
+@bp.route("/telemetry/packet-log")
+def packetLog():
+    return jsonify({"ok": True, "packetLog": realtime_service.PACKET_LOG[-50:]})
 
 
 # ---------- UC3: ví dụ API cho nút "Confirm Booking" ----------

@@ -17,8 +17,8 @@ STALE_THRESHOLD_SECONDS = 60
 # UC1 – giới hạn tiêu chí tìm kiếm
 MIN_RADIUS_KM = 0.1
 MAX_RADIUS_KM = 10.0
-DEFAULT_RADIUS_KM = 2.0
-DEFAULT_LOCATION = {"lat": 10.8790, "lng": 106.8030}  # trung tâm khu ĐHQG (gần đúng)
+DEFAULT_RADIUS_KM = 10.0
+DEFAULT_LOCATION = {"lat": 10.8806, "lng": 106.8054}  # Bách khoa CS2
 
 # UC3 – thời gian giữ xe sau khi đặt
 HOLD_TIME_MINUTES = 15

@@ -3,7 +3,7 @@
 Mẫu chuẩn của một route: nhận yêu cầu -> gọi service -> render_template.
 Route KHÔNG chứa logic nghiệp vụ; logic nằm trong services/.
 """
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import asin, cos, radians, sin, sqrt
 
 from flask import Blueprint, abort, redirect, render_template, request, session, url_for
@@ -247,16 +247,36 @@ def charging():
     bookedPairs = {
         (r["portId"], r["timeSlot"])
         for r in db.CHARGING_REGISTRATIONS
-        if r.get("status") in ("REGISTERED", "APPROVED")
+        if r.get("status") in ("ACTIVE", "REGISTERED", "APPROVED")
     }
     availablePorts = [p for p in db.portsOfHub(hub["id"]) if p.get("status") == "AVAILABLE"]
 
     slots = []
+    now = datetime.now()
+    selectedDate = now.date()
+    futureSlots = []
     for slotIndex, timeSlot in enumerate(CHARGING_TIME_SLOTS):
+        startText = timeSlot.split(" - ", 1)[0]
+        try:
+            slotStart = datetime.strptime(f"{selectedDate.isoformat()} {startText}", "%Y-%m-%d %H:%M")
+        except ValueError:
+            slotStart = now
+        if slotStart > now:
+            futureSlots.append((timeSlot, slotStart))
+
+    if not futureSlots:
+        selectedDate = (now + timedelta(days=1)).date()
+        for timeSlot in CHARGING_TIME_SLOTS:
+            startText = timeSlot.split(" - ", 1)[0]
+            slotStart = datetime.strptime(f"{selectedDate.isoformat()} {startText}", "%Y-%m-%d %H:%M")
+            futureSlots.append((timeSlot, slotStart))
+
+    for timeSlot, slotStart in futureSlots:
+        isoTimeSlot = slotStart.isoformat(timespec="minutes")
         for port in availablePorts:
-            if (port["id"], timeSlot) not in bookedPairs:
+            if (port["id"], isoTimeSlot) not in bookedPairs:
                 slots.append({
-                    "id": f"{port['id']}|{timeSlot}",
+                    "id": f"{port['id']}|{isoTimeSlot}",
                     "portId": port["id"],
                     "time": timeSlot,
                     "selected": len(slots) == 0,
@@ -265,7 +285,7 @@ def charging():
 
     activeBooking = _findUserVehicleBooking(user["id"], "ACTIVE")
     activeVehicle = db.getVehicle(activeBooking["vehicleId"]) if activeBooking else None
-    currentDate = datetime.now().strftime("%d/%m/%Y")
+    currentDate = selectedDate.strftime("%d/%m/%Y")
 
     return render_template(
         "student/charging_slot.html",

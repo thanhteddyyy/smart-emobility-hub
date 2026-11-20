@@ -33,6 +33,8 @@ def validateParameters(params):
         raise ServiceError(INVALID_PARAMETERS, "Tham số số lượng phải là số nguyên hợp lệ.") from exc
 
     weather = (params.get("weather") or "HEAVY_RAIN").upper()
+    timeFrame = (params.get("timeFrame") or "09:00-18:00")
+    scenario = (params.get("scenario") or "STANDARD").upper()
     if not (-50 <= demandPct <= 100):
         raise ServiceError(INVALID_PARAMETERS, "Biến động nhu cầu phải trong khoảng -50% đến +100%.")
     if not (-50 <= evDelta <= 50):
@@ -44,6 +46,8 @@ def validateParameters(params):
         "studentDemandPercent": demandPct,
         "availableEvDelta": evDelta,
         "weather": weather,
+        "timeFrame": timeFrame,
+        "scenario": scenario,
     }
 
 
@@ -56,18 +60,35 @@ def calculateImpact(virtualData, params):
     baseAvailable = sum(1 for v in vehicles if v["status"] == "AVAILABLE")
     demandFactor, supplyPenalty = _WEATHER_FACTORS[params["weather"]]
 
-    hours = [
+    fullHours = [
         "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
         "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM",
     ]
     baseDemandCurve = [18, 26, 36, 46, 56, 48, 38, 30, 22]
     baseSupplyOffsets = [8, 5, 2, -2, -5, -3, 1, 4, 6]
+    frame = params.get("timeFrame", "09:00-18:00")
+    if frame == "06:00-12:00":
+        hours = ["06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM"]
+        demandCurve = [10, 16, 28, 44, 38, 24]
+        supplyOffsets = [10, 8, 4, -1, 2, 5]
+    elif frame == "12:00-18:00":
+        hours = ["12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"]
+        demandCurve = [56, 48, 38, 30, 22, 18]
+        supplyOffsets = [-5, -3, 1, 4, 6, 8]
+    else:
+        hours = fullHours
+        demandCurve = baseDemandCurve
+        supplyOffsets = baseSupplyOffsets
+
+    scenario = params.get("scenario", "STANDARD")
+    scenarioFactor = {"HUB_FULL": 1.35, "WEATHER_ALERT": 1.20, "LOW_SUPPLY": 1.15}.get(scenario, 1.0)
+    demandCurve = [int(round(val * scenarioFactor)) for val in demandCurve]
 
     demandMultiplier = (1.0 + params["studentDemandPercent"] / 100.0) * demandFactor
     effectiveSupplyBase = max(4, baseAvailable + params["availableEvDelta"] - supplyPenalty)
 
-    demandSeries = [max(0, round(val * demandMultiplier)) for val in baseDemandCurve]
-    availableSeries = [max(0, effectiveSupplyBase + off) for off in baseSupplyOffsets]
+    demandSeries = [max(0, round(val * demandMultiplier)) for val in demandCurve]
+    availableSeries = [max(0, effectiveSupplyBase + off) for off in supplyOffsets]
     gaps = [avail - dem for avail, dem in zip(availableSeries, demandSeries)]
 
     peakShortageIdx = gaps.index(min(gaps))

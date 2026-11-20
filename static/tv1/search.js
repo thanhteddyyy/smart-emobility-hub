@@ -93,6 +93,12 @@
     byId('place').textContent = hub.name;
     if (user) byId('identity').textContent = user.id;
     else label('identity','tv.guest');
+    const slot = byId('slot');
+    if (slot) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      slot.min = now.toISOString().slice(0, 16);
+    }
     choose(tab);
     if (!dialog.open) dialog.showModal();
   }

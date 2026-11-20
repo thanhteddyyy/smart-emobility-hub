@@ -18,21 +18,21 @@
 | `status_service.py` | UC2 | ResourceStatusController |
 | `booking_service.py` | UC3, UC4 | BookingController |
 | `trip_service.py` | UC5, UC6 | TripController |
-| `charging_service.py` | UC7 | _TODO: điền tên lớp_ |
+| `charging_service.py` | UC7 | ChargingController |
 | `monitor_service.py` | UC8 | NetworkMonitorController |
-| `alert_service.py` | UC9, UC10 | _TODO_ |
+| `alert_service.py` | UC9, UC10 | AlertController |
 | `dispatch_service.py` | UC11 | DispatchController |
-| `incident_service.py` | UC12 | _TODO_ |
-| `schedule_service.py` | UC13 | _TODO_ |
-| `simulation_service.py` | UC14 | _TODO_ |
-| `static/js/theme.js`, `i18n.js` | UC15 | _TODO_ |
-| `realtime_service.py` | UC16 | _TODO_ |
+| `incident_service.py` | UC12 | IncidentController |
+| `schedule_service.py` | UC13 | ChargingScheduleController |
+| `simulation_service.py` | UC14 | WhatIfSimulationController |
+| `static/js/theme.js`, `i18n.js` | UC15 | DisplayPreferenceController |
+| `realtime_service.py` | UC16 | RealtimeStateController |
 | `auth_service.py` | UC17 | AuthController |
 | `audit_service.py` | NFR11 | AuditLog |
 
 ## Khác biệt giữa MVP và thiết kế (ghi vào báo cáo)
 
-_TODO(TV4): hoàn thiện._
+Các module nghiệp vụ đều chạy trong tiến trình Flask đơn, dữ liệu trong bộ nhớ là bản sao của seed.
 - Không có database, Load Balancer; chạy 1 tiến trình Flask.
 - Realtime dùng polling 5 giây thay cho WebSocket/SSE (vẫn đạt NFR02 ≤ 15 giây).
 - SSO, Notification, IoT là giả lập.
