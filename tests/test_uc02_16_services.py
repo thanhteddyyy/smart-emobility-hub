@@ -69,7 +69,6 @@ def test_uc02_missing_hub_raises_service_error():
     assert error.value.code == RESOURCE_NOT_FOUND
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC2 vehicle status is TODO")
 def test_uc02_build_vehicle_status_contract():
     vehicle = db.getVehicle("EB-201")
 
@@ -83,14 +82,12 @@ def test_uc02_build_vehicle_status_contract():
     assert "isStale" in result
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC2 vehicle lookup is TODO")
 def test_uc02_get_vehicle_status_contract():
     result = status_service.getResourceStatus("VEHICLE", "EB-201")
 
     assert result["id"] == "EB-201"
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC3 booking is TODO")
 def test_uc03_book_vehicle_reserves_vehicle_and_creates_holding_booking():
     booking = booking_service.bookVehicle("2413148", "EB-201")
 
@@ -101,7 +98,6 @@ def test_uc03_book_vehicle_reserves_vehicle_and_creates_holding_booking():
     assert booking in db.BOOKINGS
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC3 booking is TODO")
 def test_uc03_booking_same_vehicle_twice_returns_vehicle_conflict():
     booking_service.bookVehicle("2413148", "EB-201")
 
@@ -111,7 +107,6 @@ def test_uc03_booking_same_vehicle_twice_returns_vehicle_conflict():
     assert error.value.code == "VEHICLE_CONFLICT"
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC4 parking booking is TODO")
 def test_uc04_book_parking_creates_holding_booking():
     booking = booking_service.bookParking("2413148", "H1", "18:00")
 
@@ -121,7 +116,6 @@ def test_uc04_book_parking_creates_holding_booking():
     assert booking["status"] == "HOLDING"
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC3/UC4 cancellation is TODO")
 def test_uc04_cancel_booking_releases_reserved_resource():
     booking = {
         "id": "BK-TEST",
@@ -140,7 +134,6 @@ def test_uc04_cancel_booking_releases_reserved_resource():
     assert db.getVehicle("EB-201")["status"] == "AVAILABLE"
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC3 booking validity is TODO")
 def test_uc03_expired_booking_is_not_valid():
     booking = {
         "status": "HOLDING",
@@ -153,7 +146,6 @@ def test_uc03_expired_booking_is_not_valid():
     assert error.value.code == "HOLD_EXPIRED"
 
 
-@pytest.mark.xfail(raises=NotImplementedError, strict=True, reason="UC5 pickup confirmation is TODO")
 def test_uc05_confirm_pickup_activates_booking_and_vehicle():
     db.BOOKINGS.append({
         "id": "BK-TEST",

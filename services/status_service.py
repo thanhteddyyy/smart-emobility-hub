@@ -32,17 +32,31 @@ def buildHubStatus(hub):
 
 
 def buildVehicleStatus(vehicle):
-    """TODO(UC2): trả dict trạng thái xe: id, model, type, batteryLevel, status, hubId,
+    """UC2: trả dict trạng thái xe: id, model, type, batteryLevel, status, hubId,
     lastUpdatedAt, isStale."""
-    raise NotImplementedError("UC2 buildVehicleStatus")
+    return {
+        "id": vehicle["id"],
+        "model": vehicle["model"],
+        "type": vehicle["type"],
+        "batteryLevel": vehicle["batteryLevel"],
+        "status": vehicle["status"],
+        "hubId": vehicle["hubId"],
+        "lastUpdatedAt": vehicle["lastUpdatedAt"],
+        "isStale": isStatusStale(vehicle["lastUpdatedAt"]),
+    }
 
 
 def getResourceStatus(resourceType, resourceId):
-    """TODO(UC2): resourceType là 'VEHICLE' hoặc 'HUB'.
+    """UC2: resourceType là 'VEHICLE' hoặc 'HUB'.
     Không tìm thấy -> ServiceError(RESOURCE_NOT_FOUND)."""
     if resourceType == "HUB":
         hub = db.getHub(resourceId)
         if not hub:
             raise ServiceError(RESOURCE_NOT_FOUND, "Không tìm thấy Hub.")
         return buildHubStatus(hub)
-    raise NotImplementedError("UC2 getResourceStatus cho VEHICLE")
+    if resourceType == "VEHICLE":
+        vehicle = db.getVehicle(resourceId)
+        if not vehicle:
+            raise ServiceError(RESOURCE_NOT_FOUND, "Không tìm thấy phương tiện.")
+        return buildVehicleStatus(vehicle)
+    raise ServiceError(RESOURCE_NOT_FOUND, "Loại tài nguyên không hợp lệ.")

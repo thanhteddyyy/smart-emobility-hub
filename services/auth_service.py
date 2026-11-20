@@ -4,6 +4,7 @@ from functools import wraps
 from flask import redirect, request, session, url_for
 
 from data import mock_data as db
+from services import audit_service
 from services.errors import ACCESS_DENIED, INVALID_CREDENTIALS, SSO_UNAVAILABLE, ServiceError
 
 ALLOWED_ROLES = ("STUDENT", "OPERATOR")
@@ -11,7 +12,7 @@ SSO_AVAILABLE = True   # đổi thành False để demo lỗi SSO không khả d
 
 
 def authenticate(email, password):
-    """Bản cơ bản đã chạy được. TODO(UC17): ghi AuditLog, xử lý AF1 (phiên còn hiệu lực)."""
+    """UC17: Xác thực người dùng (SSO giả lập) và ghi AuditLog."""
     if not SSO_AVAILABLE:
         raise ServiceError(SSO_UNAVAILABLE, "Dịch vụ xác thực hiện không khả dụng. Vui lòng thử lại sau.")
     user = next((u for u in db.USERS if u["email"] == email and u["password"] == password), None)
@@ -19,6 +20,7 @@ def authenticate(email, password):
         raise ServiceError(INVALID_CREDENTIALS, "Sai email hoặc mật khẩu.")
     if user["role"] not in ALLOWED_ROLES:
         raise ServiceError(ACCESS_DENIED, "Không đủ quyền truy cập. Vui lòng liên hệ Đơn vị vận hành.")
+    audit_service.record(user["id"], "LOGIN", user["role"], f"email={email}")
     return {"id": user["id"], "name": user["name"], "role": user["role"]}
 
 

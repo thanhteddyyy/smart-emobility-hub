@@ -6,13 +6,59 @@
 <html lang="vi">
 <head>
   {% include "_head.html" %}
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/mobile.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='tv1/student.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/student_web.css') }}">
+  <script src="{{ url_for('static', filename='js/student_view.js') }}"></script>
   <title>{% block title %}{{ BRAND_NAME }}{% endblock %}</title>
   {% block head %}{% endblock %}
 </head>
 <body>
+<div class="mobile-preview-bar" role="region" aria-label="Chế độ hiển thị">
+  <span data-i18n="view.mobile">Mobile</span>
+  <button type="button" data-view-set="web" data-i18n="view.switchToWeb">Giao diện Web</button>
+</div>
 <div class="phone {% block phoneClass %}{% endblock %}">
+  <header class="web-navbar">
+    <a class="web-nav-brand" href="{{ url_for('student.search') }}">
+      <span class="web-nav-brand-badge" aria-hidden="true"><i class="bi bi-bicycle"></i></span>
+      <span>{{ BRAND_NAME }}</span>
+    </a>
+
+    {% if currentUser and request.endpoint != 'auth.login' %}
+    <nav class="web-nav-links" aria-label="Điều hướng Sinh viên">
+      <a href="{{ url_for('student.search') }}" class="{{ 'active' if request.endpoint == 'student.search' }}">
+        <i class="bi bi-compass"></i><span data-i18n="nav.explore">Khám phá</span>
+      </a>
+      <a href="{{ url_for('student.page', page='ride') }}" class="{{ 'active' if request.path.startswith('/student/ride') or request.path.startswith('/student/pickup') or request.path.startswith('/student/return') }}">
+        <i class="bi bi-bicycle"></i><span data-i18n="nav.ride">Chuyến đi</span>
+      </a>
+      <a href="{{ url_for('student.page', page='charging') }}" class="{{ 'active' if request.path.startswith('/student/charging') }}">
+        <i class="bi bi-lightning-charge"></i><span data-i18n="nav.charging">Sạc</span>
+      </a>
+    </nav>
+    {% endif %}
+
+    <div class="web-nav-right">
+      <div class="seg" role="group" aria-label="Chế độ hiển thị">
+        <button type="button" data-view-set="web" data-i18n="view.web">Web</button>
+        <button type="button" data-view-set="mobile" data-i18n="view.mobile">Mobile</button>
+      </div>
+      {% include "_switches.html" %}
+      {% if currentUser %}
+      <span class="web-user-pill"><i class="bi bi-person-circle"></i>{{ currentUser.name }}</span>
+      <a class="web-auth-btn outline" href="{{ url_for('auth.logout') }}">
+        <i class="bi bi-box-arrow-right"></i><span data-i18n="action.logout">Đăng xuất</span>
+      </a>
+      {% elif request.endpoint != 'auth.login' %}
+      <a class="web-auth-btn" href="{{ url_for('auth.login') }}">
+        <i class="bi bi-person"></i><span data-i18n="action.login">Đăng nhập</span>
+      </a>
+      {% endif %}
+    </div>
+  </header>
+
   {% block header %}<header class="phone-top">
     <a class="phone-brand" href="{{ url_for('student.search') }}">{{ BRAND_NAME }}</a>
     {% include "_switches.html" %}

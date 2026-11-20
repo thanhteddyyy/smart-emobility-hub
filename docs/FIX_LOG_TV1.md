@@ -68,3 +68,30 @@ Hiện còn **8 test đánh dấu `XFAIL`** tương ứng các hàm còn đang �
   - `tests/test_uc17_auth.py`: bổ sung 4 testcase kiểm tra 2 luồng đăng nhập/đăng xuất riêng.
   - `README.md`, `docs/UI_GUIDE.md`, `docs/DEMO_SCRIPT.md`: cập nhật hướng dẫn 2 cổng đăng nhập và kịch bản demo.
 
+---
+
+## Bổ sung 2: Giao diện Responsive Web + Mobile cho Cổng Sinh viên (Phương án 2)
+- **Mục tiêu**: Giữ 1 bộ URL duy nhất cho Sinh viên (`/student/...`, `/login`), tự động hiển thị giao diện **Web Desktop** trên màn hình `≥ 900px` (Top Navbar, màn hình tìm/đặt xe 2 cột bản đồ + danh sách Hub, trang đăng nhập và các trang H6–H12/UC2 dạng Web Card căn giữa) và giữ nguyên 100% **App Mobile (`414px`)** chuẩn Figma khi thu nhỏ hoặc chọn nút gạt nhanh `Web / Mobile`. Không đụng vào bất kỳ file HTML nào của TV2, TV3 hay Backend TV4.
+- **Các file đã thêm / cập nhật**:
+  - `static/js/student_view.js` *(mới)*: lưu & chuyển đổi chế độ xem `Web / Mobile` (`localStorage["ehub-student-view"]`), phát sự kiện `ehub:viewchange`.
+  - `static/css/student_web.css` *(mới)*: toàn bộ style Desktop Responsive (100% dùng biến `var(--...)`, 0 mã màu cứng).
+  - `templates/base_mobile.html`: thêm thanh điều hướng ngang `.web-navbar` (chỉ hiện trên Desktop Web) và thanh nổi chuyển lại Web khi xem thử Mobile trên PC.
+  - `static/tv1/search.js`: tự mở bản đồ Leaflet và hiển thị toàn bộ danh sách Hub khi ở chế độ Desktop Web, bấm vào thẻ Hub để chọn & pan bản đồ, đồng bộ `map.invalidateSize()` khi resize/chuyển chế độ.
+  - `static/i18n/vi.json`, `static/i18n/en.json`, `README.md`: thêm khóa song ngữ `view.*` và cập nhật mô tả 2 cổng.
+
+---
+
+## Bổ sung 3: Hoàn thiện toàn bộ luồng UC2–UC7, 3 demo bắt buộc & chuẩn hóa UI/i18n (đạt 62/62 passed)
+- **Backend Services & API (phần T6 20/11 — xóa sạch 8 `XFAIL`)**:
+  - `services/status_service.py`: hiện thực `buildVehicleStatus` và `getResourceStatus("VEHICLE", ...)` (UC2).
+  - `services/booking_service.py`: hiện thực `bookVehicle` (bọc `with db.DATA_LOCK:` đạt demo bắt buộc `scripts/race_demo.py`), `bookParking`, `cancelBooking`, `isBookingValid` (UC3, UC4).
+  - `services/trip_service.py`: hiện thực `confirmPickup` (UC5).
+  - `services/auth_service.py`: bổ sung ghi `AuditLog` khi đăng nhập thành công (UC17).
+  - `blueprints/api/routes.py`: bổ sung alias `POST /api/bookings/parking` khớp `search.js` và bảo vệ `get_json(silent=True) or {}`.
+  - `blueprints/student/routes.py`: nối dữ liệu thật cho toàn bộ 8 màn hình (`resource`, `pickup`, `ride`, `return`, `returned`, `charging`, `charging-review`, `charging-suggest`) và hỗ trợ đi thông toàn luồng đặt xe → nhận xe → đang đi → trả xe → sạc.
+  - `tests/test_uc02_16_services.py`: gỡ toàn bộ 8 `@pytest.mark.xfail`.
+- **Giao diện TV2 (8 trang Student) & TV3 (`schedule.html`) + Song ngữ**:
+  - Cập nhật 8 file `templates/student/{resource,pickup,ride,return,returned,charging_slot,charging_review,charging_suggest}.html`: nối dữ liệu thật, gắn `<form>`/`href` đi đúng luồng `H6→H7→H8→H9` và `H10→H11→H12`, bổ sung bản đồ Leaflet polyline cho `ride.html`, bản đồ chọn Hub trả cho `return.html` và bản đồ gợi ý trạm sạc cho `charging_suggest.html`.
+  - Chuẩn hóa `templates/operator/schedule.html` theo `dashboard.css` (`.panel-card`, `.table-x`, `.btn-primary-x`, `<select>` chọn Hub) và gắn đầy đủ `data-i18n`.
+  - Bổ sung đầy đủ toàn bộ khóa song ngữ mới vào cả `static/i18n/vi.json` và `static/i18n/en.json` (0 khóa thiếu trên toàn bộ 28 file HTML).
+

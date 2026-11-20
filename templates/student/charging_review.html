@@ -1,41 +1,58 @@
-{# UC – Hình 11: Xem lại đặt lịch sạc. Phụ trách: TV2. #}
+{# UC7 – Hình 11: Xem lại & xác nhận đặt lịch sạc. Đã nối form POST với charging_service.registerCharging. #}
 {% extends "base_mobile.html" %}
 {% block content %}
-<!-- Dữ liệu giả lập cho TV2 test UI, xoá khi TV4 ráp API -->
-{% set booking = booking | default({
-    'hub_name': 'Trạm Ký túc xá A',
-    'port': 'Cổng A-03',
-    'vehicle': 'EV-001',
-    'date': '16 Tháng 10 2026',
-    'time': '09:00 - 10:00',
-    'duration': '60 phút'
-}, true) %}
-
-<div class="pt-1 mb-4">
+<div class="pt-1 mb-3">
   <h1 class="h3 fw-bold mb-1" style="color: var(--color-text);" data-i18n="chargingReview.title">Xem lại đặt lịch sạc</h1>
   <p class="mb-0 small" style="color: var(--color-muted);" data-i18n="chargingReview.subtitle">Xem lại thông tin sạc của bạn</p>
 </div>
 
-<!-- Thẻ thông tin Booking -->
-<article class="card-x p-3 mb-4">
-  <h2 class="h5 fw-bold mb-3" style="color: var(--color-text);">{{ booking.hub_name }} • {{ booking.port }}</h2>
-  <div class="small" style="color: var(--color-muted); line-height: 1.6;">
-    <div><span data-i18n="chargingReview.vehicleLabel">Xe:</span> {{ booking.vehicle }}</div>
-    <div><span data-i18n="chargingReview.dateLabel">Ngày:</span> {{ booking.date }}</div>
-    <div><span data-i18n="chargingReview.timeLabel">Thời gian:</span> {{ booking.time }}</div>
-    <div><span data-i18n="chargingReview.durationLabel">Thời lượng:</span> {{ booking.duration }}</div>
+{% if error %}
+<div class="alert-x danger mb-3">
+  <div>{{ error.message }}</div>
+  {% if error.code == 'NO_PORT_AVAILABLE' %}
+  <div class="mt-2">
+    <a class="fw-bold" href="{{ url_for('student.chargingSuggest', hubId=hubId) }}" data-i18n="chargingSlot.btnSuggest">Tìm trạm sạc gần nhất</a>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if registration %}
+<div class="alert-x success mb-3">
+  <b data-i18n="chargingReview.successTitle">Đăng ký sạc thành công!</b>
+  <div class="small mt-1">{{ registration.id }} • {{ hub.name if hub else hubId }} • {{ registration.portId }} ({{ registration.timeSlot }})</div>
+</div>
+{% endif %}
+
+<article class="card-x p-3 mb-3">
+  <h2 class="h5 fw-bold mb-3" style="color: var(--color-text);">{{ hub.name if hub else hubId }} • {{ portId or '—' }}</h2>
+  <div class="small" style="color: var(--color-muted); line-height: 1.7;">
+    <div><span data-i18n="chargingReview.vehicleLabel">Xe:</span> <b>{{ vehicleId }}</b></div>
+    <div><span data-i18n="chargingReview.dateLabel">Ngày:</span> <b>{{ currentDate }}</b></div>
+    <div><span data-i18n="chargingReview.timeLabel">Thời gian:</span> <b>{{ timeSlot }}</b></div>
+    <div><span data-i18n="chargingReview.durationLabel">Thời lượng:</span> <b data-i18n="chargingReview.durationValue">60 phút</b></div>
+    <div><span data-i18n="tv.battery">Pin</span>: <b>{{ batteryLevel }}%</b></div>
   </div>
 </article>
 
-<!-- Dòng chú thích nhỏ -->
+{% if not registration %}
 <p class="small mb-4" style="color: var(--color-muted);" data-i18n="chargingReview.note">
-  Cổng sạc của bạn chưa được giữ chỗ.<br>
-  Tình trạng cổng trống sẽ được kiểm tra khi xác nhận.
+  Cổng sạc của bạn chưa được giữ chỗ. Tình trạng cổng trống sẽ được kiểm tra khi xác nhận.
 </p>
 
-<!-- Nút bấm điều hướng -->
+<form method="post" action="{{ url_for('student.chargingReview') }}" class="mt-auto d-flex flex-column gap-2 pt-2">
+  <input type="hidden" name="hubId" value="{{ hubId }}">
+  <input type="hidden" name="portId" value="{{ portId }}">
+  <input type="hidden" name="timeSlot" value="{{ timeSlot }}">
+  <input type="hidden" name="vehicleId" value="{{ vehicleId }}">
+  <input type="hidden" name="batteryLevel" value="{{ batteryLevel }}">
+  <button type="submit" class="btn w-100 btn-primary-x" data-i18n="chargingReview.btnConfirm">Xác nhận đặt lịch</button>
+  <a class="btn w-100 btn-outline-x" href="{{ url_for('student.charging', hubId=hubId) }}" data-i18n="chargingReview.btnCancel">Hủy đặt lịch</a>
+</form>
+{% else %}
 <div class="mt-auto d-flex flex-column gap-2 pt-2">
-  <button type="button" class="btn w-100 btn-primary-x" data-i18n="chargingReview.btnConfirm">Xác nhận đặt lịch</button>
-  <button type="button" class="btn w-100 btn-outline-x" data-i18n="chargingReview.btnCancel">Hủy đặt lịch</button>
+  <a class="btn w-100 btn-primary-x" href="{{ url_for('student.search') }}" data-i18n="returned.btnExplore">Quay lại khám phá</a>
+  <a class="btn w-100 btn-outline-x" href="{{ url_for('student.charging', hubId=hubId) }}" data-i18n="chargingSlot.btnChange">Đổi cổng hoặc giờ</a>
 </div>
+{% endif %}
 {% endblock %}

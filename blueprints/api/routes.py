@@ -45,14 +45,14 @@ def bookVehicle():
     user = session.get("user")
     if not user:
         return jsonify({"ok": False, "error": "LOGIN_REQUIRED", "message": "Cần đăng nhập."}), 401
-    booking = booking_service.bookVehicle(user["id"], request.get_json(force=True).get("vehicleId"))
+    data = request.get_json(silent=True) or {}
+    booking = booking_service.bookVehicle(user["id"], data.get("vehicleId"))
     return jsonify({"ok": True, "booking": booking})
 
 
-# TODO(TV4): thêm API cho UC4, UC5, UC6, UC7, UC11, UC12, UC13, UC14 theo cùng kiểu.
-
-#---------- UC4: Đặt chỗ và huỷ lượt đặt" ----------
+# ---------- UC4: Đặt chỗ và huỷ lượt đặt ----------
 @bp.route("/bookings/hub", methods=["POST"])
+@bp.route("/bookings/parking", methods=["POST"])
 def bookParking():
     user = session.get("user")
     if not user:
@@ -163,7 +163,7 @@ def processDispatch():
         return jsonify({"ok": False, "error": "LOGIN_REQUIRED", "message": "Cần đăng nhập."}), 401
     if user["role"] != "OPERATOR":
         return jsonify({"ok": False, "error": "FORBIDDEN", "message": "Không có quyền truy cập."}), 403
-    data = request.get_json(silent=True)
+    data = request.get_json(silent=True) or {}
     sourceHubId = data.get("sourceHubId")
     destHubId = data.get("destHubId")
     vehicleIds = data.get("vehicleIds")

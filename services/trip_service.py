@@ -2,12 +2,38 @@
 from datetime import datetime
 
 from data import mock_data as db
-from services.errors import BOOKING_NOT_FOUND, HOLD_EXPIRED, HUB_FULL, ServiceError
+from services import audit_service, booking_service
+from services.errors import BOOKING_NOT_FOUND, HOLD_EXPIRED, HUB_FULL, RESOURCE_NOT_FOUND, ServiceError
 
 
 def confirmPickup(userId, bookingId):
-    """TODO(UC5): Kiểm tra booking còn hạn -> xe chuyển IN_USE, booking chuyển ACTIVE."""
-    raise NotImplementedError("UC5 confirmPickup")
+    """UC5: Kiểm tra booking còn hạn -> xe chuyển IN_USE, booking chuyển ACTIVE."""
+    with db.DATA_LOCK:
+        booking = next(
+            (b for b in db.BOOKINGS if b["id"] == bookingId and b["userId"] == userId),
+            None,
+        )
+        if not booking:
+            raise ServiceError(BOOKING_NOT_FOUND, "Không tìm thấy lượt đặt xe.")
+
+        booking_service.isBookingValid(booking)
+
+        if booking.get("type") != "VEHICLE" or booking.get("status") != "HOLDING":
+            raise ServiceError(HOLD_EXPIRED, "Lượt đặt không ở trạng thái chờ nhận xe.")
+
+        vehicle = db.getVehicle(booking.get("vehicleId"))
+        if not vehicle:
+            raise ServiceError(RESOURCE_NOT_FOUND, "Không tìm thấy phương tiện.")
+
+        now = datetime.now().isoformat(timespec="seconds")
+        vehicle["status"] = "IN_USE"
+        vehicle["lastUpdatedAt"] = now
+
+        booking["status"] = "ACTIVE"
+        booking["startedAt"] = now
+
+    audit_service.record(userId, "CONFIRM_PICKUP", bookingId, f"vehicle={vehicle['id']}")
+    return booking
 
 
 def returnVehicle(userId, bookingId, hubId):

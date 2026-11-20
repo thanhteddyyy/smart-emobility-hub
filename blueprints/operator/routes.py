@@ -198,8 +198,10 @@ def applySimulation():
     )
 
 
-# ---------- UC13: Lịch sạc (chưa có mockup Figma — placeholder) ----------
+# ---------- UC13: Lịch sạc thông minh ----------
 @bp.route("/schedule")
 @loginRequired("OPERATOR")
 def schedule():
-    return render_template("operator/schedule.html")
+    from data import mock_data as db
+    hubs = [h for h in db.HUBS if h.get("status") == "ACTIVE"] or list(db.HUBS)
+    return render_template("operator/schedule.html", hubs=hubs)

@@ -22,6 +22,10 @@
   try { saved = localStorage.getItem(KEY); } catch (e) {}
   applyTheme(saved || "light");
 
+  document.addEventListener("DOMContentLoaded", function () {
+    applyTheme(document.documentElement.getAttribute("data-theme") || "light");
+  });
+
   document.addEventListener("click", function (ev) {
     const btn = ev.target.closest("[data-theme-set]");
     if (!btn) return;

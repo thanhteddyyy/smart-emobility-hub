@@ -1,77 +1,92 @@
-{# UC2 – chưa có mockup: Chi tiết xe / Hub. Phụ trách: TV2.
-   Cần làm: Pin, chỗ trống, cổng sạc, thời điểm cập nhật; cảnh báo 'dữ liệu cũ' khi isStale.
-   Service liên quan: status_service.getResourceStatus, isStatusStale #}
+{# UC2 – Chi tiết xe / Hub. Đã nối dữ liệu thật từ status_service.getResourceStatus & buildVehicleStatus. #}
 {% extends "base_mobile.html" %}
 {% block content %}
-<!-- Dữ liệu giả lập cho TV2 test UI, xoá khi TV4 ráp API -->
-{% set resource = resource | default({
-    'name': 'Trạm Ký túc xá A',
-    'vehicle_id': 'EB-028',
-    'battery_percentage': 68,
-    'available_slots': 5,
-    'total_slots': 12,
-    'available_ports': 3,
-    'total_ports': 6,
-    'updated_at': '14:30 • 20/11/2026'
-}, true) %}
-{% set is_stale = is_stale | default(false, true) %}
-
 <div class="pt-1 mb-3">
   <h1 class="h3 fw-bold mb-1" style="color: var(--color-text);" data-i18n="resource.title">Chi tiết xe / Hub</h1>
-  <p class="mb-0 small" style="color: var(--color-muted);">{{ resource.name }} • {{ resource.vehicle_id }}</p>
+  {% if hubStatus %}
+  <p class="mb-0 small" style="color: var(--color-muted);">
+    {{ hubStatus.name }}{% if selectedVehicle %} • {{ selectedVehicle.id }} ({{ selectedVehicle.model }}){% endif %}
+  </p>
+  {% endif %}
 </div>
 
-<!-- Cảnh báo dữ liệu cũ khi isStale = true -->
-{% if is_stale %}
+{% if error %}
+<div class="alert-x danger mb-3">{{ error.message }}</div>
+{% endif %}
+
+{% if isStale %}
 <div class="card-x p-3 mb-3 d-flex align-items-start gap-2"
-     style="border: 1px solid var(--color-primary); background-color: var(--color-primary-soft);">
-  <span class="fw-bold" style="color: var(--color-primary);">!</span>
+     style="border: 1px solid var(--color-warning); background-color: var(--color-warning-soft);">
+  <span class="fw-bold" style="color: var(--color-warning);">!</span>
   <div class="small" style="color: var(--color-text);" data-i18n="resource.staleWarning">
     Dữ liệu cũ — trạng thái hiển thị có thể chưa được cập nhật mới nhất.
   </div>
 </div>
 {% endif %}
 
-<!-- Thẻ Pin hiện tại (đồng bộ với H6 & H7) -->
+{% if selectedVehicle %}
+{% set bars = (selectedVehicle.batteryLevel / 20) | round(0, 'ceil') | int %}
 <article class="card-x p-3 mb-3">
   <p class="small fw-semibold text-uppercase mb-3" style="color: var(--color-muted); letter-spacing: .04em;" data-i18n="resource.battery">Pin hiện tại</p>
   <div class="d-flex align-items-center justify-content-between gap-3">
     <div class="d-flex align-items-stretch flex-grow-1 gap-2" style="height: 2.75rem; max-width: 12rem;">
-      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
-      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
-      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
-      <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
-      <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
+      {% for i in range(1, 6) %}
+      <span class="flex-fill rounded-3" style="background: {{ 'var(--color-primary)' if i <= bars else 'var(--color-primary-soft)' }};"></span>
+      {% endfor %}
     </div>
     <div class="text-end">
-      <div class="fs-2 fw-bold lh-1" style="color: var(--color-text);">{{ resource.battery_percentage }}%</div>
-      <div class="small mt-1" style="color: var(--color-muted);">{{ resource.vehicle_id }}</div>
+      <div class="fs-2 fw-bold lh-1" style="color: var(--color-text);">{{ selectedVehicle.batteryLevel }}%</div>
+      <div class="small mt-1" style="color: var(--color-muted);">{{ selectedVehicle.id }} · {{ selectedVehicle.status }}</div>
     </div>
   </div>
 </article>
+{% endif %}
 
-<!-- Thẻ Chỗ trống & Cổng sạc -->
+{% if hubStatus %}
 <article class="card-x p-3 mb-3">
   <h2 class="h6 fw-bold mb-3" style="color: var(--color-text);" data-i18n="resource.hubStatus">Trạng thái trạm</h2>
   <div class="d-flex flex-column gap-2 small">
     <div class="d-flex justify-content-between">
+      <span style="color: var(--color-muted);" data-i18n="hub.bikes">Xe sẵn sàng</span>
+      <span class="fw-bold" style="color: var(--color-text);" data-rt="hubs.{{ hubStatus.hubId }}.availableVehicles">{{ hubStatus.availableVehicles }}</span>
+    </div>
+    <div class="d-flex justify-content-between">
       <span style="color: var(--color-muted);" data-i18n="resource.availableSlots">Chỗ đậu trống</span>
-      <span class="fw-bold" style="color: var(--color-text);">{{ resource.available_slots }} / {{ resource.total_slots }}</span>
+      <span class="fw-bold" style="color: var(--color-text);"><span data-rt="hubs.{{ hubStatus.hubId }}.emptySpots">{{ hubStatus.emptySpots }}</span> / {{ hubStatus.totalSpots }}</span>
     </div>
     <div class="d-flex justify-content-between">
       <span style="color: var(--color-muted);" data-i18n="resource.availablePorts">Cổng sạc trống</span>
-      <span class="fw-bold" style="color: var(--color-text);">{{ resource.available_ports }} / {{ resource.total_ports }}</span>
+      <span class="fw-bold" style="color: var(--color-text);"><span data-rt="hubs.{{ hubStatus.hubId }}.availablePorts">{{ hubStatus.availablePorts }}</span> / {{ hubStatus.totalPorts }}</span>
     </div>
     <div class="d-flex justify-content-between pt-2" style="border-top: 1px solid var(--color-border);">
       <span style="color: var(--color-muted);" data-i18n="resource.updatedAt">Cập nhật lúc</span>
-      <span style="color: var(--color-muted);">{{ resource.updated_at }}</span>
+      <span style="color: var(--color-muted);">{{ hubStatus.lastUpdatedAt[11:19] if hubStatus.lastUpdatedAt else '—' }}</span>
     </div>
   </div>
 </article>
+{% endif %}
 
-<!-- Nút thao tác -->
+{% if vehicles %}
+<article class="card-x p-3 mb-3">
+  <h2 class="h6 fw-bold mb-2" style="color: var(--color-text);" data-i18n="resource.vehicleList">Danh sách xe tại trạm</h2>
+  <div class="d-flex flex-column gap-2">
+    {% for v in vehicles %}
+    <a class="d-flex justify-content-between align-items-center p-2 rounded-3 text-decoration-none"
+       style="border: 1px solid {{ 'var(--color-primary)' if selectedVehicle and v.id == selectedVehicle.id else 'var(--color-border)' }}; background: {{ 'var(--color-primary-soft)' if selectedVehicle and v.id == selectedVehicle.id else 'transparent' }}; color: var(--color-text);"
+       href="{{ url_for('student.resource', hubId=hubStatus.hubId, vehicleId=v.id) }}">
+      <div>
+        <div class="fw-semibold small">{{ v.model }} ({{ v.id }})</div>
+        <div class="small" style="color: var(--color-muted);">{{ v.status }}</div>
+      </div>
+      <span class="fw-bold small">{{ v.batteryLevel }}%</span>
+    </a>
+    {% endfor %}
+  </div>
+</article>
+{% endif %}
+
 <div class="mt-auto d-flex flex-column gap-2 pt-2">
-  <button type="button" class="btn w-100 btn-primary-x" data-i18n="resource.btnRefresh">Làm mới trạng thái</button>
-  <button type="button" class="btn w-100 btn-outline-x" data-i18n="resource.btnBack">Quay lại</button>
+  <a class="btn w-100 btn-primary-x" href="{{ url_for('student.resource', hubId=hubStatus.hubId if hubStatus else 'H1', vehicleId=selectedVehicle.id if selectedVehicle else None) }}" data-i18n="resource.btnRefresh">Làm mới trạng thái</a>
+  <a class="btn w-100 btn-outline-x" href="{{ url_for('student.search') }}" data-i18n="resource.btnBack">Quay lại</a>
 </div>
 {% endblock %}

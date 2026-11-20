@@ -11,8 +11,8 @@
 .phone .seg button{padding:7px;background:transparent;font-size:12px}.phone .seg .active,.phone .primary,.phone #tabs .chosen{background:var(--tv-green);color:white}
 .phone [data-theme-set=light]:before{content:'☀'}.phone [data-theme-set=dark]:before{content:'☾'}.phone .seg i{display:none}
 [data-theme=light] .phone [data-theme-set=light],[data-theme=dark] .phone [data-theme-set=dark]{display:none}
-.map-art{position:relative;flex:1;min-height:42dvh;background:#eee url(campus.webp) center/cover}
-[data-theme=dark] .map-art{background-blend-mode:multiply;background-color:#73777a}
+.map-art{position:relative;flex:1;min-height:42dvh;background:var(--tv-well)}
+[data-theme=dark] .map-art{background:var(--tv-well)}
 #liveMap{position:absolute;inset:0;z-index:1}.station-sheet{position:relative;margin-top:-16px;padding:10px 16px 14px;border-radius:26px 26px 0 0;background:var(--tv-bg);z-index:1}
 .handle{width:40px;height:5px;border-radius:8px;background:var(--tv-line);margin:0 auto 12px}.line h2{margin:0 auto 0 0;font-size:18px}.phone .minor{font-size:11px;padding:5px 8px}
 #stations{margin:8px 0;font-size:12px;width:100%}.station{border:1px solid var(--tv-line);border-radius:20px;padding:15px;box-shadow:0 5px 18px #0001;color:var(--tv-muted)}.station h1,.signin h1{font-size:21px;color:var(--tv-ink);margin:0}.station .line{justify-content:space-between}.pill{border-radius:18px;background:var(--tv-soft);color:var(--tv-ink);padding:4px 8px;font-size:11px;white-space:nowrap}

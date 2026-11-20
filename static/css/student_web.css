@@ -1,0 +1,366 @@
+/* Responsive Web Desktop cho Cổng Sinh viên (Phương án 2).
+   - Màn hình < 900px (hoặc bật chế độ xem Mobile): giữ nguyên 100% khung App Mobile 414px chuẩn Figma.
+   - Màn hình >= 900px (chế độ Web mặc định): tự mở rộng thành Web App với Top Navbar, bản đồ 2 cột & thẻ căn giữa.
+   Mọi màu sắc đều dùng biến từ tokens.css / student.css, không dùng mã màu cứng. */
+
+.web-navbar,
+.mobile-preview-bar {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  /* Thanh nổi nhỏ góc trên phải khi người dùng chọn xem thử khung Mobile trên PC */
+  :root[data-student-view="mobile"] body {
+    background: var(--color-bg);
+    padding: 20px 0 32px;
+  }
+
+  :root[data-student-view="mobile"] .phone {
+    min-height: calc(100dvh - 52px);
+    border-radius: 26px;
+    border: 1px solid var(--color-border-strong);
+    box-shadow: 0 16px 40px var(--color-shadow);
+    overflow: hidden;
+  }
+
+  :root[data-student-view="mobile"] .mobile-preview-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 1050;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 999px;
+    padding: 6px 10px 6px 14px;
+    box-shadow: 0 6px 18px var(--color-shadow);
+    font-size: 0.82rem;
+    color: var(--color-text);
+  }
+
+  :root[data-student-view="mobile"] .mobile-preview-bar button {
+    border: 0;
+    border-radius: 999px;
+    padding: 5px 12px;
+    background: var(--tv-green);
+    color: var(--color-on-primary);
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  /* ==================== CHẾ ĐỘ WEB DESKTOP (>= 900px) ==================== */
+  :root:not([data-student-view="mobile"]) .phone,
+  :root:not([data-student-view="mobile"]) .phone.explorer,
+  :root:not([data-student-view="mobile"]) .phone.auth-screen {
+    max-width: none;
+    width: 100%;
+    min-height: 100dvh;
+    margin: 0;
+    border: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  :root:not([data-student-view="mobile"]) .phone-top,
+  :root:not([data-student-view="mobile"]) .phone-nav {
+    display: none;
+  }
+
+  /* Thanh điều hướng Web ngang trên cùng */
+  :root:not([data-student-view="mobile"]) .web-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: 64px;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  :root:not([data-student-view="mobile"]) .web-nav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--color-text-strong);
+    flex-shrink: 0;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-nav-brand-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--tv-green);
+    color: var(--color-on-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-subtle);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-nav-links a:hover {
+    background: var(--tv-soft);
+    color: var(--tv-green);
+  }
+
+  :root:not([data-student-view="mobile"]) .web-nav-links a.active {
+    background: var(--tv-green);
+    color: var(--color-on-primary);
+  }
+
+  :root:not([data-student-view="mobile"]) .web-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-navbar .seg {
+    box-shadow: none;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-bg);
+    padding: 2px;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-navbar .seg button {
+    padding: 4px 9px;
+    font-size: 0.78rem;
+    border-radius: 999px;
+    color: var(--color-muted);
+    background: transparent;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-navbar .seg button.active {
+    background: var(--tv-green);
+    color: var(--color-on-primary);
+  }
+
+  :root:not([data-student-view="mobile"]) .web-navbar .seg i {
+    display: inline-block;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-navbar [data-theme-set]:before {
+    content: none;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-navbar [data-theme-set] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-user-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--tv-soft);
+    color: var(--color-text);
+    font-size: 0.84rem;
+    font-weight: 600;
+  }
+
+  :root:not([data-student-view="mobile"]) .web-auth-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--tv-green);
+    color: var(--color-on-primary);
+  }
+
+  :root:not([data-student-view="mobile"]) .web-auth-btn.outline {
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  :root:not([data-student-view="mobile"]) .web-auth-btn.outline:hover {
+    border-color: var(--tv-green);
+    color: var(--tv-green);
+  }
+
+  /* ---------- 1. Màn hình Tìm kiếm & Đặt xe (/student/search) - Bố cục 2 cột Web ---------- */
+  :root:not([data-student-view="mobile"]) .phone.explorer {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .tools {
+    position: absolute;
+    top: 82px;
+    left: 24px;
+    right: auto;
+    width: min(420px, calc(100% - 490px));
+    z-index: 20;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .tools > div {
+    display: none;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .tools input {
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: 0 8px 24px var(--color-shadow);
+    padding: 12px 16px;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .phone-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 440px;
+    height: calc(100dvh - 64px);
+    overflow: hidden;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .map-art {
+    height: 100%;
+    min-height: 0;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .station-sheet {
+    margin-top: 0;
+    border-radius: 0;
+    border-left: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 20px 24px 28px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .handle,
+  :root:not([data-student-view="mobile"]) .phone.explorer #stations {
+    display: none;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer #criteria {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 10px;
+    align-items: end;
+    padding: 12px;
+    border-radius: 14px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer #criteria[hidden] {
+    display: none;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer #criteria label {
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .station {
+    cursor: pointer;
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .station:hover {
+    border-color: var(--tv-green);
+    box-shadow: 0 8px 20px var(--color-shadow);
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.explorer .station.is-selected {
+    border-color: var(--tv-green);
+    background: var(--tv-soft);
+    box-shadow: 0 8px 22px var(--color-shadow);
+  }
+
+  /* Modal đặt xe căn giữa màn hình trên Web Desktop */
+  :root:not([data-student-view="mobile"]) #booking {
+    inset: 0;
+    margin: auto;
+    width: min(460px, calc(100% - 32px));
+    height: fit-content;
+    border: 1px solid var(--color-border-strong);
+    box-shadow: 0 20px 60px var(--color-shadow);
+  }
+
+  /* ---------- 2. Màn hình Đăng nhập Sinh viên (/login) - Web Card căn giữa ---------- */
+  :root:not([data-student-view="mobile"]) .phone.auth-screen .phone-main {
+    align-items: center;
+    justify-content: center;
+    padding: 36px 24px;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.auth-screen .auth-error {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 0 16px;
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.auth-screen .signin {
+    width: 100%;
+    max-width: 460px;
+    margin: 0;
+    padding: 36px 32px;
+    border-radius: 18px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 12px 32px var(--color-shadow);
+  }
+
+  :root:not([data-student-view="mobile"]) .phone.auth-screen footer {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
+  /* ---------- 3. Các màn hình còn lại của Sinh viên (TV2: H6-H12, resource, denied) ---------- */
+  :root:not([data-student-view="mobile"]) .phone:not(.explorer):not(.auth-screen) .phone-main {
+    width: 100%;
+    max-width: 680px;
+    margin: 28px auto 40px;
+    padding: 28px 32px;
+    border-radius: 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 10px 28px var(--color-shadow);
+    flex: 0 1 auto;
+  }
+}
+

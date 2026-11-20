@@ -5,7 +5,7 @@ Hệ thống điều phối phương tiện điện trong Khu đô thị ĐHQG-H
 
 Đây là bản **MVP để demo**: giao diện làm theo mockup Submission 2, logic làm theo Class diagram và Method description Submission 3, **dữ liệu giả lập, không dùng database**.
 
-> **Trạng thái hiện tại: đã tích hợp MVP trên `main`.** Đã hoàn thiện hai cổng đăng nhập tách biệt cho Sinh viên (Mobile) và Đơn vị vận hành (Desktop), luồng tìm Hub (UC1), đặt/nhận/trả xe & sạc (UC2–UC7 UI + một phần service), toàn bộ Web Dashboard vận hành (UC8–UC14), đổi Sáng/Tối & VN/EN (UC15), cập nhật tự động mỗi 5 giây (UC16) và phân quyền (UC17). Các phần còn lại đang được hoàn thiện theo `docs/FIX_LOG_TV1.md`.
+> **Trạng thái hiện tại: hoàn thiện đầy đủ MVP trên `main` (62/62 test passed).** Đã hoàn chỉnh cả 2 cổng tách biệt (Sinh viên Responsive Web + Mobile App và Đơn vị vận hành chỉ Web Desktop), toàn bộ luồng Sinh viên **UC1–UC7** (tìm Hub, xem chi tiết xe/Hub, đặt xe/chỗ chống race condition, nhận xe, bản đồ chuyến đi Leaflet polyline, trả xe, đăng ký sạc & gợi ý trạm sạc khẩn), toàn bộ Dashboard Vận hành **UC8–UC14** (kể cả Lịch sạc thông minh và Mô phỏng What-if cô lập), đổi Sáng/Tối & VN/EN (**UC15**), cập nhật realtime & lọc gói trễ (**UC16**), phân quyền & AuditLog (**UC17**).
 
 ---
 
@@ -22,8 +22,8 @@ Hoặc bấm đúp `run.bat` trên Windows, `./run.sh` trên macOS/Linux.
 
 | Cổng | Đường dẫn | Trải nghiệm & Luồng đăng nhập |
 |---|---|---|
-| **Cổng Sinh viên (Mobile UI)** | http://127.0.0.1:5000 (hoặc `/student/search`) | **Không bắt đăng nhập ngay**: sinh viên tự do tìm Hub, xem xe/trạm trên bản đồ. Khi xác nhận **Đặt xe / Đặt chỗ** hoặc vào màn hình chuyến đi/sạc (`UC3–UC7`), hệ thống mới chuyển sang trang đăng nhập Mobile SSO (`/login`). Đăng xuất sẽ quay về `/student/search`. |
-| **Cổng Đơn vị vận hành (Desktop UI)** | http://127.0.0.1:5000/operator/login (hoặc `/operator/`) | **Bắt buộc đăng nhập ngay** với giao diện Desktop quản trị riêng (chỉ chấp nhận tài khoản vai trò `OPERATOR`). Đăng nhập xong vào thẳng `/operator/overview`; đăng xuất sẽ quay về `/operator/login`. |
+| **Cổng Sinh viên (Responsive Web + Mobile App)** | http://127.0.0.1:5000 (hoặc `/student/search`) | **Không bắt đăng nhập ngay**: tự động hiển thị giao diện **Web Desktop** (Top Navbar + bản đồ 2 cột rộng + danh sách Hub) trên máy tính và **App Mobile** chuẩn Figma (`414px`) trên màn hình nhỏ, có thêm nút gạt nhanh `Web / Mobile` trên thanh đầu trang để demo. Khi xác nhận **Đặt xe / Đặt chỗ** hoặc vào màn hình chuyến đi/sạc (`UC3–UC7`), mới chuyển sang `/login`. Đăng xuất quay về `/student/search`. |
+| **Cổng Đơn vị vận hành (Chỉ Web Desktop)** | http://127.0.0.1:5000/operator/login (hoặc `/operator/`) | **Bắt buộc đăng nhập ngay** với giao diện Desktop quản trị riêng (chỉ chấp nhận tài khoản vai trò `OPERATOR`). Đăng nhập xong vào thẳng `/operator/overview`; đăng xuất sẽ quay về `/operator/login`. |
 
 > Ở chân mỗi trang đăng nhập đều có liên kết chuyển nhanh giữa **Cổng Sinh viên** và **Cổng Đơn vị vận hành** để tiện trình bày khi demo.
 
