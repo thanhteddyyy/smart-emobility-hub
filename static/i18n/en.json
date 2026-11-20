@@ -192,8 +192,6 @@
   "tv.UNAVAILABLEBody": "The booking service could not confirm this request. Please try again later.",
   "tv.SSO_UNAVAILABLE": "Authentication service is currently unavailable. Please try again later.",
   "tv.INVALID_CREDENTIALS": "Incorrect email or password.",
-  "tv.ACCESS_DENIED": "This account does not have access."
-}
-
+  "tv.ACCESS_DENIED": "This account does not have access.",
   "denied.body": "Your account is not allowed to open this page."
 }

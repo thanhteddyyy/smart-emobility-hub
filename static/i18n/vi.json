@@ -192,8 +192,6 @@
   "tv.UNAVAILABLEBody": "Dịch vụ đặt chỗ chưa phản hồi thành công. Vui lòng thử lại sau.",
   "tv.SSO_UNAVAILABLE": "Dịch vụ xác thực hiện không khả dụng. Vui lòng thử lại sau.",
   "tv.INVALID_CREDENTIALS": "Sai email hoặc mật khẩu.",
-  "tv.ACCESS_DENIED": "Tài khoản chưa được cấp quyền truy cập."
-}
-
+  "tv.ACCESS_DENIED": "Tài khoản chưa được cấp quyền truy cập.",
   "denied.body": "Tài khoản của bạn không được phép mở trang này."
 }
