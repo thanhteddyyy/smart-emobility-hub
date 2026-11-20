@@ -1,12 +1,46 @@
-{# UC5 – Hình 6: Nhận xe. Phụ trách: TV2.
-   Cần làm: Mã đặt xe, thông tin xe, thanh pin, nút xác nhận nhận xe.
-   Service liên quan: trip_service.confirmPickup #}
+{# UC5 – Hình 6: Nhận xe. Phụ trách: TV2. #}
 {% extends "base_mobile.html" %}
 {% block content %}
-<h1 class="h4 mt-2">Nhận xe</h1>
-<div class="todo-box">
-  <b>TODO (TV2) – UC5 · Hình 6</b><br>
-  Mã đặt xe, thông tin xe, thanh pin, nút xác nhận nhận xe.<br>
-  Service: <code>trip_service.confirmPickup</code>
+<!-- Bổ sung dữ liệu giả lập chống lỗi -->
+{% set vehicle = vehicle | default({'id': 'EB-028', 'type': 'Xe đạp điện', 'battery_percentage': 68}, true) %}
+{% set booking = booking | default({'id': 'BK-12345'}, true) %}
+{% set hub = hub | default({'name': 'Ký túc xá A'}, true) %}
+
+<div class="pt-1 mb-3">
+ <h1 class="h3 fw-bold mb-1" style="color: var(--color-text);" data-i18n="pickup.title">Nhận xe</h1>
+ <p class="mb-0 small" style="color: var(--color-muted);" data-i18n="pickup.subtitle">Xem lại thông tin nhận xe</p>
+</div>
+
+<!-- Đã sửa thành class .card-x chuẩn của nhóm -->
+<article class="card-x p-3 mb-3">
+   <h2 class="h6 fw-bold mb-2" style="color: var(--color-text);" data-i18n="pickup.vehicle">{{ vehicle.type }} • {{ vehicle.id }}</h2>
+   <p class="small mb-1" style="color: var(--color-muted);" data-i18n="pickup.booking">Đặt xe: {{ booking.id }}</p>
+   <p class="small mb-1" style="color: var(--color-muted);" data-i18n="pickup.place">Điểm nhận: {{ hub.name }}</p>
+   <p class="small mb-0" style="color: var(--color-muted);" data-i18n="pickup.status">Đặt chỗ của bạn • Hợp lệ</p>
+</article>
+
+<!-- Đã sửa thành class .card-x chuẩn của nhóm -->
+<article class="card-x p-3 mb-4">
+   <p class="small fw-semibold text-uppercase mb-3" style="color: var(--color-muted); letter-spacing: .04em;" data-i18n="pickup.battery">Pin hiện tại</p>
+   <div class="d-flex align-items-center justify-content-between gap-3">
+     <div class="d-flex align-items-stretch flex-grow-1 gap-2" style="height: 2.75rem; max-width: 12rem;">
+       <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+       <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+       <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+       <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
+       <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
+     </div>
+     <div class="text-end">
+       <div class="fs-2 fw-bold lh-1" style="color: var(--color-text);" data-i18n="pickup.batteryPercent">{{ vehicle.battery_percentage }}%</div>
+       <div class="small mt-1" style="color: var(--color-muted);" data-i18n="pickup.vehicleCode">Xe {{ vehicle.id }}</div>
+     </div>
+   </div>
+</article>
+
+<div class="mt-auto d-flex flex-column gap-2 pt-2">
+ <!-- Đã chuẩn hóa nút bấm theo class nhóm -->
+ <button type="button" class="btn w-100 btn-primary-x" data-i18n="pickup.confirm">Xác nhận đã nhận xe</button>
+ <button type="button" class="btn w-100 btn-outline-x" data-i18n="pickup.chooseOther">Chọn đặt xe khác</button>
+ <button type="button" class="btn w-100 border-0 bg-transparent small fw-semibold py-1" style="color: var(--color-muted);" data-i18n="pickup.cancel">Hủy nhận xe</button>
 </div>
 {% endblock %}
