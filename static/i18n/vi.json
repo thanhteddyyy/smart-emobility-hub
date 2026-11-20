@@ -4,7 +4,7 @@
   "nav.ride": "Chuyến đi",
   "nav.charging": "Sạc",
   "nav.account": "Tài khoản",
-  "search.placeholder": "Tìm Hub hoặc xe điện...",
+  "search.placeholder": "Tìm trạm…",
   "search.nearest": "Trạm gần nhất",
   "search.radius": "Bán kính (km)",
   "search.minBattery": "Pin tối thiểu (%)",
@@ -286,5 +286,14 @@
   "schedule.colVehicle": "Xe",
   "schedule.colPort": "Cổng sạc",
   "schedule.colSlot": "Khung giờ",
-  "schedule.empty": "Chưa có lịch sạc — chọn Hub và bấm \"Tạo lịch tự động\"."
+  "schedule.empty": "Chưa có lịch sạc — chọn Hub và bấm \"Tạo lịch tự động\".",
+  "tv.station": "Thông tin trạm",
+  "tv.directions": "Chỉ đường đi bộ từ BK CS2",
+  "tv.connection": "Mất kết nối cập nhật dữ liệu.",
+  "tv.INVALID_PARAMETERS": "Chọn lại giờ đến",
+  "tv.INVALID_PARAMETERSBody": "Vui lòng chọn thời điểm trong tương lai.",
+  "tv.done": "Đã rõ",
+  "tv.NO_BIKES": "Trạm đã hết xe",
+  "tv.NO_BIKESBody": "Hãy chọn một trạm khác còn xe để đặt.",
+  "tv.origin": "Bạn ở đây · BK CS2"
 }

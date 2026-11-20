@@ -4,7 +4,7 @@ DEMO BẮT BUỘC – race condition: hai yêu cầu cùng đặt một xe, ch�
 Toàn bộ bước kiểm tra -> đổi trạng thái -> tạo booking được bọc trong `with db.DATA_LOCK:`.
 Thử bằng: python scripts/race_demo.py
 """
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
 import config
 from data import mock_data as db
@@ -13,6 +13,7 @@ from services.errors import (
     BOOKING_NOT_FOUND,
     HOLD_EXPIRED,
     HUB_FULL,
+    INVALID_PARAMETERS,
     RESOURCE_NOT_FOUND,
     VEHICLE_CONFLICT,
     ServiceError,
@@ -74,6 +75,17 @@ def bookVehicle(userId, vehicleId):
 def bookParking(userId, hubId, timeSlot):
     """UC4: Hub hết chỗ FREE -> ServiceError(HUB_FULL) (Hình 4)."""
     with db.DATA_LOCK:
+        try:
+            if not isinstance(timeSlot, str):
+                raise ValueError("Invalid arrival time")
+            if len(timeSlot) == 5 and timeSlot[2] == ":":
+                arrival = datetime.combine(datetime.now().date(), time.fromisoformat(timeSlot))
+            else:
+                arrival = datetime.fromisoformat(timeSlot.replace("Z", "+00:00"))
+        except (TypeError, ValueError):
+            raise ServiceError(INVALID_PARAMETERS, "Thời điểm đến không hợp lệ.")
+        if arrival <= datetime.now(arrival.tzinfo):
+            raise ServiceError(INVALID_PARAMETERS, "Vui lòng chọn thời điểm đến trong tương lai.")
         hub = db.getHub(hubId)
         if not hub or hub["status"] != "ACTIVE":
             raise ServiceError(RESOURCE_NOT_FOUND, "Không tìm thấy Hub đang hoạt động.")

@@ -108,12 +108,23 @@ def test_uc03_booking_same_vehicle_twice_returns_vehicle_conflict():
 
 
 def test_uc04_book_parking_creates_holding_booking():
-    booking = booking_service.bookParking("2413148", "H1", "18:00")
+    arrival = (datetime.now() + timedelta(hours=1)).isoformat()
+    booking = booking_service.bookParking("2413148", "H1", arrival)
 
     assert booking["type"] == "PARKING"
     assert booking["hubId"] == "H1"
-    assert booking["timeSlot"] == "18:00"
+    assert booking["timeSlot"] == arrival
     assert booking["status"] == "HOLDING"
+
+
+@pytest.mark.parametrize("arrival", ["2000-01-01T12:00", "2000-01-01T12:00+07:00", "invalid"])
+def test_uc04_invalid_arrival_preserves_availability(arrival):
+    before = [spot["status"] for spot in db.spotsOfHub("H1")]
+    with pytest.raises(ServiceError) as error:
+        booking_service.bookParking("2413148", "H1", arrival)
+    assert error.value.code == "INVALID_PARAMETERS"
+    assert before == [spot["status"] for spot in db.spotsOfHub("H1")]
+    assert not db.BOOKINGS
 
 
 def test_uc04_cancel_booking_releases_reserved_resource():

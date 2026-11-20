@@ -364,3 +364,8 @@
   }
 }
 
+@media (min-width:900px) {
+  :root[data-student-view="mobile"] .phone {height:calc(100dvh - 52px)}
+  :root:not([data-student-view="mobile"]) .phone.explorer .phone-main:has(#sheet[hidden]) {grid-template-columns:1fr}
+  :root:not([data-student-view="mobile"]) .phone.explorer .station-sheet {max-height:100%}
+}

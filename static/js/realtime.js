@@ -14,14 +14,20 @@
   async function refresh() {
     try {
       const res = await fetch("/api/state");
+      if (!res.ok) throw new Error(String(res.status));
       const state = await res.json();
+      if (!state.ok) throw new Error("Invalid state");
+      const warning = document.getElementById("connectionWarning");
+      if (warning) warning.hidden = true;
       document.querySelectorAll("[data-rt]").forEach(function (el) {
         const value = pick(state, el.dataset.rt);
         if (value !== undefined) el.textContent = value;
       });
       document.dispatchEvent(new CustomEvent("ehub:state", { detail: state }));
     } catch (e) {
-      console.warn("Mất kết nối realtime:", e); // TODO(TV4): hiện cảnh báo mất kết nối (NFR05)
+      const warning = document.getElementById("connectionWarning");
+      if (warning) warning.hidden = false;
+      console.warn("Mất kết nối realtime:", e);
     }
   }
 

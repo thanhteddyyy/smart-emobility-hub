@@ -22,6 +22,7 @@ def buildHubStatus(hub):
         "hubId": hub["id"], "name": hub["name"], "area": hub["area"],
         "lat": hub["lat"], "lng": hub["lng"], "status": hub["status"],
         "availableVehicles": sum(v["status"] == "AVAILABLE" for v in vehicles),
+        "totalVehicles": len(vehicles),
         "emptySpots": sum(s["status"] == "FREE" for s in spots),
         "totalSpots": len(spots),
         "availablePorts": sum(p["status"] == "AVAILABLE" for p in ports),

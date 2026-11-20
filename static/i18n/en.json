@@ -4,7 +4,7 @@
   "nav.ride": "My ride",
   "nav.charging": "Charging",
   "nav.account": "Account",
-  "search.placeholder": "Search hubs or e-bikes...",
+  "search.placeholder": "Search stations…",
   "search.nearest": "Nearest Station",
   "search.radius": "Radius (km)",
   "search.minBattery": "Min battery (%)",
@@ -286,5 +286,14 @@
   "schedule.colVehicle": "Vehicle",
   "schedule.colPort": "Charging Port",
   "schedule.colSlot": "Time Slot",
-  "schedule.empty": "No schedule yet — choose a Hub and click \"Auto-Generate Schedule\"."
+  "schedule.empty": "No schedule yet — choose a Hub and click \"Auto-Generate Schedule\".",
+  "tv.station": "Station details",
+  "tv.directions": "Walking directions from BK CS2",
+  "tv.connection": "Live updates disconnected.",
+  "tv.INVALID_PARAMETERS": "Choose a new arrival time",
+  "tv.INVALID_PARAMETERSBody": "Select a future arrival time.",
+  "tv.done": "Done",
+  "tv.NO_BIKES": "No bikes available",
+  "tv.NO_BIKESBody": "Choose another station with an available bike.",
+  "tv.origin": "You are here · BK CS2"
 }

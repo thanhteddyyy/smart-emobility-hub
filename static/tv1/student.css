@@ -33,3 +33,13 @@
 .portal-switch{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;padding-top:14px;border-top:1px solid var(--tv-line);font-size:12px}
 .portal-switch a{color:var(--tv-green);text-decoration:none;font-weight:600}
 .portal-switch a:hover{text-decoration:underline}
+
+.phone {height:100dvh;overflow:hidden}
+.phone-main {min-height:0;overflow-y:auto}
+.phone-nav,.phone-top,.web-navbar {flex-shrink:0}
+.explorer .station-sheet {max-height:55%;overflow:auto}
+.explorer .map-art {min-height:0}
+#suggestions {position:absolute;top:100%;left:0;right:0;margin:4px 0;padding:6px;list-style:none;border-radius:12px;background:var(--tv-bg);border:1px solid var(--tv-line);max-height:40dvh;overflow:auto}
+#suggestions button {width:100%;text-align:left;background:transparent}
+#suggestions button:hover,#suggestions button:focus {background:var(--tv-well)}
+#connectionWarning {position:fixed;bottom:4rem;left:50%;transform:translateX(-50%);z-index:50;padding:6px 12px;border-radius:8px;background:var(--tv-warn);color:var(--tv-amber)}
