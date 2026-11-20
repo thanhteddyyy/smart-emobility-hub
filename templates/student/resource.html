@@ -3,10 +3,75 @@
    Service liên quan: status_service.getResourceStatus, isStatusStale #}
 {% extends "base_mobile.html" %}
 {% block content %}
-<h1 class="h4 mt-2">Chi tiết xe / Hub</h1>
-<div class="todo-box">
-  <b>TODO (TV2) – UC2 · chưa có mockup</b><br>
-  Pin, chỗ trống, cổng sạc, thời điểm cập nhật; cảnh báo 'dữ liệu cũ' khi isStale.<br>
-  Service: <code>status_service.getResourceStatus, isStatusStale</code>
+<!-- Dữ liệu giả lập cho TV2 test UI, xoá khi TV4 ráp API -->
+{% set resource = resource | default({
+    'name': 'Trạm Ký túc xá A',
+    'vehicle_id': 'EB-028',
+    'battery_percentage': 68,
+    'available_slots': 5,
+    'total_slots': 12,
+    'available_ports': 3,
+    'total_ports': 6,
+    'updated_at': '14:30 • 20/11/2026'
+}, true) %}
+{% set is_stale = is_stale | default(false, true) %}
+
+<div class="pt-1 mb-3">
+  <h1 class="h3 fw-bold mb-1" style="color: var(--color-text);" data-i18n="resource.title">Chi tiết xe / Hub</h1>
+  <p class="mb-0 small" style="color: var(--color-muted);">{{ resource.name }} • {{ resource.vehicle_id }}</p>
+</div>
+
+<!-- Cảnh báo dữ liệu cũ khi isStale = true -->
+{% if is_stale %}
+<div class="card-x p-3 mb-3 d-flex align-items-start gap-2"
+     style="border: 1px solid var(--color-primary); background-color: var(--color-primary-soft);">
+  <span class="fw-bold" style="color: var(--color-primary);">!</span>
+  <div class="small" style="color: var(--color-text);" data-i18n="resource.staleWarning">
+    Dữ liệu cũ — trạng thái hiển thị có thể chưa được cập nhật mới nhất.
+  </div>
+</div>
+{% endif %}
+
+<!-- Thẻ Pin hiện tại (đồng bộ với H6 & H7) -->
+<article class="card-x p-3 mb-3">
+  <p class="small fw-semibold text-uppercase mb-3" style="color: var(--color-muted); letter-spacing: .04em;" data-i18n="resource.battery">Pin hiện tại</p>
+  <div class="d-flex align-items-center justify-content-between gap-3">
+    <div class="d-flex align-items-stretch flex-grow-1 gap-2" style="height: 2.75rem; max-width: 12rem;">
+      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
+      <span class="flex-fill rounded-3" style="background: var(--color-primary-soft);"></span>
+    </div>
+    <div class="text-end">
+      <div class="fs-2 fw-bold lh-1" style="color: var(--color-text);">{{ resource.battery_percentage }}%</div>
+      <div class="small mt-1" style="color: var(--color-muted);">{{ resource.vehicle_id }}</div>
+    </div>
+  </div>
+</article>
+
+<!-- Thẻ Chỗ trống & Cổng sạc -->
+<article class="card-x p-3 mb-3">
+  <h2 class="h6 fw-bold mb-3" style="color: var(--color-text);" data-i18n="resource.hubStatus">Trạng thái trạm</h2>
+  <div class="d-flex flex-column gap-2 small">
+    <div class="d-flex justify-content-between">
+      <span style="color: var(--color-muted);" data-i18n="resource.availableSlots">Chỗ đậu trống</span>
+      <span class="fw-bold" style="color: var(--color-text);">{{ resource.available_slots }} / {{ resource.total_slots }}</span>
+    </div>
+    <div class="d-flex justify-content-between">
+      <span style="color: var(--color-muted);" data-i18n="resource.availablePorts">Cổng sạc trống</span>
+      <span class="fw-bold" style="color: var(--color-text);">{{ resource.available_ports }} / {{ resource.total_ports }}</span>
+    </div>
+    <div class="d-flex justify-content-between pt-2" style="border-top: 1px solid var(--color-border);">
+      <span style="color: var(--color-muted);" data-i18n="resource.updatedAt">Cập nhật lúc</span>
+      <span style="color: var(--color-muted);">{{ resource.updated_at }}</span>
+    </div>
+  </div>
+</article>
+
+<!-- Nút thao tác -->
+<div class="mt-auto d-flex flex-column gap-2 pt-2">
+  <button type="button" class="btn w-100 btn-primary-x" data-i18n="resource.btnRefresh">Làm mới trạng thái</button>
+  <button type="button" class="btn w-100 btn-outline-x" data-i18n="resource.btnBack">Quay lại</button>
 </div>
 {% endblock %}
