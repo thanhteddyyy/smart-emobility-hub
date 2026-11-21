@@ -74,18 +74,23 @@ def bookVehicle(userId, vehicleId):
 
 def bookParking(userId, hubId, timeSlot):
     """UC4: Hub hết chỗ FREE -> ServiceError(HUB_FULL) (Hình 4)."""
+    if not timeSlot:
+        raise ServiceError(INVALID_PARAMETERS, "Thiếu thời gian đặt chỗ.")
+    try:
+        slotText = str(timeSlot).strip()
+        if len(slotText) == 5 and slotText[2] == ":":
+            datetime.strptime(slotText, "%H:%M")
+            slotTime = None
+        else:
+            slotTime = datetime.fromisoformat(slotText.replace("Z", "+00:00"))
+        if slotTime is not None and slotTime.tzinfo:
+            slotTime = slotTime.replace(tzinfo=None)
+        if slotTime is not None and slotTime < datetime.now():
+            raise ServiceError(INVALID_PARAMETERS, "Không thể đặt chỗ trong quá khứ.")
+    except ValueError:
+        raise ServiceError(INVALID_PARAMETERS, "Thời gian đặt chỗ không hợp lệ.")
     with db.DATA_LOCK:
-        try:
-            if not isinstance(timeSlot, str):
-                raise ValueError("Invalid arrival time")
-            if len(timeSlot) == 5 and timeSlot[2] == ":":
-                arrival = datetime.combine(datetime.now().date(), time.fromisoformat(timeSlot))
-            else:
-                arrival = datetime.fromisoformat(timeSlot.replace("Z", "+00:00"))
-        except (TypeError, ValueError):
-            raise ServiceError(INVALID_PARAMETERS, "Thời điểm đến không hợp lệ.")
-        if arrival <= datetime.now(arrival.tzinfo):
-            raise ServiceError(INVALID_PARAMETERS, "Vui lòng chọn thời điểm đến trong tương lai.")
+
         hub = db.getHub(hubId)
         if not hub or hub["status"] != "ACTIVE":
             raise ServiceError(RESOURCE_NOT_FOUND, "Không tìm thấy Hub đang hoạt động.")

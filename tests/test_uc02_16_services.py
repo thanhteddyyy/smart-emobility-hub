@@ -222,7 +222,7 @@ def test_uc06_return_vehicle_rejects_booking_owned_by_another_user():
 
 def test_uc07_register_charging_reserves_available_port():
     registration = charging_service.registerCharging(
-        "2413148", "H1", "H1-C01", "2026-11-20T09:00", 30
+        "2413148", "H1", "H1-C01", "2099-11-20T09:00", 30
     )
 
     assert registration["portId"] == "H1-C01"
@@ -233,12 +233,12 @@ def test_uc07_register_charging_reserves_available_port():
 
 def test_uc07_duplicate_port_and_slot_are_rejected():
     charging_service.registerCharging(
-        "2413148", "H1", "H1-C01", "2026-11-20T09:00", 30
+        "2413148", "H1", "H1-C01", "2099-11-20T09:00", 30
     )
 
     with pytest.raises(ServiceError) as error:
         charging_service.registerCharging(
-            "another-user", "H1", "H1-C01", "2026-11-20T09:00", 40
+            "another-user", "H1", "H1-C01", "2099-11-20T09:00", 40
         )
 
     assert error.value.code == NO_PORT_AVAILABLE

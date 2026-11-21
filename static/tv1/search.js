@@ -24,14 +24,14 @@
     map = L.map(box).setView(start, 15);
     map.zoomControl.setPosition('bottomleft');
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
-    hubs.forEach((h, i) => L.circleMarker([h.lat, h.lng], {radius: 11})
-      .addTo(map).bindTooltip(Object.assign(document.createElement('span'), {textContent: h.name}))
+    hubs.forEach((h, i) => L.circleMarker([h.lat, h.lng], { radius: 11 })
+      .addTo(map).bindTooltip(Object.assign(document.createElement('span'), { textContent: h.name }))
       .on('click', () => selectHub(i)));
     const markerLabel = document.createElement('span');
     markerLabel.dataset.i18n = 'tv.origin';
     markerLabel.textContent = 'BK CS2';
-    L.circleMarker(start, {radius: 5, interactive: false, color: 'white', fillColor: 'blue', fillOpacity: 1})
-      .addTo(map).bindTooltip(markerLabel, {permanent: true, direction: 'bottom'});
+    L.circleMarker(start, { radius: 5, interactive: false, color: 'white', fillColor: 'blue', fillOpacity: 1 })
+      .addTo(map).bindTooltip(markerLabel, { permanent: true, direction: 'bottom' });
     new ResizeObserver(() => map.invalidateSize()).observe(box);
   }
 
@@ -49,8 +49,8 @@
     const end = [hub.lat, hub.lng];
     if (hub.lat === origin.lat && hub.lng === origin.lng) map.setView(start, 16);
     else {
-      route = L.polyline([start, end], {dashArray: '5 8', interactive: false}).addTo(map);
-      map.fitBounds(route.getBounds(), {padding: [30, 50], maxZoom: 16});
+      route = L.polyline([start, end], { dashArray: '5 8', interactive: false }).addTo(map);
+      map.fitBounds(route.getBounds(), { padding: [30, 50], maxZoom: 16 });
     }
   }
 
@@ -95,9 +95,9 @@
     byId('selection').hidden = byId('tabs').hidden = false;
     byId('bikeField').hidden = byId('batteryLine').hidden = !bike;
     byId('parkField').hidden = bike;
-    byId('bikeTab').classList.toggle('chosen',bike);
-    byId('parkTab').classList.toggle('chosen',!bike);
-    label('bookingTitle','tv.reserve'); label('confirm','tv.confirm'); label('cancel','action.cancel');
+    byId('bikeTab').classList.toggle('chosen', bike);
+    byId('parkTab').classList.toggle('chosen', !bike);
+    label('bookingTitle', 'tv.reserve'); label('confirm', 'tv.confirm'); label('cancel', 'action.cancel');
     byId('cancel').hidden = false;
     byId('confirm').disabled = false;
     updateMinimum();
@@ -106,12 +106,13 @@
   function openBooking(tab = 'vehicle') {
     const vehicles = byId('vehicles');
     const available = hub.matchingVehicles;
-    vehicles.replaceChildren(...available.map(v => new Option(v.model+' (#'+v.id+')',v.id)));
+    vehicles.replaceChildren(...available.map(v => new Option(v.model + ' (#' + v.id + ')', v.id)));
     vehicles.onchange = () => byId('battery').textContent = available[vehicles.selectedIndex]?.batteryLevel ?? '—';
     vehicles.onchange();
     byId('place').textContent = hub.name;
     if (user) byId('identity').textContent = user.id;
-    else label('identity','tv.guest');
+    else label('identity', 'tv.guest');
+
     choose(tab);
     if (!dialog.open) dialog.showModal();
   }
@@ -126,8 +127,8 @@
     for (const panel of panels) panel.hidden = panel.dataset.feedback !== code;
     byId('genericFeedback').hidden = panels.some(panel => !panel.hidden);
     byId('lostBike').textContent = byId('vehicles').selectedOptions[0]?.textContent || '';
-    label('feedbackTitle','tv.'+code); label('feedbackBody','tv.'+code+'Body');
-    byId('alternative').textContent = code === 'HUB_FULL' && alternate ? alternate.name+' · 🅿 '+alternate.emptySpots : '';
+    label('feedbackTitle', 'tv.' + code); label('feedbackBody', 'tv.' + code + 'Body');
+    byId('alternative').textContent = code === 'HUB_FULL' && alternate ? alternate.name + ' · 🅿 ' + alternate.emptySpots : '';
     const actions = {
       SUCCESS: mode === 'vehicle' ? 'tv.goPickup' : 'tv.done',
       HUB_FULL: alternate ? 'tv.switch' : 'tv.back',
@@ -139,7 +140,7 @@
     };
     byId('cancel').hidden = actions[code] === 'tv.done' || actions[code] === 'tv.back';
     label('confirm', actions[code]);
-    label('cancel','tv.back'); translate();
+    label('cancel', 'tv.back'); translate();
   }
   byId('bikeTab').onclick = () => choose('vehicle');
   byId('parkTab').onclick = () => choose('parking');
@@ -159,9 +160,9 @@
         location.assign(nextPath);
         return;
       }
-      if (state === 'HUB_FULL' && alternate) {selectHub(hubs.indexOf(alternate)); openBooking('parking');}
-      else if (['HOLD_EXPIRED','UNAVAILABLE','INVALID_PARAMETERS'].includes(state)) openBooking(mode);
-      else { dialog.close(); selectHub(-1); if (['VEHICLE_CONFLICT','NO_BIKES'].includes(state)) query.focus(); }
+      if (state === 'HUB_FULL' && alternate) { selectHub(hubs.indexOf(alternate)); openBooking('parking'); }
+      else if (['HOLD_EXPIRED', 'UNAVAILABLE', 'INVALID_PARAMETERS'].includes(state)) openBooking(mode);
+      else { dialog.close(); selectHub(-1); if (['VEHICLE_CONFLICT', 'NO_BIKES'].includes(state)) query.focus(); }
       return;
     }
     updateMinimum();
@@ -171,18 +172,20 @@
     busy = true;
     dialog.querySelectorAll('button, input, select').forEach(el => { el.disabled = true; });
     try {
-      const payload = mode === 'vehicle' ? {vehicleId:byId('vehicles').value} : {hubId:hub.hubId,timeSlot:new Date(slot.value).toISOString()};
-      const response = await fetch('/api/bookings/'+mode,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      if (response.status === 401) {location.assign('/login?next=/student/search'); return;}
+      const payload = mode === 'vehicle' ? { vehicleId: byId('vehicles').value } : { hubId: hub.hubId, timeSlot: new Date(slot.value).toISOString() };
+      const response = await fetch('/api/bookings/' + mode, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (response.status === 401) { location.assign('/login?next=/student/search'); return; }
       const result = await response.json().catch(() => ({}));
-      if (response.ok && result.ok) { lastBookingId = result.booking?.id || null;
+      if (response.ok && result.ok) {
+        lastBookingId = result.booking?.id || null;
         if (mode === 'vehicle') hub.matchingVehicles = hub.matchingVehicles.filter(v => v.id !== payload.vehicleId);
         const key = mode === 'vehicle' ? 'availableVehicles' : 'emptySpots';
         hub[key] = Math.max(0, hub[key] - 1);
         cards[hubs.indexOf(hub)].querySelector('[data-rt$=".' + key + '"]').textContent = hub[key];
-        feedback('SUCCESS'); }
-      else feedback(['VEHICLE_CONFLICT','HUB_FULL','HOLD_EXPIRED','INVALID_PARAMETERS'].includes(result.error) ? result.error : 'UNAVAILABLE');
-    } catch {feedback('UNAVAILABLE');}
+        feedback('SUCCESS');
+      }
+      else feedback(['VEHICLE_CONFLICT', 'HUB_FULL', 'HOLD_EXPIRED', 'INVALID_PARAMETERS'].includes(result.error) ? result.error : 'UNAVAILABLE');
+    } catch { feedback('UNAVAILABLE'); }
     finally {
       busy = false;
       dialog.querySelectorAll('button, input, select').forEach(el => { el.disabled = false; });
@@ -190,12 +193,12 @@
   };
   dialog.addEventListener('cancel', event => { if (busy) event.preventDefault(); });
   const models = new Map(hubs.flatMap(h => h.matchingVehicles.map(v => [v.id, v.model])));
-  document.addEventListener('ehub:state', ({detail}) => {
+  document.addEventListener('ehub:state', ({ detail }) => {
     const vehicles = Object.entries(detail.network.vehicles);
     hubs.forEach((h, i) => {
       Object.assign(h, detail.hubs[h.hubId]);
       h.matchingVehicles = vehicles.filter(([, v]) => v.hubId === h.hubId && v.status === 'AVAILABLE')
-        .map(([id, v]) => ({...v, id, model: models.get(id) || id}));
+        .map(([id, v]) => ({ ...v, id, model: models.get(id) || id }));
       const pill = cards[i].querySelector('.pill');
       const key = h.availableVehicles ? 'tv.open' : 'tv.noBike';
       if (pill.dataset.i18n !== key) { pill.dataset.i18n = key; translate(); }
@@ -204,8 +207,8 @@
   initMap();
   // Read-only mockup previews. Never send a booking request on page load.
   const screen = new URLSearchParams(location.search).get('ui');
-  const examples = {H3:'VEHICLE_CONFLICT',H4:'HUB_FULL',H5:'HOLD_EXPIRED'};
-  if (hubs.length && ['H2',...Object.keys(examples)].includes(screen)) {
+  const examples = { H3: 'VEHICLE_CONFLICT', H4: 'HUB_FULL', H5: 'HOLD_EXPIRED' };
+  if (hubs.length && ['H2', ...Object.keys(examples)].includes(screen)) {
     selectHub(0);
     openBooking(screen === 'H4' ? 'parking' : 'vehicle');
     if (examples[screen]) feedback(examples[screen]);

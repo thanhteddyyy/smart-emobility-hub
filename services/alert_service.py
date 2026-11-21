@@ -98,9 +98,20 @@ def evaluateHubLoad(includeSeeded=False):
                 item["hubName"] = hubUsage["name"]
                 if item.get("utilizationType") == "Parking spots":
                     item["utilization"] = hubUsage["usagePercent"]
-                    if hubUsage["usageRate"] >= config.OVERLOAD_CRITICAL_RATE:
-                        item["dangerLevel"] = "HIGH"
-            item["severity"] = "CRITICAL" if item.get("dangerLevel") == "HIGH" else "WARNING"
+                elif item.get("utilizationType") == "Charging ports":
+                    ports = db.portsOfHub(item["hubId"])
+                    occupied = sum(p["status"] in ("IN_USE", "OUT_OF_ORDER") for p in ports)
+                    item["utilization"] = int(round(occupied * 100 / len(ports))) if ports else 0
+            utilization = item.get("utilization", 0)
+            if utilization >= int(round(config.OVERLOAD_CRITICAL_RATE * 100)):
+                item["dangerLevel"] = "HIGH"
+                item["severity"] = "CRITICAL"
+            elif utilization >= int(round(config.OVERLOAD_WARNING_RATE * 100)):
+                item["dangerLevel"] = "MEDIUM"
+                item["severity"] = "WARNING"
+            else:
+                item["dangerLevel"] = "LOW"
+                item["severity"] = "SAFE"
             alerts.append(item)
 
         statusOrder = {"ACTIVE": 0, "RESOLVED": 1}

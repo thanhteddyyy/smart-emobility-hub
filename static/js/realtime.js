@@ -14,20 +14,42 @@
   async function refresh() {
     try {
       const res = await fetch("/api/state");
-      if (!res.ok) throw new Error(String(res.status));
+      if (!res.ok) throw new Error("HTTP " + res.status);
       const state = await res.json();
       if (!state.ok) throw new Error("Invalid state");
-      const warning = document.getElementById("connectionWarning");
-      if (warning) warning.hidden = true;
+
+      const studentWarning = document.getElementById("connectionWarning");
+      if (studentWarning) studentWarning.hidden = true;
+      const floatingWarning = document.getElementById("realtimeConnectionWarning");
+      if (floatingWarning) floatingWarning.hidden = true;
+
       document.querySelectorAll("[data-rt]").forEach(function (el) {
         const value = pick(state, el.dataset.rt);
         if (value !== undefined) el.textContent = value;
       });
       document.dispatchEvent(new CustomEvent("ehub:state", { detail: state }));
     } catch (e) {
-      const warning = document.getElementById("connectionWarning");
-      if (warning) warning.hidden = false;
       console.warn("Mất kết nối realtime:", e);
+      const studentWarning = document.getElementById("connectionWarning");
+      if (studentWarning) {
+        studentWarning.hidden = false;
+      } else {
+        let floatingWarning = document.getElementById("realtimeConnectionWarning");
+        if (!floatingWarning) {
+          floatingWarning = document.createElement("div");
+          floatingWarning.id = "realtimeConnectionWarning";
+          floatingWarning.className = "alert-x danger";
+          floatingWarning.setAttribute("role", "alert");
+          floatingWarning.style.position = "fixed";
+          floatingWarning.style.bottom = "1rem";
+          floatingWarning.style.left = "50%";
+          floatingWarning.style.transform = "translateX(-50%)";
+          floatingWarning.style.zIndex = "9999";
+          floatingWarning.textContent = "Mất kết nối realtime. Đang thử cập nhật lại...";
+          document.body.appendChild(floatingWarning);
+        }
+        floatingWarning.hidden = false;
+      }
     }
   }
 

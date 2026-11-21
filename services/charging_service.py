@@ -1,5 +1,6 @@
 """UC7 – Đăng ký sạc (Submission 3, mục 2.5)."""
 import math
+from datetime import datetime
 
 from data import mock_data as db
 from services.errors import INVALID_PARAMETERS, NO_PORT_AVAILABLE, RESOURCE_NOT_FOUND, ServiceError
@@ -17,6 +18,16 @@ def registerCharging(userId, hubId, portId, timeSlot, batteryLevel):
         raise ServiceError(INVALID_PARAMETERS, "Thiếu thông tin đăng ký sạc.")
     if not isinstance(batteryLevel, (int, float)) or isinstance(batteryLevel, bool) or not (0 <= batteryLevel <= 100):
         raise ServiceError(INVALID_PARAMETERS, "Mức pin phải nằm trong khoảng 0 đến 100.")
+    try:
+        slotText = str(timeSlot)
+        if "T" in slotText:
+            slotTime = datetime.fromisoformat(slotText.replace("Z", "+00:00"))
+            if slotTime.tzinfo:
+                slotTime = slotTime.replace(tzinfo=None)
+            if slotTime < datetime.now():
+                raise ServiceError(INVALID_PARAMETERS, "Không thể đăng ký sạc trong quá khứ.")
+    except ValueError:
+        raise ServiceError(INVALID_PARAMETERS, "Thời gian đăng ký sạc không hợp lệ.")
 
     hub = db.getHub(hubId)
     if not hub:

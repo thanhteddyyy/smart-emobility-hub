@@ -35,7 +35,7 @@ Hoặc bấm đúp `run.bat` trên Windows, `./run.sh` trên macOS/Linux.
 | Đơn vị vận hành | `operator@ehub.vn` | `123456` | `/operator/login` |
 | Không đủ quyền (để demo lỗi) | `guest@gmail.com` | `123456` | Cả 2 cổng đều báo `ACCESS_DENIED` |
 
-_TODO: bổ sung phiên bản Python khuyến nghị và kịch bản demo chi tiết trước khi nộp._
+Phiên bản khuyến nghị: Python 3.11 trở lên (đã xác minh với Python 3.13). Chạy `python app.py`, sau đó truy cập `/login` cho Sinh viên hoặc `/operator/login` cho Operator.
 
 ---
 

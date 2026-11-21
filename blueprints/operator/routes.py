@@ -4,6 +4,7 @@ from flask import Blueprint, redirect, render_template, request, session, url_fo
 from services import alert_service, dispatch_service, incident_service, monitor_service, simulation_service
 from services.auth_service import loginRequired
 from services.errors import ServiceError
+from services import realtime_service
 
 bp = Blueprint("operator", __name__)
 
@@ -30,6 +31,7 @@ def overview():
         overview=overviewData,
         alerts=alerts,
         filter=filterCriteria,
+        packetLog=realtime_service.PACKET_LOG[-20:],
     )
 
 
