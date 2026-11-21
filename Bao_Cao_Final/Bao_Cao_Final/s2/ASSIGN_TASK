@@ -1,0 +1,104 @@
+II. PHÂN CÔNG CHI TIẾT TỪNG THÀNH VIÊN (INDIVIDUAL TASKS & UI DESIGN)
+👤 THÀNH VIÊN 1: LUỒNG TÌM KIẾM & ĐẶT GIỮ XE (UC1 - UC4)
+Activity Diagram:
+
+Luồng Sinh viên mở App → Tìm Hub / Xe → Chọn xe → Đặt giữ chỗ xe.
+
+Sequence Diagram:
+
+Tương tác giữa Student → :MapSearchScreen / :BookingConfirmModal → :BookingController → Database.
+
+UI Task (Chủ trì Mobile App - Đặt phương tiện):
+
+MapSearchScreen: Màn hình Bản đồ & Tìm kiếm Hub/Phương tiện.
+
+BookingConfirmModal: Hộp thoại Xác nhận Đặt giữ phương tiện (Tập trung hiển thị thông tin xe, % pin, thời gian giữ chỗ, mã đặt chỗ).
+
+👤 THÀNH VIÊN 2: LUỒNG QUẢN LÝ CHUYẾN ĐI, TRẢ XE & DỊCH VỤ SẠC (UC5 - UC7)
+Activity Diagram:
+
+Luồng Sinh viên quét mã QR nhận xe → Di chuyển → Trả xe tại Hub → Đăng ký suất sạc / sử dụng dịch vụ sạc độc lập.
+
+Sequence Diagram:
+
+Tương tác giữa Student → :ActiveRideScreen / :ReturnScreen / :ChargingBookingModal → :TripController / :ChargingController → :IoTGateway.
+
+UI Task (Hỗ trợ Mobile App - Chuyến đi & Sạc):
+
+ActiveRideScreen: Màn hình Chuyến đi đang diễn ra (Theo dõi hành trình, % pin xe).
+
+ReturnScreen: Màn hình Trả xe & Hướng dẫn trả về Hub.
+
+ChargingBookingModal (hoặc ChargingStationScreen): Hộp thoại/Màn hình Đăng ký, đặt suất sạc hoặc điều khiển bật/tắt công tắc sạc tại trạm.
+
+👤 THÀNH VIÊN 3: LUỒNG GIÁM SÁT MẠNG LƯỚI & QUẢN LÝ SỰ CỐ (UC8 - UC10, UC12)
+Activity Diagram:
+
+Luồng Cảnh báo quá tải/Sự cố phát sinh → Ban vận hành kiểm tra → Phân công xử lý.
+
+Sequence Diagram:
+
+Tương tác giữa Operator → :MonitoringDashboard / :IncidentModal → :AlertController → Database.
+
+UI Task (Chủ trì Web Dashboard):
+
+MonitoringDashboard: Dashboard Giám sát Mạng lưới Hub Tổng quan.
+
+IncidentModal: Bảng Quản lý Tài nguyên (Trạm sạc/Xe) & Xử lý Sự cố.
+
+👤 THÀNH VIÊN 4: LUỒNG ĐIỀU PHỐI, LẬP LỊCH & MÔ PHỎNG WHAT-IF (UC11, UC13, UC14)
+Activity Diagram:
+
+Luồng Chọn Hub nguồn/đích → Điều phối xe → Chạy thuật toán mô phỏng Kịch bản What-if.
+
+Sequence Diagram:
+
+Tương tác giữa Operator → :DispatchScreen / :SimulationPanel → :DispatchController / :OptimizationEngine.
+
+UI Task (Hỗ trợ Web Dashboard):
+
+DispatchScreen: Màn hình Điều phối xe.
+
+SimulationPanel: Panel Mô phỏng Kịch bản What-if.
+
+Nhiệm vụ Bonus:
+
+Vẽ State-chart Diagram cho Vòng đời trạng thái của Xe điện (Available → Reserved → In-use → Low Battery → Charging → Maintenance).
+
+👤 THÀNH VIÊN 5: LUỒNG HỆ THỐNG, XÁC THỰC SSO & IOT (UC15 - UC17)
+Activity Diagram:
+
+Luồng Đăng nhập SSO → Phân quyền (RBAC) → Đồng bộ dữ liệu cảm biến IoT thời gian thực.
+
+Sequence Diagram:
+
+Tương tác giữa User/Sensor → :LoginScreen / :IoTReceiver → :SSOProvider → :IoTController.
+
+UI Task:
+
+LoginScreen: Màn hình Đăng nhập / Xác thực hệ thống.
+
+
+
+- Trách nhiệm Trưởng nhóm (Leader): 
+  + Điều phối tiến độ công việc chung của nhóm.
+  + Tổng hợp file Báo cáo Submission #2 (định dạng PDF).
+  + Rà soát & Kiểm tra chéo (Cross-check) tên Lớp Boundary/Màn hình trên toàn bộ tài liệu trước khi nộp.
+
+
+
+Gợi ý các lớp boundary (các màn hình UI) cần vẽ:
+Phân hệ Mobile App (Sinh viên): 5 Lớp
+MapSearchScreen: Màn hình Bản đồ & Tìm kiếm Hub / Phương tiện / Trạm sạc.
+BookingConfirmModal: Hộp thoại Xác nhận Đặt giữ xe.
+ChargingBookingModal (Mới): Hộp thoại/Màn hình Đặt trước suất sạc hoặc Bật/Tắt sạc.
+ActiveRideScreen: Màn hình Chuyến đi đang diễn ra.
+ReturnScreen: Màn hình Hướng dẫn & Xác nhận Trả xe.
+Phân hệ Web Dashboard (Ban vận hành): 4 Lớp
+MonitoringDashboard: Màn hình Giám sát Mạng lưới Hub Tổng quan.
+IncidentModal: Hộp thoại Quản lý Cảnh báo & Sự cố.
+DispatchScreen: Màn hình Lập lệnh Điều phối Xe.
+SimulationPanel: Panel Mô phỏng Kịch bản What-if.
+Phân hệ Hệ thống (Dùng chung): 1 Lớp
+LoginScreen (Màn hình Đăng nhập & Xác thực SSO)
+

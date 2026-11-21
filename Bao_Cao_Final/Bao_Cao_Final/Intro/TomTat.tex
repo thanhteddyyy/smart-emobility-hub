@@ -1,0 +1,6 @@
+\section*{Tóm tắt}
+\addcontentsline{toc}{section}{Tóm tắt}
+
+Báo cáo trình bày quá trình phân tích, thiết kế, hiện thực và kiểm thử hệ thống \textbf{E-Hub (Smart E-Mobility Hub)} --- nền tảng điều phối phương tiện điện trong Khu đô thị ĐHQG-HCM. Hệ thống hỗ trợ hai nhóm người dùng chính: \textbf{Sinh viên} (tìm Hub và xe điện trên bản đồ, xem trạng thái thời gian thực, đặt xe, đặt chỗ đỗ, nhận/trả xe và đăng ký sạc) và \textbf{Đơn vị vận hành} (giám sát mạng lưới, theo dõi tài nguyên, cảnh báo quá tải, điều phối xe, xử lý sự cố, lập lịch sạc thông minh và mô phỏng kịch bản What-if).
+
+Phiên bản MVP được xây dựng theo kiến trúc 3 tầng trên nền tảng Python/Flask với dữ liệu giả lập gồm 5 Hub, 700 xe, 830 chỗ đỗ và 220 cổng sạc. Kết quả kiểm thử tự động bằng \texttt{pytest} đạt \textbf{87/87 test case} và hoàn thành cả 3 kịch bản demo bắt buộc (chống tranh chấp đồng thời khi đặt xe, lọc gói dữ liệu trễ và cô lập dữ liệu mô phỏng).
