@@ -6369,19 +6369,19 @@
   {
    "id": "H1-P03",
    "hubId": "H1",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P04",
    "hubId": "H1",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P05",
    "hubId": "H1",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6399,31 +6399,31 @@
   {
    "id": "H1-P08",
    "hubId": "H1",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P09",
    "hubId": "H1",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P10",
    "hubId": "H1",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P11",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P12",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6447,13 +6447,13 @@
   {
    "id": "H1-P16",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P17",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6477,13 +6477,13 @@
   {
    "id": "H1-P21",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P22",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6507,13 +6507,13 @@
   {
    "id": "H1-P26",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P27",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6537,13 +6537,13 @@
   {
    "id": "H1-P31",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P32",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6555,7 +6555,7 @@
   {
    "id": "H1-P34",
    "hubId": "H1",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6567,13 +6567,13 @@
   {
    "id": "H1-P36",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P37",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6597,13 +6597,13 @@
   {
    "id": "H1-P41",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P42",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6627,13 +6627,13 @@
   {
    "id": "H1-P46",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P47",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6657,13 +6657,13 @@
   {
    "id": "H1-P51",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P52",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6687,13 +6687,13 @@
   {
    "id": "H1-P56",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P57",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6717,13 +6717,13 @@
   {
    "id": "H1-P61",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P62",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6747,19 +6747,19 @@
   {
    "id": "H1-P66",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P67",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P68",
    "hubId": "H1",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6777,13 +6777,13 @@
   {
    "id": "H1-P71",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P72",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6807,13 +6807,13 @@
   {
    "id": "H1-P76",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P77",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6837,13 +6837,13 @@
   {
    "id": "H1-P81",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P82",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6861,19 +6861,19 @@
   {
    "id": "H1-P85",
    "hubId": "H1",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P86",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P87",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6897,13 +6897,13 @@
   {
    "id": "H1-P91",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P92",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6927,13 +6927,13 @@
   {
    "id": "H1-P96",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P97",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6957,13 +6957,13 @@
   {
    "id": "H1-P101",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P102",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -6987,13 +6987,13 @@
   {
    "id": "H1-P106",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P107",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7017,13 +7017,13 @@
   {
    "id": "H1-P111",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P112",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7047,13 +7047,13 @@
   {
    "id": "H1-P116",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P117",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7065,7 +7065,7 @@
   {
    "id": "H1-P119",
    "hubId": "H1",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7077,13 +7077,13 @@
   {
    "id": "H1-P121",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P122",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7107,13 +7107,13 @@
   {
    "id": "H1-P126",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P127",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7137,13 +7137,13 @@
   {
    "id": "H1-P131",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P132",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7167,13 +7167,13 @@
   {
    "id": "H1-P136",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P137",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7197,13 +7197,13 @@
   {
    "id": "H1-P141",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P142",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7227,13 +7227,13 @@
   {
    "id": "H1-P146",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P147",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7257,19 +7257,19 @@
   {
    "id": "H1-P151",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P152",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P153",
    "hubId": "H1",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7287,13 +7287,13 @@
   {
    "id": "H1-P156",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P157",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7317,13 +7317,13 @@
   {
    "id": "H1-P161",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P162",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7347,13 +7347,13 @@
   {
    "id": "H1-P166",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P167",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7371,19 +7371,19 @@
   {
    "id": "H1-P170",
    "hubId": "H1",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P171",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P172",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7407,13 +7407,13 @@
   {
    "id": "H1-P176",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P177",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7437,13 +7437,13 @@
   {
    "id": "H1-P181",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P182",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7467,13 +7467,13 @@
   {
    "id": "H1-P186",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P187",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7497,13 +7497,13 @@
   {
    "id": "H1-P191",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P192",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7527,13 +7527,13 @@
   {
    "id": "H1-P196",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-P197",
    "hubId": "H1",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7569,19 +7569,19 @@
   {
    "id": "H2-P03",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P04",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P05",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7599,19 +7599,19 @@
   {
    "id": "H2-P08",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P09",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P10",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7629,19 +7629,19 @@
   {
    "id": "H2-P13",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P14",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P15",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7659,19 +7659,19 @@
   {
    "id": "H2-P18",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P19",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P20",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7689,19 +7689,19 @@
   {
    "id": "H2-P23",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P24",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P25",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7719,19 +7719,19 @@
   {
    "id": "H2-P28",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P29",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P30",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7749,19 +7749,19 @@
   {
    "id": "H2-P33",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P34",
    "hubId": "H2",
-   "status": "RESERVED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P35",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7779,19 +7779,19 @@
   {
    "id": "H2-P38",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P39",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P40",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7809,61 +7809,61 @@
   {
    "id": "H2-P43",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P44",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P45",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P46",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P47",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P48",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P49",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P50",
    "hubId": "H2",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P51",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P52",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7887,13 +7887,13 @@
   {
    "id": "H2-P56",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P57",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7917,13 +7917,13 @@
   {
    "id": "H2-P61",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P62",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7947,19 +7947,19 @@
   {
    "id": "H2-P66",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P67",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P68",
    "hubId": "H2",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -7977,13 +7977,13 @@
   {
    "id": "H2-P71",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P72",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8007,13 +8007,13 @@
   {
    "id": "H2-P76",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P77",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8037,13 +8037,13 @@
   {
    "id": "H2-P81",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P82",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8061,19 +8061,19 @@
   {
    "id": "H2-P85",
    "hubId": "H2",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P86",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P87",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8097,13 +8097,13 @@
   {
    "id": "H2-P91",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P92",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8127,13 +8127,13 @@
   {
    "id": "H2-P96",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P97",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8157,13 +8157,13 @@
   {
    "id": "H2-P101",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P102",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8187,13 +8187,13 @@
   {
    "id": "H2-P106",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P107",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8217,13 +8217,13 @@
   {
    "id": "H2-P111",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P112",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8247,13 +8247,13 @@
   {
    "id": "H2-P116",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P117",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8265,7 +8265,7 @@
   {
    "id": "H2-P119",
    "hubId": "H2",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8277,13 +8277,13 @@
   {
    "id": "H2-P121",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P122",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8307,13 +8307,13 @@
   {
    "id": "H2-P126",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P127",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8337,13 +8337,13 @@
   {
    "id": "H2-P131",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P132",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8367,13 +8367,13 @@
   {
    "id": "H2-P136",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P137",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8397,13 +8397,13 @@
   {
    "id": "H2-P141",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P142",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8427,13 +8427,13 @@
   {
    "id": "H2-P146",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P147",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8457,19 +8457,19 @@
   {
    "id": "H2-P151",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P152",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P153",
    "hubId": "H2",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8487,13 +8487,13 @@
   {
    "id": "H2-P156",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P157",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8517,13 +8517,13 @@
   {
    "id": "H2-P161",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P162",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8547,13 +8547,13 @@
   {
    "id": "H2-P166",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P167",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8571,19 +8571,19 @@
   {
    "id": "H2-P170",
    "hubId": "H2",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P171",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P172",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8607,13 +8607,13 @@
   {
    "id": "H2-P176",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-P177",
    "hubId": "H2",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8649,19 +8649,19 @@
   {
    "id": "H3-P03",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P04",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P05",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8679,19 +8679,19 @@
   {
    "id": "H3-P08",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P09",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P10",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8709,19 +8709,19 @@
   {
    "id": "H3-P13",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P14",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P15",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8739,19 +8739,19 @@
   {
    "id": "H3-P18",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P19",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P20",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8769,19 +8769,19 @@
   {
    "id": "H3-P23",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P24",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P25",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8799,19 +8799,19 @@
   {
    "id": "H3-P28",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P29",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P30",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8829,19 +8829,19 @@
   {
    "id": "H3-P33",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P34",
    "hubId": "H3",
-   "status": "RESERVED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P35",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8859,19 +8859,19 @@
   {
    "id": "H3-P38",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P39",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P40",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8889,19 +8889,19 @@
   {
    "id": "H3-P43",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P44",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P45",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8919,19 +8919,19 @@
   {
    "id": "H3-P48",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P49",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P50",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8949,19 +8949,19 @@
   {
    "id": "H3-P53",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P54",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P55",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -8979,19 +8979,19 @@
   {
    "id": "H3-P58",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P59",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P60",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9009,31 +9009,31 @@
   {
    "id": "H3-P63",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P64",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P65",
    "hubId": "H3",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P66",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P67",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9057,13 +9057,13 @@
   {
    "id": "H3-P71",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P72",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9087,13 +9087,13 @@
   {
    "id": "H3-P76",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P77",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9117,13 +9117,13 @@
   {
    "id": "H3-P81",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P82",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9141,19 +9141,19 @@
   {
    "id": "H3-P85",
    "hubId": "H3",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P86",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P87",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9177,13 +9177,13 @@
   {
    "id": "H3-P91",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P92",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9207,13 +9207,13 @@
   {
    "id": "H3-P96",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P97",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9237,13 +9237,13 @@
   {
    "id": "H3-P101",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P102",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9267,13 +9267,13 @@
   {
    "id": "H3-P106",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P107",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9297,13 +9297,13 @@
   {
    "id": "H3-P111",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P112",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9327,13 +9327,13 @@
   {
    "id": "H3-P116",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P117",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9345,7 +9345,7 @@
   {
    "id": "H3-P119",
    "hubId": "H3",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9357,13 +9357,13 @@
   {
    "id": "H3-P121",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P122",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9387,13 +9387,13 @@
   {
    "id": "H3-P126",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P127",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9417,13 +9417,13 @@
   {
    "id": "H3-P131",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P132",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9447,13 +9447,13 @@
   {
    "id": "H3-P136",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P137",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9477,13 +9477,13 @@
   {
    "id": "H3-P141",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P142",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9507,13 +9507,13 @@
   {
    "id": "H3-P146",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P147",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9537,19 +9537,19 @@
   {
    "id": "H3-P151",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P152",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P153",
    "hubId": "H3",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9567,13 +9567,13 @@
   {
    "id": "H3-P156",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-P157",
    "hubId": "H3",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9609,19 +9609,19 @@
   {
    "id": "H4-P03",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P04",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P05",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9639,19 +9639,19 @@
   {
    "id": "H4-P08",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P09",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P10",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9669,19 +9669,19 @@
   {
    "id": "H4-P13",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P14",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P15",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9693,37 +9693,37 @@
   {
    "id": "H4-P17",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P18",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P19",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P20",
    "hubId": "H4",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P21",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P22",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9747,13 +9747,13 @@
   {
    "id": "H4-P26",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P27",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9777,13 +9777,13 @@
   {
    "id": "H4-P31",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P32",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9795,7 +9795,7 @@
   {
    "id": "H4-P34",
    "hubId": "H4",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9807,13 +9807,13 @@
   {
    "id": "H4-P36",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P37",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9837,13 +9837,13 @@
   {
    "id": "H4-P41",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P42",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9867,13 +9867,13 @@
   {
    "id": "H4-P46",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P47",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9897,13 +9897,13 @@
   {
    "id": "H4-P51",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P52",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9927,13 +9927,13 @@
   {
    "id": "H4-P56",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P57",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9957,13 +9957,13 @@
   {
    "id": "H4-P61",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P62",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -9987,19 +9987,19 @@
   {
    "id": "H4-P66",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P67",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P68",
    "hubId": "H4",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10017,13 +10017,13 @@
   {
    "id": "H4-P71",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P72",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10047,13 +10047,13 @@
   {
    "id": "H4-P76",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P77",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10077,13 +10077,13 @@
   {
    "id": "H4-P81",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P82",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10101,19 +10101,19 @@
   {
    "id": "H4-P85",
    "hubId": "H4",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P86",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P87",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10137,13 +10137,13 @@
   {
    "id": "H4-P91",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P92",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10167,13 +10167,13 @@
   {
    "id": "H4-P96",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P97",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10197,13 +10197,13 @@
   {
    "id": "H4-P101",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P102",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10227,13 +10227,13 @@
   {
    "id": "H4-P106",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P107",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10257,13 +10257,13 @@
   {
    "id": "H4-P111",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P112",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10287,13 +10287,13 @@
   {
    "id": "H4-P116",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P117",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10305,7 +10305,7 @@
   {
    "id": "H4-P119",
    "hubId": "H4",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10317,13 +10317,13 @@
   {
    "id": "H4-P121",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P122",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10347,13 +10347,13 @@
   {
    "id": "H4-P126",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P127",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10377,13 +10377,13 @@
   {
    "id": "H4-P131",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P132",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10407,13 +10407,13 @@
   {
    "id": "H4-P136",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-P137",
    "hubId": "H4",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10449,19 +10449,19 @@
   {
    "id": "H5-P03",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P04",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P05",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10479,19 +10479,19 @@
   {
    "id": "H5-P08",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P09",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P10",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10509,19 +10509,19 @@
   {
    "id": "H5-P13",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P14",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P15",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10539,19 +10539,19 @@
   {
    "id": "H5-P18",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P19",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P20",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10569,19 +10569,19 @@
   {
    "id": "H5-P23",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P24",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P25",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10599,19 +10599,19 @@
   {
    "id": "H5-P28",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P29",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P30",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10629,19 +10629,19 @@
   {
    "id": "H5-P33",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P34",
    "hubId": "H5",
-   "status": "RESERVED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P35",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10659,19 +10659,19 @@
   {
    "id": "H5-P38",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P39",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P40",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10689,19 +10689,19 @@
   {
    "id": "H5-P43",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P44",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P45",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10719,19 +10719,19 @@
   {
    "id": "H5-P48",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P49",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P50",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10749,19 +10749,19 @@
   {
    "id": "H5-P53",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P54",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P55",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10779,19 +10779,19 @@
   {
    "id": "H5-P58",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P59",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P60",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10809,19 +10809,19 @@
   {
    "id": "H5-P63",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P64",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P65",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10839,19 +10839,19 @@
   {
    "id": "H5-P68",
    "hubId": "H5",
-   "status": "RESERVED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P69",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P70",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10869,19 +10869,19 @@
   {
    "id": "H5-P73",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P74",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P75",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10899,31 +10899,31 @@
   {
    "id": "H5-P78",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "FREE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P79",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P80",
    "hubId": "H5",
-   "status": "OCCUPIED",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P81",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P82",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "RESERVED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10941,19 +10941,19 @@
   {
    "id": "H5-P85",
    "hubId": "H5",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P86",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P87",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -10977,13 +10977,13 @@
   {
    "id": "H5-P91",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P92",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11007,13 +11007,13 @@
   {
    "id": "H5-P96",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P97",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11037,13 +11037,13 @@
   {
    "id": "H5-P101",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P102",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11067,13 +11067,13 @@
   {
    "id": "H5-P106",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P107",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11097,13 +11097,13 @@
   {
    "id": "H5-P111",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P112",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11127,13 +11127,13 @@
   {
    "id": "H5-P116",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P117",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11145,7 +11145,7 @@
   {
    "id": "H5-P119",
    "hubId": "H5",
-   "status": "RESERVED",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11157,13 +11157,13 @@
   {
    "id": "H5-P121",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P122",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11187,13 +11187,13 @@
   {
    "id": "H5-P126",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P127",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11217,13 +11217,13 @@
   {
    "id": "H5-P131",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P132",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11247,13 +11247,13 @@
   {
    "id": "H5-P136",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P137",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11277,13 +11277,13 @@
   {
    "id": "H5-P141",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P142",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11307,13 +11307,13 @@
   {
    "id": "H5-P146",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-P147",
    "hubId": "H5",
-   "status": "FREE",
+   "status": "OCCUPIED",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11347,21 +11347,21 @@
    "id": "H1-C02",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C03",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C04",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11382,14 +11382,14 @@
    "id": "H1-C07",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C08",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11410,14 +11410,14 @@
    "id": "H1-C11",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C12",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11431,14 +11431,14 @@
    "id": "H1-C14",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C15",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11452,14 +11452,14 @@
    "id": "H1-C17",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C18",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11480,14 +11480,14 @@
    "id": "H1-C21",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C22",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11508,14 +11508,14 @@
    "id": "H1-C25",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C26",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11536,14 +11536,14 @@
    "id": "H1-C29",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C30",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11564,14 +11564,14 @@
    "id": "H1-C33",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C34",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11592,14 +11592,14 @@
    "id": "H1-C37",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C38",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11620,14 +11620,14 @@
    "id": "H1-C41",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C42",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11641,21 +11641,21 @@
    "id": "H1-C44",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C45",
    "hubId": "H1",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C46",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11676,14 +11676,14 @@
    "id": "H1-C49",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H1-C50",
    "hubId": "H1",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11704,14 +11704,14 @@
    "id": "H2-C03",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C04",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11732,7 +11732,7 @@
    "id": "H2-C07",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11746,21 +11746,21 @@
    "id": "H2-C09",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C10",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C11",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11774,21 +11774,21 @@
    "id": "H2-C13",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C14",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C15",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11802,14 +11802,14 @@
    "id": "H2-C17",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C18",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11830,14 +11830,14 @@
    "id": "H2-C21",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C22",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11858,14 +11858,14 @@
    "id": "H2-C25",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C26",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11886,14 +11886,14 @@
    "id": "H2-C29",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C30",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11914,14 +11914,14 @@
    "id": "H2-C33",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C34",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11942,14 +11942,14 @@
    "id": "H2-C37",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C38",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11970,14 +11970,14 @@
    "id": "H2-C41",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C42",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -11991,14 +11991,14 @@
    "id": "H2-C44",
    "hubId": "H2",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H2-C45",
    "hubId": "H2",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12019,14 +12019,14 @@
    "id": "H3-C03",
    "hubId": "H3",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C04",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12047,14 +12047,14 @@
    "id": "H3-C07",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C08",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12075,14 +12075,14 @@
    "id": "H3-C11",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C12",
    "hubId": "H3",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12103,14 +12103,14 @@
    "id": "H3-C15",
    "hubId": "H3",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C16",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12131,14 +12131,14 @@
    "id": "H3-C19",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C20",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12159,7 +12159,7 @@
    "id": "H3-C23",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12173,14 +12173,14 @@
    "id": "H3-C25",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C26",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12201,14 +12201,14 @@
    "id": "H3-C29",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C30",
    "hubId": "H3",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12229,14 +12229,14 @@
    "id": "H3-C33",
    "hubId": "H3",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C34",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12257,14 +12257,14 @@
    "id": "H3-C37",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H3-C38",
    "hubId": "H3",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12299,14 +12299,14 @@
    "id": "H4-C03",
    "hubId": "H4",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C04",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12327,14 +12327,14 @@
    "id": "H4-C07",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C08",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12355,14 +12355,14 @@
    "id": "H4-C11",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C12",
    "hubId": "H4",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12383,14 +12383,14 @@
    "id": "H4-C15",
    "hubId": "H4",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C16",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12411,14 +12411,14 @@
    "id": "H4-C19",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C20",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12432,7 +12432,7 @@
    "id": "H4-C22",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12453,14 +12453,14 @@
    "id": "H4-C25",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C26",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12481,14 +12481,14 @@
    "id": "H4-C29",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C30",
    "hubId": "H4",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12509,14 +12509,14 @@
    "id": "H4-C33",
    "hubId": "H4",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C34",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12537,14 +12537,14 @@
    "id": "H4-C37",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H4-C38",
    "hubId": "H4",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12579,14 +12579,14 @@
    "id": "H5-C03",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C04",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12607,14 +12607,14 @@
    "id": "H5-C07",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C08",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12635,14 +12635,14 @@
    "id": "H5-C11",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C12",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12663,14 +12663,14 @@
    "id": "H5-C15",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C16",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12691,14 +12691,14 @@
    "id": "H5-C19",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C20",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12719,14 +12719,14 @@
    "id": "H5-C23",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C24",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12747,28 +12747,28 @@
    "id": "H5-C27",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C28",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "IN_USE",
+   "status": "AVAILABLE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C29",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C30",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12789,14 +12789,14 @@
    "id": "H5-C33",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C34",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12817,14 +12817,14 @@
    "id": "H5-C37",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C38",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12845,14 +12845,14 @@
    "id": "H5-C41",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C42",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
@@ -12866,14 +12866,14 @@
    "id": "H5-C44",
    "hubId": "H5",
    "powerKw": 3.3,
-   "status": "OUT_OF_ORDER",
+   "status": "IN_USE",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   },
   {
    "id": "H5-C45",
    "hubId": "H5",
    "powerKw": 7.4,
-   "status": "AVAILABLE",
+   "status": "OUT_OF_ORDER",
    "lastUpdatedAt": "2026-11-17T08:00:00"
   }
  ],
@@ -12896,7 +12896,7 @@
    "hubId": "H1",
    "resourceType": "HUB",
    "resourceId": "H1",
-   "description": "Hub sắp quá tải",
+   "description": "Hub sắp quá tải giờ cao điểm",
    "reason": "Quá tải trạm",
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "HIGH",
@@ -12909,7 +12909,7 @@
    "hubId": "H3",
    "resourceType": "VEHICLE",
    "resourceId": "EB-221",
-   "description": "GPS lệch vị trí",
+   "description": "GPS lệch vị trí khỏi trạm",
    "reason": "GPS lệch vị trí",
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "LOW",
@@ -12922,7 +12922,7 @@
    "hubId": "H4",
    "resourceType": "CHARGING_PORT",
    "resourceId": "H4-C01",
-   "description": "Cổng sạc lỗi chập chờn",
+   "description": "Cổng sạc lỗi chập chờn điện áp",
    "reason": "Hỏng cổng sạc",
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "MEDIUM",
@@ -12935,8 +12935,8 @@
    "hubId": "H2",
    "resourceType": "VEHICLE",
    "resourceId": "EB-213",
-   "description": "Mất tín hiệu GPS",
-   "reason": "Lỗi pin",
+   "description": "Pin sụt nhanh bất thường",
+   "reason": "Lỗi pin / sụt áp",
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "LOW",
    "status": "RESOLVED",
@@ -12948,11 +12948,24 @@
    "hubId": "H5",
    "resourceType": "HUB",
    "resourceId": "H5",
-   "description": "Hub mất kết nối chập chờn",
+   "description": "Hub mất tín hiệu định kỳ",
    "reason": "Mất kết nối IoT",
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "MEDIUM",
    "status": "IN_PROGRESS",
+   "operator": "Jack",
+   "createdAt": "2026-11-17T08:00:00"
+  },
+  {
+   "id": "INC-007",
+   "hubId": "H2",
+   "resourceType": "VEHICLE",
+   "resourceId": "EB-209",
+   "description": "Phanh trước bị bó nhẹ cần bảo trì",
+   "reason": "Hỏng phanh / lốp xe",
+   "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
+   "priority": "MEDIUM",
+   "status": "RESOLVED",
    "operator": "Jack",
    "createdAt": "2026-11-17T08:00:00"
   }
@@ -12986,7 +12999,7 @@
    "hubId": "H1",
    "hubName": "Ga Metro ĐHQG",
    "utilizationType": "Parking spots",
-   "utilization": 95,
+   "utilization": 96,
    "threshold": 75,
    "dangerLevel": "HIGH",
    "location": "Ga Metro ĐHQG - Cửa Đông",
@@ -12999,7 +13012,7 @@
    "hubId": "H2",
    "hubName": "KTX Khu A",
    "utilizationType": "Charging ports",
-   "utilization": 90,
+   "utilization": 84,
    "threshold": 80,
    "dangerLevel": "MEDIUM",
    "location": "KTX Khu A - Cổng chính",
@@ -13012,9 +13025,9 @@
    "hubId": "H4",
    "hubName": "ĐH Bách khoa CS2",
    "utilizationType": "Parking spots",
-   "utilization": 93,
+   "utilization": 89,
    "threshold": 75,
-   "dangerLevel": "HIGH",
+   "dangerLevel": "MEDIUM",
    "location": "ĐH Bách khoa CS2 - Nhà xe A",
    "expectedCause": "Class dismissal peak",
    "status": "ACTIVE",
@@ -13025,11 +13038,11 @@
    "hubId": "H3",
    "hubName": "KTX Khu B",
    "utilizationType": "Parking spots",
-   "utilization": 85,
+   "utilization": 60,
    "threshold": 80,
-   "dangerLevel": "MEDIUM",
+   "dangerLevel": "LOW",
    "location": "KTX Khu B - Khu B2",
-   "expectedCause": "Evening return traffic",
+   "expectedCause": "Normal evening traffic",
    "status": "ACTIVE",
    "createdAt": "2026-11-17T09:10:00"
   },
@@ -13038,11 +13051,11 @@
    "hubId": "H5",
    "hubName": "Nhà văn hóa Sinh viên",
    "utilizationType": "Charging ports",
-   "utilization": 82,
+   "utilization": 40,
    "threshold": 75,
-   "dangerLevel": "MEDIUM",
+   "dangerLevel": "LOW",
    "location": "Nhà văn hóa Sinh viên - Sảnh B",
-   "expectedCause": "Student event surge",
+   "expectedCause": "Off-peak charging window",
    "status": "RESOLVED",
    "createdAt": "2026-11-17T09:05:00"
   }

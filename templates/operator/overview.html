@@ -3,45 +3,39 @@
 {% block heading %}<span data-i18n="dash.overview">Tổng quan mạng lưới</span>{% endblock %}
 
 {% block content %}
-<section class="panel-card mb-3" id="packetLogPanel">
-  <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
-    <h2 class="panel-title m-0">Nhật ký gói dữ liệu trễ (PACKET_LOG)</h2>
-    <small class="text-muted-2">Lọc gói có timestamp cũ</small>
-  </div>
-  <div class="table-responsive">
-    <table class="table-x">
-      <thead><tr><th>Tài nguyên</th><th>Trạng thái gói</th><th>Timestamp</th><th>Lý do</th></tr></thead>
-      <tbody id="packetLogBody">
-        {% for entry in packetLog %}
-        <tr><td>{{ entry.packet.resourceType }} / {{ entry.packet.resourceId }}</td><td>{{ entry.packet.status }}</td><td>{{ entry.packet.timestamp }}</td><td>{{ entry.reason }}</td></tr>
-        {% else %}
-        <tr><td colspan="4" class="text-muted-2 small">Chưa có gói trễ. Gửi gói qua /api/telemetry để demo.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</section>
 <div class="d-flex flex-wrap align-items-center gap-3">
   <div class="stat-grid flex-grow-1">
     <div class="stat-card-x stat-card-primary">
       <i class="bi bi-geo-alt-fill stat-icon" aria-hidden="true"></i>
       <div class="stat-label" data-i18n="stat.hubs">Hubs</div>
-      <div class="num" data-rt="network.activeHubCount">{{ overview.activeHubCount }}</div>
+      <div class="num">
+        <span data-rt="network.activeHubCount">{{ overview.activeHubCount }}</span>
+        <span class="fs-6 fw-normal opacity-75">/ {{ overview.totalHubs }}</span>
+      </div>
     </div>
     <div class="stat-card-x stat-card-warning">
       <i class="bi bi-bicycle stat-icon" aria-hidden="true"></i>
       <div class="stat-label" data-i18n="stat.vehicles">Xe sẵn sàng</div>
-      <div class="num" data-rt="network.availableVehicles">{{ overview.availableVehicles }}</div>
+      <div class="num">
+        <span data-rt="network.availableVehicles">{{ overview.availableVehicles }}</span>
+        <span class="fs-6 fw-normal opacity-75">/ {{ overview.totalVehicles }}</span>
+      </div>
     </div>
     <div class="stat-card-x stat-card-secondary">
       <i class="bi bi-p-square-fill stat-icon" aria-hidden="true"></i>
       <div class="stat-label" data-i18n="stat.spots">Chỗ đỗ trống</div>
-      <div class="num" data-rt="network.emptySpots">{{ overview.emptySpots }}</div>
+      <div class="num">
+        <span data-rt="network.emptySpots">{{ overview.emptySpots }}</span>
+        <span class="fs-6 fw-normal opacity-75">/ {{ overview.totalSpots }}</span>
+      </div>
     </div>
     <div class="stat-card-x stat-card-error">
       <i class="bi bi-ev-station-fill stat-icon" aria-hidden="true"></i>
       <div class="stat-label" data-i18n="stat.ports">Cổng sạc trống</div>
-      <div class="num" data-rt="network.availablePorts">{{ overview.availablePorts }}</div>
+      <div class="num">
+        <span data-rt="network.availablePorts">{{ overview.availablePorts }}</span>
+        <span class="fs-6 fw-normal opacity-75">/ {{ overview.totalPorts }}</span>
+      </div>
     </div>
   </div>
   <button type="button" id="overviewRefreshBtn" class="btn btn-outline-secondary rounded-circle p-2" title="Refresh" aria-label="Refresh">
@@ -58,33 +52,61 @@
   <section class="panel-card d-flex flex-column gap-3">
     <h2 class="panel-title" data-i18n="dash.warningsAndAlerts">Cảnh báo &amp; Sự cố</h2>
     <div class="d-flex flex-column gap-2">
-      {% for alert in alerts[:5] %}
+      {% for alert in alerts[:4] %}
         <div class="alert-feed-item">
           <div class="d-flex align-items-center justify-content-between gap-2">
             <div class="d-flex align-items-center gap-2">
-              <span class="small">{{ alert.createdAt[11:16] }}</span>
-              <span class="chip-x {{ 'chip-solid-danger' if alert.dangerLevel == 'HIGH' else 'chip-solid-warning' }}"
-                    data-i18n="{{ 'alerts.critical' if alert.dangerLevel == 'HIGH' else 'alerts.warning' }}">
-                {{ 'Critical' if alert.dangerLevel == 'HIGH' else 'Warning' }}
-              </span>
+              <span class="small text-muted-2">{{ alert.createdAt[11:16] }}</span>
+              {% if alert.dangerLevel == 'HIGH' %}
+                <span class="chip-x chip-solid-danger" data-i18n="alerts.critical">Critical</span>
+              {% elif alert.dangerLevel == 'MEDIUM' %}
+                <span class="chip-x chip-solid-warning" data-i18n="alerts.warning">Warning</span>
+              {% else %}
+                <span class="chip-x chip-solid-success" data-i18n="alerts.safe">Safe</span>
+              {% endif %}
             </div>
             {% if alert.dangerLevel == 'HIGH' %}
               <span class="tag-incident" data-i18n="alerts.incidentTag">Incident</span>
             {% endif %}
           </div>
           <div class="small">
-            <strong>{{ alert.hubName }}</strong> —
-            <span data-i18n="{{ 'alerts.overloadingMsg' if alert.dangerLevel == 'HIGH' else 'alerts.reachingOverloadMsg' }}">
-              {{ 'đang quá tải' if alert.dangerLevel == 'HIGH' else 'sắp đạt ngưỡng quá tải' }}
-            </span> ({{ alert.utilization }}%)
+            <strong>{{ alert.hubName }}</strong> ({{ alert.utilizationType }}) —
+            {% if alert.dangerLevel == 'HIGH' %}
+              <span data-i18n="alerts.overloadingMsg">đang quá tải</span>
+            {% elif alert.dangerLevel == 'MEDIUM' %}
+              <span data-i18n="alerts.reachingOverloadMsg">sắp đạt ngưỡng quá tải</span>
+            {% else %}
+              <span data-i18n="alerts.normalMsg">hoạt động bình thường</span>
+            {% endif %}
+            ({{ alert.utilization }}%)
           </div>
         </div>
       {% else %}
         <div class="text-muted-2 small" data-i18n="alerts.empty">Không có cảnh báo quá tải.</div>
       {% endfor %}
+
+      {% if openIncidents %}
+        <div class="pt-2 mt-1 border-top">
+          <div class="small fw-semibold text-muted-2 mb-2" data-i18n="alerts.recentIncidents">Sự cố cần xử lý</div>
+          <div class="d-flex flex-column gap-2">
+            {% for inc in openIncidents[:3] %}
+              <a class="alert-feed-item text-decoration-none" href="{{ url_for('operator.incidentDetail', incidentId=inc.id) }}">
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                  <span class="fw-semibold small text-body">{{ inc.hubName }} · {{ inc.resourceId }}</span>
+                  <span class="chip-x {{ 'chip-soft-danger' if inc.priority == 'HIGH' else 'chip-soft-warning' if inc.priority == 'MEDIUM' else 'chip-soft-success' }}">
+                    {{ inc.reason or inc.resourceType }}
+                  </span>
+                </div>
+                <div class="small text-muted-2">{{ inc.description }}</div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
     </div>
-    <div>
+    <div class="d-flex flex-wrap gap-2">
       <a class="btn btn-danger btn-sm px-3" href="{{ url_for('operator.alerts') }}" data-i18n="action.viewAll">Xem tất cả</a>
+      <a class="btn-outline-x btn-sm" href="{{ url_for('operator.incidents') }}" data-i18n="dash.incidents">Xử lý sự cố</a>
     </div>
   </section>
 
@@ -128,6 +150,11 @@
           <tr class="hub-row" data-hub-name="{{ hub.name | lower }} {{ hub.hubId | lower }}">
             <td>
               <div class="fw-semibold">{{ hub.name }}</div>
+              <div class="small text-muted-2">
+                {{ hub.availableVehicles }}/{{ hub.totalVehicles }} EV ·
+                {{ hub.emptySpots }}/{{ hub.totalSpots }} P ·
+                {{ hub.availablePorts }}/{{ hub.totalPorts }} C
+              </div>
               <a class="link-view-resources" href="{{ url_for('operator.resources', hubId=hub.hubId) }}" data-i18n="action.viewResources">View resources</a>
             </td>
             <td>
@@ -135,7 +162,7 @@
                     data-rt="hubs.{{ hub.hubId }}.status">{{ hub.status }}</span>
             </td>
             <td>
-              <span class="fw-medium {{ 'text-danger' if hub.safetyWarning == 'Overload' else 'text-warning' if hub.safetyWarning == 'Danger' else '' }}"
+              <span class="fw-medium {{ 'text-danger' if hub.safetyWarning == 'Overload' else 'text-warning' if hub.safetyWarning == 'Danger' else 'text-success' }}"
                     data-rt="hubs.{{ hub.hubId }}.safetyWarning">{{ hub.safetyWarning }}</span>
             </td>
             <td class="fw-semibold">
@@ -152,11 +179,55 @@
     </div>
   </section>
 </div>
+
+<section class="panel-card" id="packetLogPanel">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <h2 class="panel-title m-0" data-i18n="packetLog.title">Nhật ký gói dữ liệu trễ (PACKET_LOG)</h2>
+    <small class="text-muted-2" data-i18n="packetLog.subtitle">Tự động lọc bỏ gói có timestamp cũ (UC16)</small>
+  </div>
+  <div class="table-responsive table-scroll-sm">
+    <table class="table-x">
+      <thead>
+        <tr>
+          <th data-i18n="packetLog.colResource">Tài nguyên</th>
+          <th data-i18n="packetLog.colStatus">Trạng thái gói</th>
+          <th data-i18n="packetLog.colTimestamp">Timestamp</th>
+          <th data-i18n="packetLog.colReason">Lý do</th>
+        </tr>
+      </thead>
+      <tbody id="packetLogBody">
+        {% for entry in packetLog | reverse %}
+        <tr>
+          <td class="fw-semibold">{{ entry.packet.resourceType }} / {{ entry.packet.resourceId }}</td>
+          <td>{{ entry.packet.status }}</td>
+          <td class="small text-muted-2">{{ entry.packet.timestamp }}</td>
+          <td>
+            <span class="chip-x chip-soft-warning">{{ entry.reason }}</span>
+            {% if entry.demo %}<span class="small text-muted-2 ms-1">demo</span>{% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4" class="text-muted-2 small py-3 text-center" data-i18n="packetLog.empty">
+            Chưa có gói trễ. Chạy scripts/packet_demo.py hoặc gửi tới /api/telemetry để demo.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 {% endblock %}
 
 {% block scripts %}
 <script>
 (function () {
+  function escapeHtml(text) {
+    return String(text ?? "").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
   async function refreshPacketLog() {
     const body = document.getElementById("packetLogBody");
     if (!body) return;
@@ -165,15 +236,13 @@
       if (!res.ok) return;
       const data = await res.json();
       const entries = data.packetLog || [];
-      if (!entries.length) {
-        body.innerHTML = '<tr><td colspan="4" class="text-muted-2 small">Chưa có gói trễ. Gửi gói qua /api/telemetry để demo.</td></tr>';
-        return;
-      }
+      if (!entries.length) return;
       body.innerHTML = entries.slice().reverse().map(function (entry) {
         const packet = entry.packet || {};
-        return "<tr><td>" + (packet.resourceType || "") + " / " + (packet.resourceId || "") +
-          "</td><td>" + (packet.status || "") + "</td><td>" + (packet.timestamp || "") +
-          "</td><td>" + (entry.reason || "") + (entry.demo ? " · demo" : "") + "</td></tr>";
+        const demoBadge = entry.demo ? ' <span class="small text-muted-2 ms-1">demo</span>' : "";
+        return "<tr><td class='fw-semibold'>" + escapeHtml(packet.resourceType) + " / " + escapeHtml(packet.resourceId) +
+          "</td><td>" + escapeHtml(packet.status) + "</td><td class='small text-muted-2'>" + escapeHtml(packet.timestamp) +
+          "</td><td><span class='chip-x chip-soft-warning'>" + escapeHtml(entry.reason) + "</span>" + demoBadge + "</td></tr>";
       }).join("");
     } catch (err) {
       console.warn("Không thể tải PACKET_LOG:", err);
@@ -222,7 +291,7 @@
       if (safetyEl) {
         const warning = hubs[hid].safetyWarning;
         safetyEl.textContent = warning;
-        safetyEl.className = "fw-medium " + (warning === "Overload" ? "text-danger" : warning === "Danger" ? "text-warning" : "");
+        safetyEl.className = "fw-medium " + (warning === "Overload" ? "text-danger" : warning === "Danger" ? "text-warning" : "text-success");
       }
     });
   });

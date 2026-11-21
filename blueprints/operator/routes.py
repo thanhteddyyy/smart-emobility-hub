@@ -26,10 +26,15 @@ def overview():
     }
     overviewData = monitor_service.getNetworkOverview(filterCriteria)
     alerts = alert_service.evaluateHubLoad(includeSeeded=True)
+    openIncidents = [
+        inc for inc in incident_service.getPrioritizedIncidents()
+        if inc.get("status") != "RESOLVED"
+    ]
     return render_template(
         "operator/overview.html",
         overview=overviewData,
         alerts=alerts,
+        openIncidents=openIncidents,
         filter=filterCriteria,
         packetLog=realtime_service.PACKET_LOG[-20:],
     )
@@ -171,6 +176,8 @@ def simulation():
         "studentDemandPercent": request.form.get("studentDemandPercent", 20),
         "availableEvDelta": request.form.get("availableEvDelta", -15),
         "weather": request.form.get("weather", "HEAVY_RAIN"),
+        "timeFrame": request.form.get("timeFrame", "09:00-18:00"),
+        "scenario": request.form.get("scenario", "STANDARD"),
     }
     report, error = None, None
     try:
@@ -181,6 +188,8 @@ def simulation():
             "studentDemandPercent": 20,
             "availableEvDelta": -15,
             "weather": "HEAVY_RAIN",
+            "timeFrame": "09:00-18:00",
+            "scenario": "STANDARD",
         })
 
     return render_template(

@@ -41,10 +41,13 @@
             </td>
             <td>{{ a.utilizationType }}: {{ a.utilization }}%</td>
             <td>
-              <span class="chip-x {{ 'chip-solid-danger' if a.dangerLevel == 'HIGH' else 'chip-solid-warning' }}"
-                    data-i18n="{{ 'priority.high' if a.dangerLevel == 'HIGH' else 'priority.medium' }}">
-                {{ 'High' if a.dangerLevel == 'HIGH' else 'Medium' }}
-              </span>
+              {% if a.dangerLevel == 'HIGH' %}
+                <span class="chip-x chip-solid-danger" data-i18n="priority.high">High</span>
+              {% elif a.dangerLevel == 'MEDIUM' %}
+                <span class="chip-x chip-solid-warning" data-i18n="priority.medium">Medium</span>
+              {% else %}
+                <span class="chip-x chip-solid-success" data-i18n="priority.low">Low</span>
+              {% endif %}
             </td>
             <td class="text-muted-2 small">{{ a.createdAt.replace('T', ' ') }}</td>
           </tr>

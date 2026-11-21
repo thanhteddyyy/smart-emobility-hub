@@ -10,10 +10,19 @@ from services.errors import INVALID_PARAMETERS, ServiceError
 _REPORTS = {}
 
 _WEATHER_FACTORS = {
-    "HEAVY_RAIN": (1.25, 5),
-    "LIGHT_RAIN": (1.10, 2),
-    "CLEAR": (1.00, 0),
-    "EXTREME_HEAT": (1.15, 3),
+    "HEAVY_RAIN": (1.22, 0.06),
+    "LIGHT_RAIN": (1.10, 0.02),
+    "CLEAR": (0.98, 0.00),
+    "EXTREME_HEAT": (1.15, 0.04),
+}
+
+_VALID_TIME_FRAMES = ("09:00-18:00", "06:00-12:00", "12:00-18:00")
+
+_SCENARIO_FACTORS = {
+    "STANDARD": (1.00, 0.00),
+    "HUB_FULL": (1.15, 0.02),
+    "WEATHER_ALERT": (1.12, 0.05),
+    "LOW_SUPPLY": (1.05, 0.12),
 }
 
 
@@ -23,7 +32,7 @@ def initVirtualEnvironment():
 
 
 def validateParameters(params):
-    """Kiểm tra tham số mô phỏng: studentDemandPercent, availableEvDelta, weather."""
+    """Kiểm tra tham số mô phỏng: studentDemandPercent, availableEvDelta, weather, timeFrame, scenario."""
     if not isinstance(params, dict) or not params:
         raise ServiceError(INVALID_PARAMETERS, "Thiếu tham số mô phỏng.")
     try:
@@ -33,14 +42,19 @@ def validateParameters(params):
         raise ServiceError(INVALID_PARAMETERS, "Tham số số lượng phải là số nguyên hợp lệ.") from exc
 
     weather = (params.get("weather") or "HEAVY_RAIN").upper()
-    timeFrame = (params.get("timeFrame") or "09:00-18:00")
+    timeFrame = params.get("timeFrame") or "09:00-18:00"
     scenario = (params.get("scenario") or "STANDARD").upper()
+
     if not (-50 <= demandPct <= 100):
         raise ServiceError(INVALID_PARAMETERS, "Biến động nhu cầu phải trong khoảng -50% đến +100%.")
-    if not (-50 <= evDelta <= 50):
-        raise ServiceError(INVALID_PARAMETERS, "Biến động số xe sẵn sàng phải trong khoảng -50 đến +50.")
+    if not (-100 <= evDelta <= 100):
+        raise ServiceError(INVALID_PARAMETERS, "Biến động số xe sẵn sàng phải trong khoảng -100 đến +100.")
     if weather not in _WEATHER_FACTORS:
         raise ServiceError(INVALID_PARAMETERS, "Điều kiện thời tiết không hợp lệ.")
+    if timeFrame not in _VALID_TIME_FRAMES:
+        raise ServiceError(INVALID_PARAMETERS, "Khung giờ mô phỏng không hợp lệ.")
+    if scenario not in _SCENARIO_FACTORS:
+        raise ServiceError(INVALID_PARAMETERS, "Kịch bản mô phỏng không hợp lệ.")
 
     return {
         "studentDemandPercent": demandPct,
@@ -51,44 +65,85 @@ def validateParameters(params):
     }
 
 
+def _selectCurveProfile(timeFrame, weather, scenario):
+    """Chọn nhãn giờ và đường cong tỷ trọng nhu cầu/cung biến thiên theo khung giờ, thời tiết và kịch bản."""
+    if timeFrame == "06:00-12:00":
+        hours = ["06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM"]
+        supplyRatios = [0.04, 0.02, -0.02, -0.04, 0.00, 0.03]
+        byScenario = {
+            "HUB_FULL": [0.50, 0.68, 0.80, 0.86, 0.90, 0.96],
+            "WEATHER_ALERT": [0.44, 0.60, 0.78, 0.88, 0.95, 0.84],
+            "LOW_SUPPLY": [0.48, 0.70, 0.90, 0.84, 0.74, 0.66],
+        }
+        byWeather = {
+            "CLEAR": [0.36, 0.62, 0.86, 0.74, 0.60, 0.52],
+            "LIGHT_RAIN": [0.42, 0.68, 0.82, 0.88, 0.72, 0.62],
+            "HEAVY_RAIN": [0.48, 0.72, 0.86, 0.94, 0.80, 0.70],
+            "EXTREME_HEAT": [0.40, 0.56, 0.72, 0.82, 0.92, 0.86],
+        }
+        demandRatios = byScenario.get(scenario) or byWeather[weather]
+        return hours, demandRatios, supplyRatios
+
+    if timeFrame == "12:00-18:00":
+        hours = ["12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"]
+        supplyRatios = [-0.04, -0.02, 0.01, 0.02, -0.01, -0.03]
+        byScenario = {
+            "HUB_FULL": [0.96, 0.86, 0.74, 0.70, 0.82, 0.88],
+            "WEATHER_ALERT": [0.72, 0.78, 0.84, 0.90, 0.96, 0.82],
+            "LOW_SUPPLY": [0.80, 0.92, 0.82, 0.72, 0.66, 0.60],
+        }
+        byWeather = {
+            "CLEAR": [0.64, 0.56, 0.58, 0.68, 0.82, 0.88],
+            "LIGHT_RAIN": [0.70, 0.64, 0.66, 0.78, 0.89, 0.80],
+            "HEAVY_RAIN": [0.84, 0.93, 0.95, 0.82, 0.74, 0.66],
+            "EXTREME_HEAT": [0.92, 0.88, 0.78, 0.70, 0.64, 0.58],
+        }
+        demandRatios = byScenario.get(scenario) or byWeather[weather]
+        return hours, demandRatios, supplyRatios
+
+    # Mặc định khung 9 giờ (08:00 AM - 04:00 PM)
+    hours = [
+        "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
+        "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM",
+    ]
+    supplyRatios = [0.05, 0.03, 0.01, -0.02, -0.04, -0.03, 0.01, 0.02, 0.00]
+    byScenario = {
+        "HUB_FULL": [0.56, 0.68, 0.78, 0.88, 0.98, 0.86, 0.76, 0.70, 0.64],
+        "WEATHER_ALERT": [0.46, 0.56, 0.64, 0.72, 0.78, 0.84, 0.90, 0.97, 0.82],
+        "LOW_SUPPLY": [0.52, 0.68, 0.82, 0.92, 0.84, 0.76, 0.68, 0.62, 0.56],
+    }
+    byWeather = {
+        "CLEAR": [0.44, 0.54, 0.62, 0.68, 0.64, 0.58, 0.68, 0.78, 0.87],
+        "LIGHT_RAIN": [0.52, 0.74, 0.88, 0.76, 0.68, 0.62, 0.66, 0.72, 0.64],
+        "HEAVY_RAIN": [0.48, 0.60, 0.70, 0.78, 0.84, 0.94, 0.82, 0.72, 0.60],
+        "EXTREME_HEAT": [0.46, 0.58, 0.72, 0.84, 0.92, 0.82, 0.74, 0.66, 0.56],
+    }
+    demandRatios = byScenario.get(scenario) or byWeather[weather]
+    return hours, demandRatios, supplyRatios
+
+
 def calculateImpact(virtualData, params):
-    """Tính chuỗi cung/cầu 9 giờ trên bản sao virtualData mà không đụng dữ liệu thật."""
+    """Tính chuỗi cung/cầu trên bản sao virtualData tương xứng quy mô đội xe hiện tại."""
     vehicles = virtualData["vehicles"]
     hubs = virtualData["hubs"]
     spots = virtualData["parkingSpots"]
 
-    baseAvailable = sum(1 for v in vehicles if v["status"] == "AVAILABLE")
-    demandFactor, supplyPenalty = _WEATHER_FACTORS[params["weather"]]
+    baseAvailable = max(10, sum(1 for v in vehicles if v["status"] == "AVAILABLE"))
+    weatherFactor, weatherPenaltyRate = _WEATHER_FACTORS[params["weather"]]
+    scenarioFactor, scenarioPenaltyRate = _SCENARIO_FACTORS[params["scenario"]]
 
-    fullHours = [
-        "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
-        "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM",
-    ]
-    baseDemandCurve = [18, 26, 36, 46, 56, 48, 38, 30, 22]
-    baseSupplyOffsets = [8, 5, 2, -2, -5, -3, 1, 4, 6]
-    frame = params.get("timeFrame", "09:00-18:00")
-    if frame == "06:00-12:00":
-        hours = ["06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM"]
-        demandCurve = [10, 16, 28, 44, 38, 24]
-        supplyOffsets = [10, 8, 4, -1, 2, 5]
-    elif frame == "12:00-18:00":
-        hours = ["12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"]
-        demandCurve = [56, 48, 38, 30, 22, 18]
-        supplyOffsets = [-5, -3, 1, 4, 6, 8]
-    else:
-        hours = fullHours
-        demandCurve = baseDemandCurve
-        supplyOffsets = baseSupplyOffsets
+    hours, demandRatios, supplyRatios = _selectCurveProfile(
+        params.get("timeFrame", "09:00-18:00"),
+        params["weather"],
+        params.get("scenario", "STANDARD"),
+    )
 
-    scenario = params.get("scenario", "STANDARD")
-    scenarioFactor = {"HUB_FULL": 1.35, "WEATHER_ALERT": 1.20, "LOW_SUPPLY": 1.15}.get(scenario, 1.0)
-    demandCurve = [int(round(val * scenarioFactor)) for val in demandCurve]
-
-    demandMultiplier = (1.0 + params["studentDemandPercent"] / 100.0) * demandFactor
+    demandMultiplier = (1.0 + params["studentDemandPercent"] / 100.0) * weatherFactor * scenarioFactor
+    supplyPenalty = round(baseAvailable * (weatherPenaltyRate + scenarioPenaltyRate))
     effectiveSupplyBase = max(4, baseAvailable + params["availableEvDelta"] - supplyPenalty)
 
-    demandSeries = [max(0, round(val * demandMultiplier)) for val in demandCurve]
-    availableSeries = [max(0, effectiveSupplyBase + off) for off in supplyOffsets]
+    demandSeries = [max(0, round(baseAvailable * ratio * demandMultiplier)) for ratio in demandRatios]
+    availableSeries = [max(0, effectiveSupplyBase + round(baseAvailable * off)) for off in supplyRatios]
     gaps = [avail - dem for avail, dem in zip(availableSeries, demandSeries)]
 
     peakShortageIdx = gaps.index(min(gaps))
@@ -128,14 +183,14 @@ def generateReport(impact):
     """Tạo báo cáo kết quả mô phỏng cho Chart.js và lưu tạm phục vụ Apply to Dispatch."""
     reportId = f"SIM-{len(_REPORTS) + 1:03d}"
     deficit = impact["maxVehicleDeficit"]
-    recommendedCount = min(5, max(2, abs(deficit) // 8)) if deficit < 0 else 0
+    recommendedCount = min(30, max(5, abs(deficit) // 4)) if deficit < 0 else 0
     sourceHub = impact["sourceHub"]
     destHub = impact["destHub"]
 
     if deficit < 0:
         recText = (
             f"Pre-dispatch {recommendedCount} EVs from {sourceHub['name']} "
-            f"to {destHub['name']} before 11:00 AM"
+            f"to {destHub['name']} before {impact['peakShortageTime']}"
         )
     else:
         recText = "Supply meets projected demand across all hubs."

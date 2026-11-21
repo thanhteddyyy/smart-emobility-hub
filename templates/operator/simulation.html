@@ -31,7 +31,7 @@
           </span>
         </div>
         <input type="range" class="form-range" id="availableEvSlider" name="availableEvDelta"
-               min="-30" max="30" step="1" value="{{ params.availableEvDelta }}">
+               min="-100" max="100" step="5" value="{{ params.availableEvDelta }}">
       </div>
 
       <div>
@@ -41,6 +41,25 @@
           <option value="LIGHT_RAIN" {{ 'selected' if params.weather == 'LIGHT_RAIN' }} data-i18n="sim.weatherLightRain">Mưa nhẹ</option>
           <option value="CLEAR" {{ 'selected' if params.weather == 'CLEAR' }} data-i18n="sim.weatherClear">Trời quang</option>
           <option value="EXTREME_HEAT" {{ 'selected' if params.weather == 'EXTREME_HEAT' }} data-i18n="sim.weatherExtremeHeat">Nắng nóng</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="fw-medium d-block mb-2" for="timeFrameSelect" data-i18n="sim.timeFrame">Khung giờ mô phỏng</label>
+        <select class="form-select" id="timeFrameSelect" name="timeFrame">
+          <option value="09:00-18:00" {{ 'selected' if params.timeFrame == '09:00-18:00' }} data-i18n="sim.timeFull">Cả ngày (08:00 – 16:00, 9 giờ)</option>
+          <option value="06:00-12:00" {{ 'selected' if params.timeFrame == '06:00-12:00' }} data-i18n="sim.timeMorning">Buổi sáng (06:00 – 11:00, 6 giờ)</option>
+          <option value="12:00-18:00" {{ 'selected' if params.timeFrame == '12:00-18:00' }} data-i18n="sim.timeAfternoon">Buổi chiều (12:00 – 17:00, 6 giờ)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="fw-medium d-block mb-2" for="scenarioSelect" data-i18n="sim.scenario">Kịch bản hệ thống</label>
+        <select class="form-select" id="scenarioSelect" name="scenario">
+          <option value="STANDARD" {{ 'selected' if params.scenario == 'STANDARD' }} data-i18n="sim.scenarioStandard">Tiêu chuẩn (theo thời tiết)</option>
+          <option value="HUB_FULL" {{ 'selected' if params.scenario == 'HUB_FULL' }} data-i18n="sim.scenarioHubFull">Cao điểm kẹt trạm (Hub Full)</option>
+          <option value="WEATHER_ALERT" {{ 'selected' if params.scenario == 'WEATHER_ALERT' }} data-i18n="sim.scenarioWeatherAlert">Cảnh báo bão chiều (Weather Alert)</option>
+          <option value="LOW_SUPPLY" {{ 'selected' if params.scenario == 'LOW_SUPPLY' }} data-i18n="sim.scenarioLowSupply">Thiếu hụt nguồn xe (Low Supply)</option>
         </select>
       </div>
 
@@ -65,8 +84,9 @@
         <canvas id="simulationChart"></canvas>
       </div>
 
-      <div class="text-center small text-muted-2" data-i18n="sim.forecastCaption">
-        Dự báo thiếu hụt phương tiện (Khung 9 giờ)
+      <div class="text-center small text-muted-2">
+        <span data-i18n="sim.forecastTitle">Dự báo thiếu hụt phương tiện theo giờ</span>
+        ({{ report.hours | length }}h · {{ params.timeFrame }})
       </div>
     </section>
 

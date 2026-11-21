@@ -115,7 +115,7 @@ def evaluateHubLoad(includeSeeded=False):
             alerts.append(item)
 
         statusOrder = {"ACTIVE": 0, "RESOLVED": 1}
-        dangerOrder = {"HIGH": 0, "MEDIUM": 1}
+        dangerOrder = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
         alerts.sort(key=lambda a: (
             statusOrder.get(a.get("status", "ACTIVE"), 9),
             dangerOrder.get(a.get("dangerLevel", "MEDIUM"), 9),

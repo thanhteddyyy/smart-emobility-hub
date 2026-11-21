@@ -885,3 +885,45 @@
     padding: 28px 24px;
   }
 }
+
+/* ---------- Bảng cuộn danh sách lớn (#15, #19) & Gợi ý lý do sự cố (#14) ---------- */
+.table-scroll-x {
+  max-height: 460px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+}
+
+.table-scroll-sm {
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+}
+
+.table-scroll-x thead th,
+.table-scroll-sm thead th {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 2;
+}
+
+.reason-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.reason-chip-btn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-20);
+}

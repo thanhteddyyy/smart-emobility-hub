@@ -3,15 +3,39 @@
 {% block heading %}<span data-i18n="dash.incidents">Xử lý sự cố</span>{% endblock %}
 
 {% block content %}
-<h2 class="h4 fw-bold m-0" data-i18n="incidents.pageTitle">Báo cáo sự cố</h2>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+  <h2 class="h4 fw-bold m-0" data-i18n="incidents.pageTitle">Báo cáo sự cố</h2>
+  <span class="chip-x chip-soft-warning" id="incidentCountBadge">{{ incidents | length }}</span>
+</div>
 
-<section class="panel-card">
-  <div class="table-responsive">
-    <table class="table-x">
+<section class="panel-card d-flex flex-column gap-3">
+  <div class="d-flex flex-wrap align-items-center gap-2">
+    <div class="search-box-x">
+      <i class="bi bi-search" aria-hidden="true"></i>
+      <input type="text" class="form-control" id="incidentSearchInput"
+             placeholder="Tìm mã, Hub, lý do sự cố..." data-i18n-placeholder="incidents.searchPlaceholder">
+    </div>
+    <select id="incidentPriorityFilter" class="form-select w-auto" aria-label="Priority">
+      <option value="" data-i18n="incidents.allPriorities">Mọi mức ưu tiên</option>
+      <option value="HIGH" data-i18n="priority.high">High</option>
+      <option value="MEDIUM" data-i18n="priority.medium">Medium</option>
+      <option value="LOW" data-i18n="priority.low">Low</option>
+    </select>
+    <select id="incidentStatusFilter" class="form-select w-auto" aria-label="Status">
+      <option value="" data-i18n="filter.allStatus">Tất cả trạng thái</option>
+      <option value="OPEN">OPEN</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="RESOLVED">RESOLVED</option>
+    </select>
+  </div>
+
+  <div class="table-responsive table-scroll-x">
+    <table class="table-x" id="incidentsTable">
       <thead>
         <tr>
           <th data-i18n="table.hub">Hub</th>
           <th data-i18n="incidents.colDetails">Chi tiết</th>
+          <th data-i18n="incidents.colReason">Phân loại &amp; Lý do</th>
           <th data-i18n="incidents.colPriority">Ưu tiên</th>
           <th data-i18n="incidents.colOperator">Người xử lý</th>
           <th data-i18n="table.status">Trạng thái</th>
@@ -21,11 +45,18 @@
       </thead>
       <tbody>
       {% for inc in incidents %}
-        <tr>
+        <tr class="incident-row"
+            data-priority="{{ inc.priority }}"
+            data-status="{{ inc.status }}"
+            data-search="{{ inc.id | lower }} {{ inc.hubName | lower }} {{ inc.resourceId | lower }} {{ inc.resourceType | lower }} {{ inc.reason | lower }} {{ inc.description | lower }}">
           <td class="fw-semibold">{{ inc.hubName }}</td>
           <td>
             <div class="fw-semibold">{{ inc.description }}</div>
             <div class="small text-muted-2">{{ inc.id }} · {{ inc.resourceId }}</div>
+          </td>
+          <td>
+            <div class="fw-medium small">{{ inc.reason or '—' }}</div>
+            <span class="chip-x chip-soft-warning mt-1">{{ inc.resourceType }}</span>
           </td>
           <td>
             <span class="chip-x {{ 'chip-soft-danger' if inc.priority == 'HIGH' else 'chip-soft-warning' if inc.priority == 'MEDIUM' else 'chip-soft-success' }}"
@@ -58,11 +89,42 @@
         </tr>
       {% else %}
         <tr>
-          <td colspan="7" class="text-center text-muted-2 py-4" data-i18n="incidents.empty">Chưa có báo cáo sự cố.</td>
+          <td colspan="8" class="text-center text-muted-2 py-4" data-i18n="incidents.empty">Chưa có báo cáo sự cố.</td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const searchEl = document.getElementById("incidentSearchInput");
+  const prioEl = document.getElementById("incidentPriorityFilter");
+  const statusEl = document.getElementById("incidentStatusFilter");
+  const countBadge = document.getElementById("incidentCountBadge");
+
+  function filterIncidents() {
+    const q = (searchEl ? searchEl.value : "").trim().toLowerCase();
+    const prio = prioEl ? prioEl.value : "";
+    const status = statusEl ? statusEl.value : "";
+    let visible = 0;
+
+    document.querySelectorAll("#incidentsTable tbody tr.incident-row").forEach(function (row) {
+      const ok = (!q || row.dataset.search.includes(q)) &&
+        (!prio || row.dataset.priority === prio) &&
+        (!status || row.dataset.status === status);
+      row.style.display = ok ? "" : "none";
+      if (ok) visible += 1;
+    });
+    if (countBadge) countBadge.textContent = String(visible);
+  }
+
+  if (searchEl) searchEl.addEventListener("input", filterIncidents);
+  if (prioEl) prioEl.addEventListener("change", filterIncidents);
+  if (statusEl) statusEl.addEventListener("change", filterIncidents);
+})();
+</script>
 {% endblock %}
