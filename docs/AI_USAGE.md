@@ -5,6 +5,7 @@
 | Thành viên | Công cụ | Dùng cho phần nào | Mức độ (gợi ý ý tưởng / viết nháp / sinh code) | Nhóm đã tự chỉnh sửa, kiểm tra gì |
 |---|---|---|---|---|
 |Võ Tấn Phát | ChatGPT, Claude | Test case, sửa lỗi code | Gợi ý test case cho submission 3 và yêu cầu kiểm tra lỗi code | Kiểm tra lại test case có phù hợp, tự sửa lỗi code bằng tay |
+|Nguyễn Khang Kỳ (2411819) | ChatGPT | Hỗ trợ rà soát phần việc cá nhân và lỗi code, gợi ý các ý tưởng, code và các test case của submission 3. | Gợi ý, soạn nháp tài liệu, code mẫu tham khảo và hỗ trợ tìm lỗi sau khi code tay. | Đối chiếu các đề xuất với mã nguồn và kết quả kiểm thử trên bản tích hợp. |
 
 Ghi chú chung của nhóm: _TODO_
 Thành viên 3:
