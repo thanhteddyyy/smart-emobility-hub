@@ -38,6 +38,15 @@
   --radius: 12px;
   --font: "DM Sans", "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Plus Jakarta Sans", "Be Vietnam Pro", system-ui, sans-serif;
+  --map-land: #eef2eb;
+  --map-park: #d6ecd9;
+  --map-park-stroke: #b7dcc0;
+  --map-water: #bfe0f7;
+  --map-water-stroke: #8ec2eb;
+  --map-road: #ffffff;
+  --map-road-casing: #cbd5e1;
+  --map-metro: #49beff;
+  --map-grid: rgba(42, 53, 71, 0.08);
 }
 
 :root[data-theme="dark"] {
@@ -75,6 +84,15 @@
   --color-sim-deficit-bg: rgba(255, 174, 31, 0.15);
   --color-sim-rec-bg: rgba(19, 222, 185, 0.15);
   --color-shadow: rgba(0, 0, 0, 0.25);
+  --map-land: #1e2636;
+  --map-park: #1c352d;
+  --map-park-stroke: #2a5245;
+  --map-water: #193752;
+  --map-water-stroke: #2c5b84;
+  --map-road: #3b4a62;
+  --map-road-casing: #0f172a;
+  --map-metro: #49beff;
+  --map-grid: rgba(255, 255, 255, 0.06);
 }
 
 body {
@@ -101,3 +119,5 @@ body {
 .seg { display: inline-flex; border: 1px solid var(--color-border); border-radius: 999px; overflow: hidden; background: var(--color-surface); }
 .seg button { border: 0; background: transparent; color: var(--color-muted); padding: .2rem .6rem; font-size: .8rem; font-weight: 600; }
 .seg button.active { background: var(--color-primary); color: var(--color-on-primary); }
+.leaflet-container { background: var(--map-land); }
+.ehub-map-label { font-size: 11px; font-weight: 600; color: var(--color-muted); white-space: nowrap; pointer-events: none; text-shadow: 0 1px 2px var(--color-surface); }

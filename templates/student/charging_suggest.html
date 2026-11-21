@@ -1,7 +1,7 @@
 {# UC7 – Hình 12: Gợi ý sạc khẩn cấp. Đã nối với charging_service.suggestNearestHubWithPort + Leaflet map. #}
 {% extends "base_mobile.html" %}
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% include "_leaflet_head.html" %}
 {% endblock %}
 {% block content %}
 <div class="pt-1 mb-3">
@@ -41,21 +41,25 @@
 {% endblock %}
 {% block scripts %}
 {% if suggestedHub %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% include "_leaflet_scripts.html" %}
 <script>
 (function () {
-  if (!window.L) return;
-  const target = [{{ suggestedHub.lat }}, {{ suggestedHub.lng }}];
-  const map = L.map("suggestMap").setView(target, 15);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap contributors" }).addTo(map);
-  L.marker(target).addTo(map).bindPopup({{ suggestedHub.name | tojson }}).openPopup();
-  {% if originHub and originHub.id != suggestedHub.id %}
-  const origin = [{{ originHub.lat }}, {{ originHub.lng }}];
-  L.circleMarker(origin, { radius: 8 }).addTo(map).bindTooltip({{ originHub.name | tojson }});
-  const line = L.polyline([origin, target], { weight: 4, dashArray: "6 6" }).addTo(map);
-  map.fitBounds(line.getBounds(), { padding: [24, 24] });
-  {% endif %}
-  window.addEventListener("ehub:viewchange", function () { setTimeout(function () { map.invalidateSize(); }, 80); });
+  function initSuggestMap() {
+    if (!window.L) return;
+    const target = [{{ suggestedHub.lat }}, {{ suggestedHub.lng }}];
+    const map = L.map("suggestMap").setView(target, 15);
+    if (window.EHubMap) window.EHubMap.attachBaseLayer(map);
+    L.marker(target).addTo(map).bindPopup({{ suggestedHub.name | tojson }}).openPopup();
+    {% if originHub and originHub.id != suggestedHub.id %}
+    const origin = [{{ originHub.lat }}, {{ originHub.lng }}];
+    L.circleMarker(origin, { radius: 8 }).addTo(map).bindTooltip({{ originHub.name | tojson }});
+    const line = L.polyline([origin, target], { weight: 4, dashArray: "6 6" }).addTo(map);
+    map.fitBounds(line.getBounds(), { padding: [24, 24] });
+    {% endif %}
+    window.addEventListener("ehub:viewchange", function () { setTimeout(function () { map.invalidateSize(); }, 80); });
+  }
+  if (window.EHubMap) window.EHubMap.onReady(initSuggestMap);
+  else initSuggestMap();
 })();
 </script>
 {% endif %}

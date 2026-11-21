@@ -1,7 +1,7 @@
 {# UC11 – Hình 20: Điều phối phương tiện (Dispatch). #}
 {% extends "base_dashboard.html" %}
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% include "_leaflet_head.html" %}
 {% endblock %}
 {% block heading %}<span data-i18n="dash.dispatch">Điều phối phương tiện</span>{% endblock %}
 
@@ -185,7 +185,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% include "_leaflet_scripts.html" %}
 <script>
 (function () {
   const mapView = {{ data.mapView | tojson }};
@@ -193,9 +193,10 @@
   const primaryColor = styles.getPropertyValue("--color-primary").trim();
   const dangerColor = styles.getPropertyValue("--color-error").trim();
 
-  if (mapView && mapView.center) {
+  function initDispatchMap() {
+    if (!window.L || !mapView || !mapView.center) return;
     const map = L.map("dispatchMap").setView([mapView.center.lat, mapView.center.lng], 14);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap" }).addTo(map);
+    if (window.EHubMap) window.EHubMap.attachBaseLayer(map);
 
     mapView.markers.forEach(function (m) {
       const markerColor = m.status === "ACTIVE" ? primaryColor : dangerColor;
@@ -220,6 +221,8 @@
       circle.bindPopup(popupHtml);
     });
   }
+  if (window.EHubMap) window.EHubMap.onReady(initDispatchMap);
+  else initDispatchMap();
 
   window.selectMapHub = function (role, hubId) {
     const sourceSel = document.getElementById("sourceHubSelect");

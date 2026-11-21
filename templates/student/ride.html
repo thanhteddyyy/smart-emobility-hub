@@ -1,7 +1,7 @@
 {# UC5 – Hình 7: Chuyến đi của bạn (Leaflet polyline + pin realtime + nút Trả xe / Sạc khẩn). #}
 {% extends "base_mobile.html" %}
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% include "_leaflet_head.html" %}
 {% endblock %}
 {% block content %}
 <div class="pt-1 mb-3">
@@ -54,15 +54,16 @@
 {% endblock %}
 {% block scripts %}
 {% if booking and vehicle and hub %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% include "_leaflet_scripts.html" %}
 <script>
 (function () {
   const start = [{{ hub.lat }}, {{ hub.lng }}];
   const dest = [{{ destHub.lat if destHub else hub.lat }}, {{ destHub.lng if destHub else hub.lng }}];
   const mid = [(start[0] + dest[0]) / 2 + 0.0012, (start[1] + dest[1]) / 2 - 0.0008];
-  if (window.L) {
+  function initRideMap() {
+    if (!window.L) return;
     const map = L.map("rideMap", { zoomControl: true }).setView(start, 15);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap contributors" }).addTo(map);
+    if (window.EHubMap) window.EHubMap.attachBaseLayer(map);
     L.marker(start).addTo(map).bindPopup({{ hub.name | tojson }}).openPopup();
     {% if destHub and destHub.id != hub.id %}
     L.circleMarker(dest, { radius: 8 }).addTo(map).bindTooltip({{ destHub.name | tojson }});
@@ -71,6 +72,8 @@
     {% endif %}
     window.addEventListener("ehub:viewchange", function () { setTimeout(function () { map.invalidateSize(); }, 80); });
   }
+  if (window.EHubMap) window.EHubMap.onReady(initRideMap);
+  else initRideMap();
 
   function batteryBars(percent) {
     const bars = document.querySelectorAll("#rideBattery");

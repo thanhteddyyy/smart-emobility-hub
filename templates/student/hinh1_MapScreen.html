@@ -1,6 +1,6 @@
 {% extends "base_mobile.html" %}
 {% block phoneClass %}explorer{% endblock %}
-{% block head %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">{% endblock %}
+{% block head %}{% include "_leaflet_head.html" %}{% endblock %}
 {% block header %}<header class="tools"><input id="query" type="search" aria-label="Hub" autocomplete="off" aria-controls="suggestions" data-i18n-placeholder="search.placeholder" placeholder="Tìm trạm…">{% include "_switches.html" %}<ul id="suggestions" hidden>{% for h in results %}<li><button type="button">{{ h.name }}</button></li>{% endfor %}<li id="noMatches" hidden data-i18n="search.empty"></li></ul></header>{% endblock %}
 {% block content %}
 {% if error %}<p role="alert">{{error.message}}</p>{% endif %}
@@ -23,6 +23,6 @@
 <script id="originData" type="application/json">{{ (mapView.center if mapView else none)|tojson }}</script>
 <script id="hubData" type="application/json">{{results|tojson}}</script>
 <script id="userData" type="application/json">{{currentUser|tojson}}</script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% include "_leaflet_scripts.html" %}
 <script src="{{url_for('static',filename='tv1/search.js')}}"></script>
 {% endblock %}

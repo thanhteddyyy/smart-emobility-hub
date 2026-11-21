@@ -14,16 +14,20 @@
   function label(id, key) { byId(id).dataset.i18n = key; }
 
   function initMap() {
+    if (map) return;
     const box = byId('liveMap');
     if (!window.L || !origin) {
       box.dataset.i18n = 'tv.mapOffline';
       translate();
       return;
     }
+    delete box.dataset.i18n;
+    box.textContent = '';
     const start = [origin.lat, origin.lng];
     map = L.map(box).setView(start, 15);
     map.zoomControl.setPosition('bottomleft');
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
+    if (window.EHubMap) window.EHubMap.attachBaseLayer(map);
+    else L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Tiles © Esri' }).addTo(map);
     hubs.forEach((h, i) => L.circleMarker([h.lat, h.lng], { radius: 11 })
       .addTo(map).bindTooltip(Object.assign(document.createElement('span'), { textContent: h.name }))
       .on('click', () => selectHub(i)));
@@ -204,7 +208,15 @@
       if (pill.dataset.i18n !== key) { pill.dataset.i18n = key; translate(); }
     });
   });
-  initMap();
+  function showMapOffline() {
+    const box = byId('liveMap');
+    if (box && !map) {
+      box.dataset.i18n = 'tv.mapOffline';
+      translate();
+    }
+  }
+  if (window.EHubMap) window.EHubMap.onReady(initMap, showMapOffline);
+  else initMap();
   // Read-only mockup previews. Never send a booking request on page load.
   const screen = new URLSearchParams(location.search).get('ui');
   const examples = { H3: 'VEHICLE_CONFLICT', H4: 'HUB_FULL', H5: 'HOLD_EXPIRED' };

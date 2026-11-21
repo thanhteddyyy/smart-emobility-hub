@@ -1,7 +1,7 @@
 {# UC6 – Hình 8: Trả xe. Đã nối form POST với trip_service.returnVehicle + bản đồ chọn Hub trả. #}
 {% extends "base_mobile.html" %}
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% include "_leaflet_head.html" %}
 {% endblock %}
 {% block content %}
 <div class="pt-1 mb-3">
@@ -57,26 +57,30 @@
 {% endblock %}
 {% block scripts %}
 {% if booking and vehicle %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% include "_leaflet_scripts.html" %}
 <script>
 (function () {
   const hubs = {{ activeHubs | tojson }};
   const select = document.getElementById("returnHubSelect");
-  if (!window.L || !hubs.length) return;
-  const first = hubs.find(h => h.hubId === select.value) || hubs[0];
-  const map = L.map("returnMap").setView([first.lat, first.lng], 15);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap contributors" }).addTo(map);
-  hubs.forEach(function (h) {
-    L.circleMarker([h.lat, h.lng], { radius: 9 }).addTo(map).bindTooltip(h.name + " (" + h.emptySpots + ")").on("click", function () {
-      select.value = h.hubId;
-      map.panTo([h.lat, h.lng]);
+  function initReturnMap() {
+    if (!window.L || !hubs.length) return;
+    const first = hubs.find(h => h.hubId === select.value) || hubs[0];
+    const map = L.map("returnMap").setView([first.lat, first.lng], 15);
+    if (window.EHubMap) window.EHubMap.attachBaseLayer(map);
+    hubs.forEach(function (h) {
+      L.circleMarker([h.lat, h.lng], { radius: 9 }).addTo(map).bindTooltip(h.name + " (" + h.emptySpots + ")").on("click", function () {
+        select.value = h.hubId;
+        map.panTo([h.lat, h.lng]);
+      });
     });
-  });
-  select.addEventListener("change", function () {
-    const picked = hubs.find(h => h.hubId === select.value);
-    if (picked) map.panTo([picked.lat, picked.lng]);
-  });
-  window.addEventListener("ehub:viewchange", function () { setTimeout(function () { map.invalidateSize(); }, 80); });
+    select.addEventListener("change", function () {
+      const picked = hubs.find(h => h.hubId === select.value);
+      if (picked) map.panTo([picked.lat, picked.lng]);
+    });
+    window.addEventListener("ehub:viewchange", function () { setTimeout(function () { map.invalidateSize(); }, 80); });
+  }
+  if (window.EHubMap) window.EHubMap.onReady(initReturnMap);
+  else initReturnMap();
 })();
 </script>
 {% endif %}
