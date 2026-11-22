@@ -1,208 +1,200 @@
-# Smart E-Mobility Hub
+<div align="center">
 
-Bài tập lớn môn **Công nghệ Phần mềm (CO3001)** – Nhóm 9, lớp L03, HK261.
-Hệ thống điều phối phương tiện điện trong Khu đô thị ĐHQG-HCM: sinh viên tìm Hub, đặt xe, nhận/trả xe, đăng ký sạc; đơn vị vận hành giám sát mạng lưới, điều phối, xử lý sự cố và mô phỏng What-if.
+# ⚡ Smart E-Mobility Hub (E-Hub)
 
-Đây là bản **MVP để demo**: giao diện làm theo mockup Submission 2, logic làm theo Class diagram và Method description Submission 3, **dữ liệu giả lập, không dùng database**.
+**Nền tảng quản lý, đặt chỗ và điều phối phương tiện điện thông minh đa trạm**
 
-> **Trạng thái hiện tại: hoàn thiện đầy đủ MVP trên `main` (62/62 test passed).** Đã hoàn chỉnh cả 2 cổng tách biệt (Sinh viên Responsive Web + Mobile App và Đơn vị vận hành chỉ Web Desktop), toàn bộ luồng Sinh viên **UC1–UC7** (tìm Hub, xem chi tiết xe/Hub, đặt xe/chỗ chống race condition, nhận xe, bản đồ chuyến đi Leaflet polyline, trả xe, đăng ký sạc & gợi ý trạm sạc khẩn), toàn bộ Dashboard Vận hành **UC8–UC14** (kể cả Lịch sạc thông minh và Mô phỏng What-if cô lập), đổi Sáng/Tối & VN/EN (**UC15**), cập nhật realtime & lọc gói trễ (**UC16**), phân quyền & AuditLog (**UC17**).
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.0.3-000000?logo=flask&logoColor=white)
+![Pytest](https://img.shields.io/badge/Pytest-87%2F87%20Passed-2EA44F?logo=pytest&logoColor=white)
+![i18n](https://img.shields.io/badge/i18n-VN%20%7C%20EN%20(423%20keys)-0EA5E9)
+![Theme](https://img.shields.io/badge/Theme-Light%20%26%20Dark%20Mode-6366F1)
+
+[🎥 Video Demo Sản Phẩm (Google Drive)](https://drive.google.com/file/d/1Nb6LbpEvITgVQEpR5PqJwCxiSEFxwJsL/view?usp=sharing) · [🚀 Chạy nhanh](#-cài-đặt--khởi-chạy-nhanh) · [🏗️ Kiến trúc](#️-kiến-trúc-hệ-thống) · [🧪 Kiểm thử & Demo kỹ thuật](#-kiểm-chứng-kỹ-thuật--automated-tests)
+
+</div>
 
 ---
 
-## 1. Chạy thử
+## 📖 Tổng quan dự án
 
+**Smart E-Mobility Hub (E-Hub)** là hệ thống web điều phối phương tiện điện (xe đạp/xe máy điện, chỗ đỗ thông minh và trạm sạc nhanh) cho khu đô thị đại học quy mô **5 Hub, 700 phương tiện, 830 chỗ đỗ và 220 cổng sạc**.
+
+Hệ thống được thiết kế theo mô hình **hai phân hệ tách biệt (Dual-Portal)**:
+1. **Cổng Người dùng / Sinh viên (Rider Portal)**: Giao diện tự thích ứng (**Responsive Web Desktop** và **Mobile App 414px**) cho phép tìm Hub gần nhất trên bản đồ tương tác, đặt xe, đặt chỗ đỗ, nhận/trả xe và đăng ký trạm sạc.
+2. **Trung tâm Vận hành (Operator Control Center)**: Dashboard chuyên biệt cho điều hành viên theo dõi toàn mạng lưới theo thời gian thực (polling 5 giây), nhận cảnh báo quá tải, xử lý sự cố, điều phối xe liên trạm, lập lịch sạc thông minh và mô phỏng dự báo **What-if** cô lập dữ liệu.
+
+---
+
+## ✨ Tính năng nổi bật
+
+### 🛵 Phân hệ Người dùng (`UC1 – UC7`)
+| Chức năng | Mô tả chi tiết |
+|---|---|
+| **Tìm kiếm & Điều hướng Hub** | Tích hợp bản đồ **Leaflet** hiển thị 5 Hub, bộ lọc theo bán kính/mức pin tối thiểu và vẽ tuyến đường đi bộ từ vị trí hiện tại tới trạm. |
+| **Theo dõi tài nguyên trạm** | Xem chi tiết số xe khả dụng, chỗ đỗ còn trống, cổng sạc khả dụng và danh sách phương tiện kèm % pin theo thời gian thực. |
+| **Đặt xe & Chỗ đỗ chống xung đột** | Cơ chế giữ xe có thời hạn (15 phút), kiểm tra khóa đồng bộ chống **race condition** khi nhiều người đặt trùng một xe; chặn đặt chỗ đỗ trong quá khứ hoặc khi Hub đầy. |
+| **Nhận xe, Theo dõi chuyến & Trả xe** | Xác nhận nhận xe chuyển sang màn hình chuyến đi kèm bản đồ hành trình và mức pin; kiểm tra sức chứa trạm đích khi trả xe. |
+| **Gợi ý & Đăng ký sạc thông minh** | Đề xuất trạm sạc khẩn cấp gần nhất khi pin yếu, chọn khung giờ sạc khả dụng và xác nhận giữ cổng sạc. |
+
+### 🖥️ Phân hệ Điều hành & Vận hành (`UC8 – UC14`)
+| Chức năng | Mô tả chi tiết |
+|---|---|
+| **Tổng quan mạng lưới thời gian thực** | KPI toàn mạng (tổng xe, chỗ trống, cổng sạc, sự cố), luồng cảnh báo/sự cố nổi bật, bộ lọc trạng thái Hub (`Hoạt động`/`Ngoại tuyến`, `An toàn`/`Nguy hiểm`/`Quá tải`) và nhật ký gói trễ (`PACKET_LOG`). |
+| **Giám sát tài nguyên chi tiết** | Tra cứu và lọc trực tiếp từng phương tiện, chỗ đỗ, cổng sạc theo từng Hub với khả năng làm mới dữ liệu tức thì. |
+| **Cảnh báo quá tải đa cấp** | Phân loại mức độ nghiêm trọng (`HIGH` / `MEDIUM` / `LOW`), hiển thị tỷ lệ sử dụng so với ngưỡng, nguyên nhân dự kiến và điều hướng nhanh sang Điều phối. |
+| **Điều phối phương tiện liên trạm** | Chọn Hub nguồn/đích trực quan trên bản đồ Leaflet hoặc danh sách, điều phối nhiều xe cùng lúc, quản lý và hủy lệnh điều phối đang chờ. |
+| **Tiếp nhận & Xử lý sự cố** | Tạm ngưng tài nguyên gặp lỗi để bảo trì, gán lý do nhanh (`Quá tải trạm`, `Hỏng cổng sạc`, `Lỗi pin / sụt áp`, `Hỏng phanh / lốp xe`, `Mất kết nối IoT`, `GPS lệch vị trí`) và cập nhật tiến độ xử lý. |
+| **Lập lịch sạc tự động** | Tự động tạo lịch sạc ưu tiên xe pin thấp, cho phép chỉnh sửa cổng/khung giờ, kiểm tra tính hợp lệ (`validate`) và phê duyệt lịch. |
+| **Mô phỏng What-if (Simulation)** | Điều chỉnh biến động nhu cầu, nguồn xe, tác động thời tiết, khung giờ và kịch bản mạng lưới; vẽ biểu đồ cung–cầu **Chart.js** và đề xuất phương án điều phối trước giờ cao điểm thiếu xe. |
+
+### 🌐 Nền tảng dùng chung (`UC15 – UC17`)
+- **Song ngữ toàn diện (`VN` / `EN`)**: Hỗ trợ chuyển đổi tức thì giữa 100% Tiếng Việt và 100% Tiếng Anh với **423 khóa từ điển đồng bộ** (`static/i18n/vi.json` & `en.json`), bao gồm cả dữ liệu cập nhật realtime, biểu đồ Chart.js và popup bản đồ.
+- **Giao diện Sáng / Tối (Light & Dark Mode)**: Chuẩn hóa bằng hệ biến CSS trong `static/css/tokens.css`, ghi nhớ lựa chọn trên trình duyệt.
+- **Xác thực Dual-Portal & Audit Log**: Phân tách luồng đăng nhập `/login` (Người dùng) và `/operator/login` (Vận hành), kiểm soát phân quyền theo vai trò (`STUDENT` / `OPERATOR` / `GUEST`) và ghi nhận nhật ký truy cập.
+
+---
+
+## 🏗️ Kiến trúc hệ thống
+
+Hệ thống tuân thủ kiến trúc phân tầng rõ ràng (**Presentation → Business Services → Thread-safe Data Access**), tách biệt hoàn toàn lớp định tuyến web khỏi logic nghiệp vụ và quản lý lỗi tập trung thông qua `ServiceError`.
+
+```mermaid
+flowchart LR
+    Client["Trình duyệt<br/>(Mobile App / Web Desktop / Dashboard)"]
+
+    subgraph Presentation["Tầng Presentation (Flask Blueprints & UI)"]
+        Routes["blueprints/<br/>auth · student · operator · api"]
+        Views["templates/ + static/<br/>Jinja2 · CSS Tokens · i18n · Leaflet · Chart.js"]
+    end
+
+    subgraph Business["Tầng Business (services/)"]
+        CoreSvc["search · booking · trip · charging<br/>monitor · alert · dispatch · incident<br/>schedule · auth · audit"]
+        RealtimeSvc["realtime_service<br/>(/api/state & lọc gói trễ timestamp)"]
+        SimSvc["simulation_service<br/>(deepcopy bản sao dữ liệu What-if)"]
+    end
+
+    subgraph DataAccess["Tầng Data Access (data/)"]
+        Store["mock_data.py<br/>(Thread-safe DATA_LOCK)"]
+        Seed["seed.json<br/>(5 Hubs · 700 EVs · 830 Spots · 220 Ports)"]
+    end
+
+    Client <-->|"HTTP / JSON Polling 5s"| Routes
+    Routes <--> Views
+    Routes --> CoreSvc
+    Routes --> RealtimeSvc
+    Routes --> SimSvc
+    CoreSvc <-->|"with DATA_LOCK"| Store
+    RealtimeSvc <-->|"with DATA_LOCK"| Store
+    SimSvc -.->|"Chỉ đọc bản sao deepcopy"| Store
+    Store <--> Seed
 ```
+
+### Nguyên tắc thiết kế chính
+- **An toàn đồng thời (`DATA_LOCK`)**: Mọi thao tác ghi đè dữ liệu dùng chung (đặt xe, điều phối, cập nhật telemetry, xử lý sự cố) đều được đồng bộ qua khóa luồng.
+- **Cô lập dữ liệu mô phỏng**: `simulation_service.py` sao chép toàn bộ trạng thái hiện tại qua `copy.deepcopy()` trước khi tính toán kịch bản What-if, đảm bảo không làm sai lệch dữ liệu vận hành thực tế.
+- **Chống sai lệch gói dữ liệu trễ**: Bộ lọc telemetry so sánh `timestamp` của gói tin đến `/api/telemetry` với `lastUpdatedAt` hiện có; gói tin cũ bị từ chối cập nhật và ghi nhận vào `PACKET_LOG`.
+- **Quản lý lỗi tập trung**: Mọi service ném `ServiceError(code, message)` chuẩn hóa từ `services/errors.py`, giúp tầng giao diện và API JSON phản hồi đồng nhất.
+
+---
+
+## 🚀 Cài đặt & Khởi chạy nhanh
+
+### Yêu cầu môi trường
+- **Python 3.11** trở lên.
+- Trình duyệt hiện đại (Chrome, Edge, Firefox) có hỗ trợ JavaScript.
+
+### Các bước chạy ứng dụng
+```bash
+# 1. Cài đặt thư viện phụ thuộc (Flask 3.0.3, pytest 8.3.3)
 pip install -r requirements.txt
+
+# 2. Khởi chạy web server (mặc định http://127.0.0.1:5000)
 python app.py
 ```
+> Trên Windows có thể nhấp đúp **`run.bat`**, trên macOS/Linux chạy **`./run.sh`**.
 
-Hoặc bấm đúp `run.bat` trên Windows, `./run.sh` trên macOS/Linux.
-
-### Hai cổng truy cập tách biệt (Dual-Portal Login)
-
-| Cổng | Đường dẫn | Trải nghiệm & Luồng đăng nhập |
+### Đường dẫn truy cập hai phân hệ
+| Phân hệ | URL mặc định | Đặc điểm truy cập |
 |---|---|---|
-| **Cổng Sinh viên (Responsive Web + Mobile App)** | http://127.0.0.1:5000 (hoặc `/student/search`) | **Không bắt đăng nhập ngay**: tự động hiển thị giao diện **Web Desktop** (Top Navbar + bản đồ 2 cột rộng + danh sách Hub) trên máy tính và **App Mobile** chuẩn Figma (`414px`) trên màn hình nhỏ, có thêm nút gạt nhanh `Web / Mobile` trên thanh đầu trang để demo. Khi xác nhận **Đặt xe / Đặt chỗ** hoặc vào màn hình chuyến đi/sạc (`UC3–UC7`), mới chuyển sang `/login`. Đăng xuất quay về `/student/search`. |
-| **Cổng Đơn vị vận hành (Chỉ Web Desktop)** | http://127.0.0.1:5000/operator/login (hoặc `/operator/`) | **Bắt buộc đăng nhập ngay** với giao diện Desktop quản trị riêng (chỉ chấp nhận tài khoản vai trò `OPERATOR`). Đăng nhập xong vào thẳng `/operator/overview`; đăng xuất sẽ quay về `/operator/login`. |
+| **Cổng Người dùng (Web & Mobile)** | `http://127.0.0.1:5000/student/search` | Truy cập trực tiếp để tìm Hub; yêu cầu đăng nhập qua `/login` khi thực hiện đặt xe/chỗ, chuyến đi hoặc đăng ký sạc. Có nút gạt `Web \| Mobile` trên thanh điều hướng để chuyển nhanh giao diện demo. |
+| **Cổng Vận hành (Desktop Dashboard)** | `http://127.0.0.1:5000/operator/login` | Yêu cầu đăng nhập bằng tài khoản vai trò `OPERATOR`, sau đó chuyển thẳng vào `/operator/overview`. |
 
-> Ở chân mỗi trang đăng nhập đều có liên kết chuyển nhanh giữa **Cổng Sinh viên** và **Cổng Đơn vị vận hành** để tiện trình bày khi demo.
-
-### Tài khoản demo
-
-| Vai trò | Email | Mật khẩu | Cổng đăng nhập |
+### Tài khoản dùng thử (Demo Accounts)
+| Vai trò | Email | Mật khẩu | Cổng hợp lệ |
 |---|---|---|---|
-| Sinh viên | `student@hcmut.edu.vn` | `123456` | `/login` |
-| Đơn vị vận hành | `operator@ehub.vn` | `123456` | `/operator/login` |
-| Không đủ quyền (để demo lỗi) | `guest@gmail.com` | `123456` | Cả 2 cổng đều báo `ACCESS_DENIED` |
-
-Phiên bản khuyến nghị: Python 3.11 trở lên (đã xác minh với Python 3.13). Chạy `python app.py`, sau đó truy cập `/login` cho Sinh viên hoặc `/operator/login` cho Operator.
+| **Người dùng (Student)** | `student@hcmut.edu.vn` | `123456` | `/login` |
+| **Điều hành viên (Operator)** | `operator@ehub.vn` | `123456` | `/operator/login` |
+| **Khách (Demo chặn quyền)** | `guest@gmail.com` | `123456` | Báo lỗi `ACCESS_DENIED` ở cả hai cổng |
 
 ---
 
-## 2. Hiểu dự án trong 1 phút
+## 🧪 Kiểm chứng kỹ thuật & Automated Tests
 
-Mỗi lần người dùng mở một trang, yêu cầu đi qua 4 chặng:
-
+### 1. Chạy toàn bộ bộ kiểm thử tự động (`87/87 tests passed`)
+```bash
+pytest -q
 ```
-Trình duyệt mở /student/search
-        │
-        ▼
-blueprints/student/routes.py     ← nhận yêu cầu, gọi service        (tầng Presentation)
-        │
-        ▼
-services/search_service.py       ← xử lý: lọc Hub, tính khoảng cách  (tầng Business)
-        │
-        ▼
-data/mock_data.py                ← dữ liệu giả, đọc từ seed.json     (tầng Data Access)
-        │
-        ▼
-templates/student/search.html    ← đổ dữ liệu vào HTML rồi trả về trình duyệt
-```
+Bộ kiểm thử bao phủ đầy đủ các nghiệp vụ từ `UC1` đến `UC17`: tìm kiếm và lọc Hub, đặt xe đồng thời, đặt chỗ đỗ, nhận/trả xe, đăng ký sạc, giám sát mạng lưới, cảnh báo quá tải, điều phối, xử lý sự cố, mô phỏng What-if, chuyển đổi i18n (`vi.json`/`en.json`), lọc gói trễ và phân quyền Dual-Portal.
 
-Ba tầng này chính là Implementation view trong Submission 3.
-
-**Muốn xem một ví dụ làm trọn vẹn?** Đọc lần lượt 4 file ở sơ đồ trên (UC1). Mọi màn hình khác làm theo đúng kiểu đó.
+### 2. Các kịch bản demo kỹ thuật đi kèm (`scripts/`)
+| Kịch bản chứng minh | Lệnh thực thi | Kết quả kỳ vọng |
+|---|---|---|
+| **Chống Race Condition khi đặt trùng xe** | `python scripts/race_demo.py` | Giả lập 2 luồng đặt cùng 1 xe đồng thời: chỉ 1 yêu cầu thành công, yêu cầu còn lại nhận lỗi `VEHICLE_CONFLICT`. |
+| **Lọc gói dữ liệu Telemetry trễ (`PACKET_LOG`)** | `python scripts/packet_demo.py` | Gửi gói tin có timestamp cũ hơn trạng thái hiện tại tới `/api/telemetry`: hệ thống từ chối ghi đè (`"updated": false`, `"reason": "OUTDATED_PACKET"`) và ghi vào `PACKET_LOG`. |
+| **Cô lập dữ liệu mô phỏng What-if** | Thao tác tại `/operator/simulation` | Chạy các kịch bản thiếu xe/mưa lớn/kẹt trạm; chỉ số vận hành thực tế tại `/operator/overview` không bị thay đổi. |
+| **Khởi tạo & đặt lại dữ liệu mẫu** | `python scripts/reset_data.py` | Nạp/khôi phục dữ liệu giả lập chuẩn trong `data/seed.json` (có thể tạo lại bộ dữ liệu lớn qua `python scripts/generate_seed.py`). |
 
 ---
 
-## 3. Thư mục nào để làm gì
+## 📁 Cấu trúc thư mục
 
-```
+```text
 smart-emobility-hub/
-├── app.py                 Khởi động web, đăng ký các blueprint
-├── config.py              Hằng số dùng chung (cổng, ngưỡng dữ liệu cũ, thời gian giữ xe…)
-├── requirements.txt       Thư viện cần cài
-├── run.bat / run.sh       Chạy nhanh
+├── app.py                     # Khởi tạo Flask app, đăng ký Blueprints & chạy bộ giả lập nền
+├── config.py                  # Cấu hình chung (cổng chạy, chu kỳ polling, thời gian giữ xe, ngưỡng trễ)
+├── requirements.txt           # Danh sách thư viện Python (Flask, pytest)
+├── run.bat / run.sh           # Script khởi chạy nhanh trên Windows / macOS & Linux
+│
+├── blueprints/                # Tầng Presentation: định tuyến URL & kiểm soát phiên làm việc
+│   ├── auth/                  #   Xác thực Dual-Portal (/login, /operator/login, /logout, /denied)
+│   ├── student/               #   Các màn hình cổng Người dùng (/student/...)
+│   ├── operator/              #   Dashboard điều hành (/operator/...)
+│   └── api/                   #   REST API JSON (/api/state, /api/telemetry, /api/charging-schedule/...)
+│
+├── services/                  # Tầng Business: xử lý toàn bộ nghiệp vụ, khóa luồng & ServiceError
+│   ├── search_service.py      #   Tìm kiếm Hub/xe & tính khoảng cách
+│   ├── booking_service.py     #   Đặt xe (lock chống race condition) & đặt chỗ đỗ
+│   ├── trip_service.py        #   Nhận xe, theo dõi hành trình & trả xe
+│   ├── charging_service.py    #   Gợi ý trạm sạc khẩn cấp & đặt cổng sạc
+│   ├── monitor_service.py     #   Tổng hợp KPI mạng lưới & trạng thái các Hub
+│   ├── alert_service.py       #   Phân tích & xử lý cảnh báo quá tải
+│   ├── dispatch_service.py    #   Điều phối phương tiện liên trạm
+│   ├── incident_service.py    #   Tiếp nhận, tạm ngưng tài nguyên & cập nhật sự cố
+│   ├── schedule_service.py    #   Tạo, chỉnh sửa, kiểm tra & phê duyệt lịch sạc
+│   ├── simulation_service.py  #   Mô phỏng What-if trên bản sao dữ liệu cô lập
+│   ├── realtime_service.py    #   Bộ giả lập telemetry & lọc gói tin lỗi thời
+│   ├── auth_service.py        #   Kiểm tra đăng nhập, phân quyền & decorator @loginRequired
+│   ├── audit_service.py       #   Ghi nhận lịch sử thao tác hệ thống
+│   └── errors.py              #   Định nghĩa mã lỗi nghiệp vụ chuẩn hóa
 │
 ├── data/
-│   ├── seed.json          Dữ liệu gốc: 5 Hub, 40 xe, 76 chỗ đỗ, 20 cổng sạc, 6 sự cố, 3 tài khoản
-│   └── mock_data.py       Nạp seed.json vào bộ nhớ + vài hàm tra cứu
+│   ├── seed.json              # Dữ liệu mẫu (5 Hub, 700 xe, 830 chỗ đỗ, 220 cổng sạc, 7 sự cố, 5 cảnh báo)
+│   └── mock_data.py           # Kho dữ liệu in-memory an toàn đa luồng với DATA_LOCK
 │
-├── services/              LOGIC NGHIỆP VỤ – tên hàm giống Method description Submission 3
-├── blueprints/            ROUTE – nối đường dẫn web với service và template
-│   ├── auth/              /login (Sinh viên), /operator/login (Vận hành), /logout, /denied
-│   ├── student/           /student/...   (màn hình mobile)
-│   ├── operator/          /operator/...  (web dashboard)
-│   └── api/               /api/...       (trả JSON cho realtime và nút bấm)
-│
-├── templates/             GIAO DIỆN (HTML)
-│   ├── base_mobile.html       Khung chung cho màn hình Sinh viên
-│   ├── base_dashboard.html    Khung chung cho dashboard Vận hành
-│   ├── auth/                  login.html (Mobile SSO), operator_login.html (Desktop), denied.html
-│   ├── student/               Màn hình mobile Sinh viên (UC1–UC7)
-│   └── operator/              Màn hình dashboard Vận hành (UC8–UC14)
-│
-├── static/
-│   ├── css/tokens.css     Bảng màu sáng/tối – mọi màu lấy từ đây
-│   ├── css/mobile.css, dashboard.css
-│   ├── js/theme.js        Đổi Sáng/Tối (UC15)
-│   ├── js/i18n.js         Đổi VN/EN (UC15)
-│   ├── js/realtime.js     Tự cập nhật số liệu mỗi 5 giây (UC16)
-│   └── i18n/vi.json, en.json   Từ điển song ngữ
-│
-├── tests/                 Test tự động (pytest) – ứng với test case Submission 3
-├── scripts/               race_demo.py (demo đặt trùng xe), reset_data.py
-└── docs/                  Tài liệu nội bộ của nhóm (xem mục 7)
+├── templates/                 # Jinja2 HTML Templates (auth/, student/, operator/, base_*.html)
+├── static/                    # Tài nguyên tĩnh: CSS tokens (Light/Dark), i18n (vi/en), JS realtime & bản đồ
+├── tests/                     # 87 automated test cases (pytest) kiểm thử end-to-end & unit
+├── scripts/                   # Công cụ demo race condition, packet lag & tạo/reset dữ liệu
+└── docs/                      # Tài liệu kiến trúc, hợp đồng dữ liệu API, hướng dẫn UI & kịch bản demo
 ```
 
 ---
 
-## 4. Ai làm ở đâu
+## 📚 Tài liệu tham khảo nội bộ (`docs/`)
 
-| Thành viên | Vai trò | Làm việc chủ yếu trong |
-|---|---|---|
-| **TV1** | UI Sinh viên: tìm kiếm, đặt chỗ, đăng nhập (Hình 1–5, 13–14) + layout mobile | `templates/base_mobile.html`, `templates/student/search.html`, `_booking_modal.html`, `templates/auth/`, `static/` |
-| **TV2** | UI Sinh viên: nhận/trả xe, sạc (Hình 6–12) + chi tiết xe/Hub | `templates/student/` (các file còn lại) |
-| **TV3** | UI Dashboard vận hành (Hình 15–20) | `templates/base_dashboard.html`, `templates/operator/`, `static/css/dashboard.css` |
-| **TV4** | Logic, dữ liệu, API, tích hợp, 3 demo bắt buộc, What-if (Hình 21), lịch sạc | `services/`, `blueprints/`, `data/`, `tests/`, `scripts/` |
-| **TV5** | Tài liệu, kiểm thử, video, slide, quy ước giao diện | `docs/`, `static/i18n/`, `static/css/tokens.css`, `tests/` |
-
-Tìm việc của mình: tìm chữ **`TODO(`** trong toàn bộ dự án (VS Code: `Ctrl+Shift+F`). Mỗi TODO ghi rõ use case và việc cần làm.
-
----
-
-## 5. Cách thêm một màn hình (làm theo UC1)
-
-Ví dụ làm màn hình **Trả xe (UC6 – Hình 8)**:
-
-1. **Giao diện (TV2)** – mở `templates/student/return.html`, thay ô TODO bằng HTML theo Figma. Giữ dòng `{% extends "base_mobile.html" %}` để có sẵn khung, nút theme, nút ngôn ngữ.
-2. **Logic (TV4)** – mở `services/trip_service.py`, viết thân hàm `returnVehicle(...)`. Khi có lỗi nghiệp vụ thì `raise ServiceError(HUB_FULL, "...")`.
-3. **Nối lại (TV4)** – trong `blueprints/student/routes.py`, tách `return` thành route riêng: gọi service, bắt `ServiceError`, truyền dữ liệu vào `render_template(...)`.
-4. **Hiển thị dữ liệu (TV2)** – trong HTML dùng `{{ hub.name }}`, `{% for %}`, `{% if error %}` như ở `search.html`.
-5. **Tự kiểm tra** – thử sáng/tối, VN/EN, trạng thái lỗi; đối chiếu test case UC6 trong Submission 3.
-6. **Gửi Pull Request** vào `main`.
-
-Trong lúc chờ TV4 viết logic, người làm UI cứ gõ dữ liệu mẫu trực tiếp trong HTML theo đúng tên trường ở `docs/DATA_CONTRACT.md`.
-
----
-
-## 6. Ba thứ dùng chung, ai cũng cần biết
-
-**Đổi ngôn ngữ** – gắn `data-i18n` vào mọi chữ hiển thị, rồi thêm key vào **cả** `vi.json` và `en.json`:
-```html
-<span data-i18n="action.book">Đặt xe</span>
-```
-
-**Số liệu tự cập nhật** – gắn `data-rt` là đường dẫn tới giá trị trong `/api/state`:
-```html
-<b data-rt="hubs.H1.availableVehicles">7</b>
-```
-
-**Màu sắc** – không viết mã màu trực tiếp, luôn dùng biến trong `tokens.css` để bản tối tự đúng:
-```css
-color: var(--color-primary);
-```
-
----
-
-## 7. Quy ước
-
-- **Đặt tên** (theo biên bản họp nhóm): class `PascalCase`, hàm và biến `camelCase`, hằng số `ALL_CAPS`. Vì vậy hàm Python trong dự án viết `searchVehicleAndHub` thay vì kiểu `snake_case` thông thường, để khớp tên trong báo cáo.
-- **Route không chứa logic.** Logic nằm trong `services/`.
-- **Service không hiển thị lỗi.** Service ném `ServiceError(MÃ_LỖI)`; giao diện quyết định hiện thế nào. Danh sách mã lỗi: `services/errors.py`.
-- **Sửa dữ liệu dùng chung** thì bọc trong `with db.DATA_LOCK:`.
-- **Git:** mỗi người một nhánh (`tv1-...`, `tv2-...`), mở Pull Request vào `main`, chỉ TV4 merge. Không sửa `seed.json`, `base_*.html`, `tokens.css` của người khác mà không báo nhóm.
-
-Tài liệu chi tiết trong `docs/`:
-
-| File | Nội dung | Phụ trách |
-|---|---|---|
-| `DATA_CONTRACT.md` | Tên trường dữ liệu, mã trạng thái, mã lỗi – "hợp đồng" giữa UI và logic | TV4 |
-| `ARCHITECTURE.md` | Thư mục ↔ Implementation view ↔ Class diagram | TV4 |
-| `UI_GUIDE.md` | Tên thương hiệu, màu, font, key song ngữ | TV5 |
-| `TEST_MATRIX.md` | Test case Submission 3 ↔ màn hình ↔ kết quả | TV5 |
-| `DEMO_SCRIPT.md` | Kịch bản video demo | TV5 |
-| `AI_USAGE.md` | Khai báo sử dụng Generative AI | TV5 (cả nhóm điền) |
-
----
-
-## 8. Chạy test
-
-```
-pytest
-python scripts/race_demo.py     # demo đặt trùng xe – đạt sau khi làm xong bookVehicle
-```
-
----
-
-## 9. Ba demo bắt buộc
-
-| Demo | Ở đâu | Cách chứng minh |
-|---|---|---|
-| Race condition khi đặt xe (UC3) | `services/booking_service.py` | `scripts/race_demo.py`: 2 người đặt 1 xe, chỉ 1 thành công |
-| Lọc gói dữ liệu trễ (UC16) | `services/realtime_service.py` | Gửi gói có thời gian cũ vào `/api/telemetry`, gói bị bỏ và ghi log |
-| Cô lập dữ liệu mô phỏng (UC14) | `services/simulation_service.py` | Chạy What-if xong, số liệu dashboard không đổi |
-
----
-
-## 10. Nhóm thực hiện
-
-| MSSV | Họ và tên |
-|---|---|
-| 2412565 | Châu Mạnh Phát |
-| 2412628 | Đào Huy Phong |
-| 2413148 | Hoàng Phạm Tiến Thành |
-| 2411819 | Nguyễn Khang Kỳ |
-| 2412616 | Võ Tấn Phát |
-
-GVHD: Nguyễn Minh Tâm
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md): Chi tiết kiến trúc phân tầng và ánh xạ module.
+- [DATA_CONTRACT.md](docs/DATA_CONTRACT.md): Hợp đồng cấu trúc dữ liệu, mã trạng thái tài nguyên và bảng mã lỗi nghiệp vụ.
+- [UI_GUIDE.md](docs/UI_GUIDE.md): Quy chuẩn hệ màu Sáng/Tối (`tokens.css`), typography và quy ước đa ngôn ngữ `data-i18n`.
+- [TEST_MATRIX.md](docs/TEST_MATRIX.md): Ma trận ánh xạ kịch bản kiểm thử tự động theo từng Use Case.
+- [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md): Kịch bản trình diễn luồng hoạt động toàn hệ thống.
