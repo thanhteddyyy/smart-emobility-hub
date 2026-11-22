@@ -84,7 +84,7 @@ def bookParking(userId, hubId, timeSlot):
         else:
             slotTime = datetime.fromisoformat(slotText.replace("Z", "+00:00"))
         if slotTime is not None and slotTime.tzinfo:
-            slotTime = slotTime.replace(tzinfo=None)
+            slotTime = slotTime.astimezone().replace(tzinfo=None)
         if slotTime is not None and slotTime < datetime.now():
             raise ServiceError(INVALID_PARAMETERS, "Không thể đặt chỗ trong quá khứ.")
     except ValueError:

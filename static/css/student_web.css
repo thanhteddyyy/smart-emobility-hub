@@ -26,29 +26,33 @@
   :root[data-student-view="mobile"] .mobile-preview-bar {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
     position: fixed;
     top: 16px;
     right: 20px;
     z-index: 1050;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-strong);
-    border-radius: 999px;
-    padding: 6px 10px 6px 14px;
-    box-shadow: 0 6px 18px var(--color-shadow);
-    font-size: 0.82rem;
-    color: var(--color-text);
   }
 
-  :root[data-student-view="mobile"] .mobile-preview-bar button {
+  :root[data-student-view="mobile"] .mobile-preview-bar .seg {
+    box-shadow: 0 6px 18px var(--color-shadow);
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface);
+    padding: 3px;
+  }
+
+  :root[data-student-view="mobile"] .mobile-preview-bar .seg button {
     border: 0;
     border-radius: 999px;
-    padding: 5px 12px;
+    padding: 5px 11px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  :root[data-student-view="mobile"] .mobile-preview-bar .seg button.active {
     background: var(--tv-green);
     color: var(--color-on-primary);
-    font-weight: 600;
-    font-size: 0.8rem;
-    cursor: pointer;
   }
 
   /* ==================== CHẾ ĐỘ WEB DESKTOP (>= 900px) ==================== */
@@ -230,7 +234,7 @@
   }
 
   :root:not([data-student-view="mobile"]) .phone.explorer .tools > div {
-    display: none;
+    display: none !important;
   }
 
   :root:not([data-student-view="mobile"]) .phone.explorer .tools input {

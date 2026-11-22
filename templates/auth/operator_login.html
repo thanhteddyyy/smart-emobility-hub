@@ -82,7 +82,7 @@
               autocomplete="username"
               required
               value="{{ request.form.get('email', '') }}"
-              placeholder="operator@ehub.vn"
+              placeholder="name@ehub.vn"
             >
           </div>
 
@@ -95,7 +95,6 @@
               class="form-control"
               autocomplete="current-password"
               required
-              placeholder="••••••"
             >
           </div>
 
@@ -104,13 +103,6 @@
             <span data-i18n="opLogin.submit">Đăng nhập vào Dashboard</span>
           </button>
         </form>
-
-        <div class="op-auth-demo">
-          <div class="op-auth-demo-label" data-i18n="opLogin.demoHint">Tài khoản vận hành demo</div>
-          <div class="op-auth-demo-creds">
-            <code>operator@ehub.vn</code> · <code>123456</code>
-          </div>
-        </div>
 
         <div class="op-auth-footer">
           <a class="op-auth-switch-link" href="{{ url_for('student.search') }}">

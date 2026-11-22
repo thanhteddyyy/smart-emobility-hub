@@ -114,8 +114,6 @@
     vehicles.onchange = () => byId('battery').textContent = available[vehicles.selectedIndex]?.batteryLevel ?? '—';
     vehicles.onchange();
     byId('place').textContent = hub.name;
-    if (user) byId('identity').textContent = user.id;
-    else label('identity', 'tv.guest');
 
     choose(tab);
     if (!dialog.open) dialog.showModal();
