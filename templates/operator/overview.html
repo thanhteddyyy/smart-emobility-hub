@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  <button type="button" id="overviewRefreshBtn" class="btn btn-outline-secondary rounded-circle p-2" title="Refresh" aria-label="Refresh">
+  <button type="button" id="overviewRefreshBtn" class="btn btn-outline-secondary rounded-circle p-2" title="Refresh" aria-label="Refresh" data-i18n-title="tooltip.refresh">
     <i class="bi bi-arrow-clockwise fs-5"></i>
   </button>
 </div>
@@ -70,7 +70,7 @@
             {% endif %}
           </div>
           <div class="small">
-            <strong>{{ alert.hubName }}</strong> ({{ alert.utilizationType }}) —
+            <strong>{{ alert.hubName }}</strong> (<span data-i18n="alertType.{{ alert.utilizationType }}">{{ alert.utilizationType }}</span>) —
             {% if alert.dangerLevel == 'HIGH' %}
               <span data-i18n="alerts.overloadingMsg">đang quá tải</span>
             {% elif alert.dangerLevel == 'MEDIUM' %}
@@ -93,11 +93,12 @@
               <a class="alert-feed-item text-decoration-none" href="{{ url_for('operator.incidentDetail', incidentId=inc.id) }}">
                 <div class="d-flex align-items-center justify-content-between gap-2">
                   <span class="fw-semibold small text-body">{{ inc.hubName }} · {{ inc.resourceId }}</span>
-                  <span class="chip-x {{ 'chip-soft-danger' if inc.priority == 'HIGH' else 'chip-soft-warning' if inc.priority == 'MEDIUM' else 'chip-soft-success' }}">
+                  <span class="chip-x {{ 'chip-soft-danger' if inc.priority == 'HIGH' else 'chip-soft-warning' if inc.priority == 'MEDIUM' else 'chip-soft-success' }}"
+                        {% if inc.reason %}data-i18n="incidentReason.{{ inc.reason }}"{% else %}data-i18n="enum.resourceType.{{ inc.resourceType }}"{% endif %}>
                     {{ inc.reason or inc.resourceType }}
                   </span>
                 </div>
-                <div class="small text-muted-2">{{ inc.description }}</div>
+                <div class="small text-muted-2" data-i18n="incidentDesc.{{ inc.id }}">{{ inc.description }}</div>
               </a>
             {% endfor %}
           </div>
@@ -121,16 +122,16 @@
       </div>
       <select class="form-select w-auto" name="operationStatus" aria-label="Operating status">
         <option value="" data-i18n="filter.allStatus">Tất cả trạng thái</option>
-        <option value="ACTIVE" {{ 'selected' if filter.operationStatus == 'ACTIVE' }}>ACTIVE</option>
-        <option value="OFFLINE" {{ 'selected' if filter.operationStatus == 'OFFLINE' }}>OFFLINE</option>
+        <option value="ACTIVE" data-i18n="enum.status.ACTIVE" {{ 'selected' if filter.operationStatus == 'ACTIVE' }}>Hoạt động</option>
+        <option value="OFFLINE" data-i18n="enum.status.OFFLINE" {{ 'selected' if filter.operationStatus == 'OFFLINE' }}>Ngoại tuyến</option>
       </select>
       <select class="form-select w-auto" name="safetyWarning" aria-label="Safety Warning">
         <option value="" data-i18n="filter.allWarning">Mọi mức cảnh báo</option>
-        <option value="Safe" {{ 'selected' if filter.safetyWarning == 'Safe' }}>Safe</option>
-        <option value="Danger" {{ 'selected' if filter.safetyWarning == 'Danger' }}>Danger</option>
-        <option value="Overload" {{ 'selected' if filter.safetyWarning == 'Overload' }}>Overload</option>
+        <option value="Safe" data-i18n="enum.warning.Safe" {{ 'selected' if filter.safetyWarning == 'Safe' }}>An toàn</option>
+        <option value="Danger" data-i18n="enum.warning.Danger" {{ 'selected' if filter.safetyWarning == 'Danger' }}>Nguy hiểm</option>
+        <option value="Overload" data-i18n="enum.warning.Overload" {{ 'selected' if filter.safetyWarning == 'Overload' }}>Quá tải</option>
       </select>
-      <button type="submit" class="btn-outline-x py-1 px-3" title="Lọc" aria-label="Lọc">
+      <button type="submit" class="btn-outline-x py-1 px-3" title="Lọc" aria-label="Lọc" data-i18n-title="tooltip.filter">
         <i class="bi bi-funnel"></i>
       </button>
     </form>
@@ -151,19 +152,23 @@
             <td>
               <div class="fw-semibold">{{ hub.name }}</div>
               <div class="small text-muted-2">
-                {{ hub.availableVehicles }}/{{ hub.totalVehicles }} EV ·
-                {{ hub.emptySpots }}/{{ hub.totalSpots }} P ·
-                {{ hub.availablePorts }}/{{ hub.totalPorts }} C
+                {{ hub.availableVehicles }}/{{ hub.totalVehicles }} <span data-i18n="unit.evShort">Xe</span> ·
+                {{ hub.emptySpots }}/{{ hub.totalSpots }} <span data-i18n="unit.spotShort">Bãi</span> ·
+                {{ hub.availablePorts }}/{{ hub.totalPorts }} <span data-i18n="unit.portShort">Sạc</span>
               </div>
               <a class="link-view-resources" href="{{ url_for('operator.resources', hubId=hub.hubId) }}" data-i18n="action.viewResources">View resources</a>
             </td>
             <td>
               <span class="chip-x {{ 'chip-solid-success' if hub.status == 'ACTIVE' else 'chip-solid-danger' }}"
-                    data-rt="hubs.{{ hub.hubId }}.status">{{ hub.status }}</span>
+                    data-rt="hubs.{{ hub.hubId }}.status"
+                    data-rt-i18n-prefix="enum.status."
+                    data-i18n="enum.status.{{ hub.status }}">{{ hub.status }}</span>
             </td>
             <td>
               <span class="fw-medium {{ 'text-danger' if hub.safetyWarning == 'Overload' else 'text-warning' if hub.safetyWarning == 'Danger' else 'text-success' }}"
-                    data-rt="hubs.{{ hub.hubId }}.safetyWarning">{{ hub.safetyWarning }}</span>
+                    data-rt="hubs.{{ hub.hubId }}.safetyWarning"
+                    data-rt-i18n-prefix="enum.warning."
+                    data-i18n="enum.warning.{{ hub.safetyWarning }}">{{ hub.safetyWarning }}</span>
             </td>
             <td class="fw-semibold">
               <span data-rt="hubs.{{ hub.hubId }}.usagePercent">{{ hub.usagePercent }}</span>%
@@ -198,12 +203,14 @@
       <tbody id="packetLogBody">
         {% for entry in packetLog | reverse %}
         <tr>
-          <td class="fw-semibold">{{ entry.packet.resourceType }} / {{ entry.packet.resourceId }}</td>
-          <td>{{ entry.packet.status }}</td>
+          <td class="fw-semibold">
+            <span data-i18n="enum.resourceType.{{ entry.packet.resourceType }}">{{ entry.packet.resourceType }}</span> / {{ entry.packet.resourceId }}
+          </td>
+          <td data-i18n="enum.status.{{ entry.packet.status }}">{{ entry.packet.status }}</td>
           <td class="small text-muted-2">{{ entry.packet.timestamp }}</td>
           <td>
-            <span class="chip-x chip-soft-warning">{{ entry.reason }}</span>
-            {% if entry.demo %}<span class="small text-muted-2 ms-1">demo</span>{% endif %}
+            <span class="chip-x chip-soft-warning" data-i18n="enum.packetReason.{{ entry.reason }}">{{ entry.reason }}</span>
+            {% if entry.demo %}<span class="small text-muted-2 ms-1" data-i18n="packetLog.demoTag">mẫu thử</span>{% endif %}
           </td>
         </tr>
         {% else %}
@@ -222,6 +229,10 @@
 {% block scripts %}
 <script>
 (function () {
+  function tr(key, fallback) {
+    return window.EHubI18n && window.EHubI18n.t ? window.EHubI18n.t(key, fallback) : fallback;
+  }
+
   function escapeHtml(text) {
     return String(text ?? "").replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -239,10 +250,18 @@
       if (!entries.length) return;
       body.innerHTML = entries.slice().reverse().map(function (entry) {
         const packet = entry.packet || {};
-        const demoBadge = entry.demo ? ' <span class="small text-muted-2 ms-1">demo</span>' : "";
-        return "<tr><td class='fw-semibold'>" + escapeHtml(packet.resourceType) + " / " + escapeHtml(packet.resourceId) +
-          "</td><td>" + escapeHtml(packet.status) + "</td><td class='small text-muted-2'>" + escapeHtml(packet.timestamp) +
-          "</td><td><span class='chip-x chip-soft-warning'>" + escapeHtml(entry.reason) + "</span>" + demoBadge + "</td></tr>";
+        const typeKey = "enum.resourceType." + String(packet.resourceType || "");
+        const statusKey = "enum.status." + String(packet.status || "");
+        const reasonKey = "enum.packetReason." + String(entry.reason || "");
+        const demoBadge = entry.demo
+          ? ' <span class="small text-muted-2 ms-1" data-i18n="packetLog.demoTag">' + escapeHtml(tr("packetLog.demoTag", "demo")) + "</span>"
+          : "";
+        return "<tr><td class='fw-semibold'><span data-i18n='" + escapeHtml(typeKey) + "'>" + escapeHtml(tr(typeKey, packet.resourceType)) +
+          "</span> / " + escapeHtml(packet.resourceId) +
+          "</td><td data-i18n='" + escapeHtml(statusKey) + "'>" + escapeHtml(tr(statusKey, packet.status)) +
+          "</td><td class='small text-muted-2'>" + escapeHtml(packet.timestamp) +
+          "</td><td><span class='chip-x chip-soft-warning' data-i18n='" + escapeHtml(reasonKey) + "'>" + escapeHtml(tr(reasonKey, entry.reason)) +
+          "</span>" + demoBadge + "</td></tr>";
       }).join("");
     } catch (err) {
       console.warn("Không thể tải PACKET_LOG:", err);
@@ -271,7 +290,16 @@
           const val = el.dataset.rt.split(".").reduce(function (o, k) {
             return o == null ? undefined : o[k];
           }, state);
-          if (val !== undefined) el.textContent = val;
+          if (val !== undefined) {
+            const prefix = el.dataset.rtI18nPrefix;
+            if (prefix) {
+              const i18nKey = prefix + val;
+              el.dataset.i18n = i18nKey;
+              el.textContent = tr(i18nKey, val);
+            } else {
+              el.textContent = val;
+            }
+          }
         });
         document.dispatchEvent(new CustomEvent("ehub:state", { detail: state }));
       } catch (err) {
@@ -285,12 +313,16 @@
     Object.keys(hubs).forEach(function (hid) {
       const statusEl = document.querySelector('[data-rt="hubs.' + hid + '.status"]');
       if (statusEl) {
-        statusEl.className = "chip-x " + (hubs[hid].status === "ACTIVE" ? "chip-solid-success" : "chip-solid-danger");
+        const statusVal = hubs[hid].status;
+        statusEl.dataset.i18n = "enum.status." + statusVal;
+        statusEl.textContent = tr("enum.status." + statusVal, statusVal);
+        statusEl.className = "chip-x " + (statusVal === "ACTIVE" ? "chip-solid-success" : "chip-solid-danger");
       }
       const safetyEl = document.querySelector('[data-rt="hubs.' + hid + '.safetyWarning"]');
       if (safetyEl) {
         const warning = hubs[hid].safetyWarning;
-        safetyEl.textContent = warning;
+        safetyEl.dataset.i18n = "enum.warning." + warning;
+        safetyEl.textContent = tr("enum.warning." + warning, warning);
         safetyEl.className = "fw-medium " + (warning === "Overload" ? "text-danger" : warning === "Danger" ? "text-warning" : "text-success");
       }
     });

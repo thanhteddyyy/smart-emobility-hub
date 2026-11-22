@@ -36,7 +36,7 @@
     </div>
     <div class="text-end">
       <div class="fs-2 fw-bold lh-1" style="color: var(--color-text);">{{ selectedVehicle.batteryLevel }}%</div>
-      <div class="small mt-1" style="color: var(--color-muted);">{{ selectedVehicle.id }} · {{ selectedVehicle.status }}</div>
+      <div class="small mt-1" style="color: var(--color-muted);">{{ selectedVehicle.id }} · <span data-i18n="enum.status.{{ selectedVehicle.status }}">{{ selectedVehicle.status }}</span></div>
     </div>
   </div>
 </article>
@@ -70,7 +70,7 @@
 <article class="card-x p-3 mb-3">
   <div class="d-flex justify-content-between align-items-center mb-2">
     <h2 class="h6 fw-bold mb-0" style="color: var(--color-text);" data-i18n="resource.vehicleList">Danh sách xe tại trạm</h2>
-    <span class="small fw-semibold" style="color: var(--color-muted);">{{ vehicles | length }} xe</span>
+    <span class="small fw-semibold" style="color: var(--color-muted);">{{ vehicles | length }} <span data-i18n="unit.vehiclesShort">xe</span></span>
   </div>
   <div class="d-flex flex-column gap-2 pe-1" style="max-height: 220px; overflow-y: auto;">
     {% for v in vehicles %}
@@ -79,7 +79,7 @@
        href="{{ url_for('student.resource', hubId=hubStatus.hubId, vehicleId=v.id) }}">
       <div>
         <div class="fw-semibold small">{{ v.model }} ({{ v.id }})</div>
-        <div class="small" style="color: var(--color-muted);">{{ v.status }}</div>
+        <div class="small" style="color: var(--color-muted);" data-i18n="enum.status.{{ v.status }}">{{ v.status }}</div>
       </div>
       <span class="fw-bold small">{{ v.batteryLevel }}%</span>
     </a>

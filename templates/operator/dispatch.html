@@ -35,9 +35,17 @@
 </div>
 
 {% if error %}
-  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</div>
+  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i><span{% if error.code %} data-i18n="err.{{ error.code }}"{% endif %}>{{ error.message }}</span></div>
 {% endif %}
-{% if successMessage %}
+{% if successMeta %}
+  <div class="alert-x success"><i class="bi bi-check-circle me-2"></i>
+    {% if successMeta.type == 'cancelled' %}
+      <span data-i18n="dispatch.successCancelledPrefix">Đã hủy lệnh điều phối</span> {{ successMeta.orderId }}.
+    {% else %}
+      <span data-i18n="dispatch.successCreatedPrefix">Đã tạo lệnh điều phối</span> {{ successMeta.orderId }} ({{ successMeta.count }} <span data-i18n="unit.vehiclesShort">xe</span>).
+    {% endif %}
+  </div>
+{% elif successMessage %}
   <div class="alert-x success"><i class="bi bi-check-circle me-2"></i>{{ successMessage }}</div>
 {% endif %}
 
@@ -70,7 +78,11 @@
                   onchange="window.location.href='{{ url_for('operator.dispatch') }}?sourceHubId=' + encodeURIComponent(this.value) + '&destHubId=' + encodeURIComponent(document.getElementById('destHubSelect').value);">
             <option value="" data-i18n="dispatch.allHubs">Tất cả Hub</option>
             {% for h in data.hubs %}
-              <option value="{{ h.hubId }}" {{ 'selected' if data.selectedSourceHubId == h.hubId }}>
+              <option value="{{ h.hubId }}"
+                      data-hub-label="{{ h.name }}"
+                      data-count="{{ h.availableVehicles }}"
+                      data-unit-key="unit.vehiclesShort"
+                      {{ 'selected' if data.selectedSourceHubId == h.hubId }}>
                 {{ h.name }} ({{ h.availableVehicles }} xe)
               </option>
             {% endfor %}
@@ -81,7 +93,11 @@
           <label class="small text-muted-2 mb-0" for="destHubSelect" data-i18n="dispatch.toHub">Đến:</label>
           <select id="destHubSelect" name="destHubId" class="form-select form-select-sm w-auto">
             {% for h in data.hubs %}
-              <option value="{{ h.hubId }}" {{ 'selected' if data.selectedDestHubId == h.hubId }}>
+              <option value="{{ h.hubId }}"
+                      data-hub-label="{{ h.name }}"
+                      data-count="{{ h.emptySpots }}"
+                      data-unit-key="unit.spotsShort"
+                      {{ 'selected' if data.selectedDestHubId == h.hubId }}>
                 {{ h.name }} ({{ h.emptySpots }} chỗ trống)
               </option>
             {% endfor %}
@@ -125,7 +141,9 @@
             </td>
             <td>
               <span class="badge {{ 'badge-ok' if v.status == 'AVAILABLE' else 'badge-warn' if v.status in ('IN_USE', 'RESERVED', 'CHARGING') else 'badge-danger' }}"
-                    data-rt="network.vehicles.{{ v.id }}.status">{{ v.status }}</span>
+                    data-rt="network.vehicles.{{ v.id }}.status"
+                    data-rt-i18n-prefix="enum.status."
+                    data-i18n="enum.status.{{ v.status }}">{{ v.status }}</span>
               <span class="badge badge-warn ms-1 low-battery-badge {{ '' if v.isLowBattery else 'd-none' }}"
                     data-i18n="dispatch.lowBattery">Low Battery</span>
             </td>
@@ -163,7 +181,7 @@
           <td>{{ o.sourceHubId }}</td>
           <td>{{ o.destHubId }}</td>
           <td>{{ o.vehicleIds | join(', ') }}</td>
-          <td><span class="badge {{ 'badge-warn' if o.status == 'PENDING' else 'badge-danger' }}">{{ o.status }}</span></td>
+          <td><span class="badge {{ 'badge-warn' if o.status == 'PENDING' else 'badge-danger' }}" data-i18n="enum.status.{{ o.status }}">{{ o.status }}</span></td>
           <td>
             {% if o.status == 'PENDING' %}
               <form method="post" action="{{ url_for('operator.dispatch') }}" class="d-inline">
@@ -193,6 +211,33 @@
   const primaryColor = styles.getPropertyValue("--color-primary").trim();
   const dangerColor = styles.getPropertyValue("--color-error").trim();
 
+  function tr(key, fallback) {
+    return window.EHubI18n && window.EHubI18n.t ? window.EHubI18n.t(key, fallback) : fallback;
+  }
+
+  function updateHubOptionLabels() {
+    document.querySelectorAll("option[data-hub-label]").forEach(function (opt) {
+      const unitFallback = opt.dataset.unitKey === "unit.spotsShort" ? "chỗ trống" : "xe";
+      opt.textContent = opt.dataset.hubLabel + " (" + opt.dataset.count + " " + tr(opt.dataset.unitKey, unitFallback) + ")";
+    });
+  }
+
+  function buildMarkerPopupHtml(m) {
+    return (
+      "<div class='small'>" +
+      "<strong>" + m.name + " (" + m.hubId + ")</strong><br>" +
+      tr("dispatch.mapAvailable", "Xe sẵn sàng:") + " " + m.availableVehicles + "<br>" +
+      tr("dispatch.mapSpots", "Chỗ đỗ trống:") + " " + m.emptySpots + "<br>" +
+      tr("dispatch.mapPorts", "Cổng sạc trống:") + " " + m.availablePorts +
+      "<div class='mt-2 d-flex gap-1'>" +
+      "<button type='button' class='btn btn-sm btn-outline-primary' onclick=\"selectMapHub('source','" + m.hubId + "')\">" + tr("dispatch.pickSource", "Chọn nguồn") + "</button>" +
+      "<button type='button' class='btn btn-sm btn-primary' onclick=\"selectMapHub('dest','" + m.hubId + "')\">" + tr("dispatch.pickDest", "Chọn đích") + "</button>" +
+      "</div></div>"
+    );
+  }
+
+  const mapPopups = [];
+
   function initDispatchMap() {
     if (!window.L || !mapView || !mapView.center) return;
     const map = L.map("dispatchMap").setView([mapView.center.lat, mapView.center.lng], 14);
@@ -208,21 +253,22 @@
         weight: 2
       }).addTo(map);
 
-      const popupHtml =
-        "<div class='small'>" +
-        "<strong>" + m.name + " (" + m.hubId + ")</strong><br>" +
-        "Xe sẵn sàng: " + m.availableVehicles + "<br>" +
-        "Chỗ đỗ trống: " + m.emptySpots + "<br>" +
-        "Cổng sạc trống: " + m.availablePorts +
-        "<div class='mt-2 d-flex gap-1'>" +
-        "<button type='button' class='btn btn-sm btn-outline-primary' onclick=\"selectMapHub('source','" + m.hubId + "')\">Chọn nguồn</button>" +
-        "<button type='button' class='btn btn-sm btn-primary' onclick=\"selectMapHub('dest','" + m.hubId + "')\">Chọn đích</button>" +
-        "</div></div>";
-      circle.bindPopup(popupHtml);
+      circle.bindPopup(buildMarkerPopupHtml(m));
+      mapPopups.push({ circle: circle, marker: m });
     });
   }
   if (window.EHubMap) window.EHubMap.onReady(initDispatchMap);
   else initDispatchMap();
+
+  updateHubOptionLabels();
+  document.addEventListener("ehub:langchange", function () {
+    updateHubOptionLabels();
+    mapPopups.forEach(function (item) {
+      if (item.circle && item.circle.setPopupContent) {
+        item.circle.setPopupContent(buildMarkerPopupHtml(item.marker));
+      }
+    });
+  });
 
   window.selectMapHub = function (role, hubId) {
     const sourceSel = document.getElementById("sourceHubSelect");
@@ -242,7 +288,7 @@
       const q = dispatchSearchInput.value.trim().toLowerCase();
       let visible = 0;
       document.querySelectorAll("#dispatchVehiclesTable tbody tr.dispatch-vehicle-row").forEach(function (row) {
-        const ok = !q || row.dataset.search.includes(q);
+        const ok = !q || row.dataset.search.includes(q) || row.textContent.toLowerCase().includes(q);
         row.style.display = ok ? "" : "none";
         if (ok) visible += 1;
       });

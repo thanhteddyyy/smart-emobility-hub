@@ -10,7 +10,7 @@ bp = Blueprint("operator", __name__)
 
 
 def _currentOperator():
-    return session.get("user") or {"id": "OP001", "name": "Matthew", "role": "OPERATOR"}
+    return session.get("user") or {"id": "OP001", "name": "Thành", "role": "OPERATOR"}
 
 
 # ---------- UC8: Tổng quan mạng lưới (OverviewDashboard) ----------
@@ -142,7 +142,7 @@ def incidentDetail(incidentId):
 def dispatch():
     sourceHubId = request.values.get("sourceHubId") or ""
     destHubId = request.values.get("destHubId") or ""
-    error, successMessage = None, None
+    error, successMessage, successMeta = None, None, None
 
     if request.method == "POST":
         action = request.form.get("action", "dispatch")
@@ -152,10 +152,12 @@ def dispatch():
                 orderId = request.form.get("orderId")
                 dispatch_service.cancelDispatchOrder(operatorId, orderId)
                 successMessage = f"Đã hủy lệnh điều phối {orderId}."
+                successMeta = {"type": "cancelled", "orderId": orderId}
             else:
                 vehicleIds = request.form.getlist("vehicleIds")
                 order = dispatch_service.processDispatch(operatorId, sourceHubId, destHubId, vehicleIds)
                 successMessage = f"Đã tạo lệnh điều phối {order['id']} ({len(order['vehicleIds'])} xe)."
+                successMeta = {"type": "created", "orderId": order["id"], "count": len(order["vehicleIds"])}
         except ServiceError as e:
             error = e
 
@@ -165,6 +167,7 @@ def dispatch():
         data=dispatchData,
         error=error,
         successMessage=successMessage,
+        successMeta=successMeta,
     )
 
 

@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="d-flex align-items-center gap-3">
-  <a class="back-icon-btn" href="{{ url_for('operator.incidents') }}" title="Back" aria-label="Back">
+  <a class="back-icon-btn" href="{{ url_for('operator.incidents') }}" title="Back" aria-label="Back" data-i18n-title="tooltip.back">
     <i class="bi bi-arrow-return-left"></i>
   </a>
   <h2 class="h4 fw-bold m-0" data-i18n="incidentDetail.pageTitle">Chi tiết sự cố</h2>
 </div>
 
 {% if error %}
-  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</div>
+  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i><span{% if error.code %} data-i18n="err.{{ error.code }}"{% endif %}>{{ error.message }}</span></div>
 {% endif %}
 {% if savedMessage == 'paused' %}
   <div class="alert-x success"><i class="bi bi-check-circle me-2"></i><span data-i18n="incidentDetail.pausedSuccess">Đã tạm ngưng tài nguyên và chuyển sự cố sang IN_PROGRESS.</span></div>
@@ -33,26 +33,28 @@
     </div>
     <div class="col-md-3">
       <div class="detail-field-label" data-i18n="incidentDetail.resourceType">Loại tài nguyên:</div>
-      <div class="detail-field-value">{{ incident.resourceType }}</div>
+      <div class="detail-field-value" data-i18n="enum.resourceType.{{ incident.resourceType }}">{{ incident.resourceType }}</div>
     </div>
     <div class="col-md-3">
       <div class="detail-field-label" data-i18n="table.status">Trạng thái</div>
       <div class="detail-field-value">
-        <span data-rt="network.resources.{{ incident.resourceId }}.status">{{ incident.resourceStatus }}</span>
-        <span class="text-muted-2 small">({{ incident.status }})</span>
+        <span data-rt="network.resources.{{ incident.resourceId }}.status"
+              data-rt-i18n-prefix="enum.status."
+              data-i18n="enum.status.{{ incident.resourceStatus }}">{{ incident.resourceStatus }}</span>
+        <span class="text-muted-2 small">(<span data-i18n="enum.status.{{ incident.status }}">{{ incident.status }}</span>)</span>
       </div>
     </div>
     <div class="col-md-6">
       <div class="detail-field-label" data-i18n="incidents.colDetails">Chi tiết</div>
-      <div class="detail-field-value">{{ incident.description }}</div>
+      <div class="detail-field-value" data-i18n="incidentDesc.{{ incident.id }}">{{ incident.description }}</div>
     </div>
     <div class="col-md-3">
       <div class="detail-field-label" data-i18n="incidentDetail.reasonLabel">Lý do sự cố:</div>
-      <div class="detail-field-value">{{ incident.reason or '—' }}</div>
+      <div class="detail-field-value"{% if incident.reason %} data-i18n="incidentReason.{{ incident.reason }}"{% endif %}>{{ incident.reason or '—' }}</div>
     </div>
     <div class="col-md-3">
       <div class="detail-field-label" data-i18n="incidentDetail.priorityLevel">Mức độ ưu tiên:</div>
-      <div class="detail-field-value">{{ incident.priority }}</div>
+      <div class="detail-field-value" data-i18n="priority.{{ incident.priority | lower }}">{{ incident.priority }}</div>
     </div>
   </div>
 </section>
@@ -67,7 +69,7 @@
       <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
         <span class="small text-muted-2" data-i18n="incidentDetail.quickReasons">Gợi ý lý do nhanh:</span>
         {% for preset in ['Quá tải trạm', 'Hỏng cổng sạc', 'Lỗi pin / sụt áp', 'Hỏng phanh / lốp xe', 'Mất kết nối IoT', 'GPS lệch vị trí'] %}
-          <button type="button" class="reason-chip-btn" onclick="document.getElementById('reason').value='{{ preset }}'">{{ preset }}</button>
+          <button type="button" class="reason-chip-btn" onclick="document.getElementById('reason').value=this.textContent.trim()" data-i18n="incidentReason.{{ preset }}">{{ preset }}</button>
         {% endfor %}
       </div>
     </div>

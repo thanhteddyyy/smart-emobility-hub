@@ -11,7 +11,7 @@
 {% else %}
   <div class="resource-banner">
     <div class="d-flex align-items-center gap-3">
-      <a class="back-icon-btn" href="{{ url_for('operator.overview') }}" title="Back" aria-label="Back">
+      <a class="back-icon-btn" href="{{ url_for('operator.overview') }}" title="Back" aria-label="Back" data-i18n-title="tooltip.back">
         <i class="bi bi-arrow-return-left"></i>
       </a>
       <div>
@@ -82,9 +82,9 @@
       </div>
       <select id="resourceTypeFilter" class="form-select w-auto" aria-label="Resource Type">
         <option value="" data-i18n="filter.allTypes">Tất cả loại</option>
-        <option value="VEHICLE">Vehicle</option>
-        <option value="CHARGING_PORT">Charging Port</option>
-        <option value="PARKING_SPOT">Parking Spot</option>
+        <option value="VEHICLE" data-i18n="enum.resourceType.VEHICLE">Vehicle</option>
+        <option value="CHARGING_PORT" data-i18n="enum.resourceType.CHARGING_PORT">Charging Port</option>
+        <option value="PARKING_SPOT" data-i18n="enum.resourceType.PARKING_SPOT">Parking Spot</option>
       </select>
     </div>
 
@@ -101,11 +101,13 @@
         <tbody>
         {% for r in data.resources %}
           <tr class="resource-row" data-category="{{ r.category }}" data-search="{{ r.name | lower }} {{ r.typeLabel | lower }} {{ r.status | lower }}">
-            <td class="fw-semibold">{{ r.typeLabel }}</td>
+            <td class="fw-semibold" data-i18n="enum.resourceType.{{ r.category }}">{{ r.typeLabel }}</td>
             <td>{{ r.name }}</td>
             <td>
               <span class="chip-x {{ 'chip-solid-success' if r.displayStatus == 'Available' else 'chip-solid-danger' if r.displayStatus == 'Faulty' else 'chip-solid-warning' }}"
-                    data-rt="network.resources.{{ r.id }}.status">{{ r.status }}</span>
+                    data-rt="network.resources.{{ r.id }}.status"
+                    data-rt-i18n-prefix="enum.status."
+                    data-i18n="enum.status.{{ r.status }}">{{ r.status }}</span>
             </td>
             <td class="text-muted-2" data-rt="network.resources.{{ r.id }}.lastUpdatedAt">{{ r.lastUpdatedAt }}</td>
           </tr>
@@ -133,7 +135,7 @@
     const cat = typeSelect ? typeSelect.value : "";
     let visible = 0;
     document.querySelectorAll("#resourcesTable tbody tr.resource-row").forEach(function (row) {
-      const matchSearch = !q || row.dataset.search.includes(q);
+      const matchSearch = !q || row.dataset.search.includes(q) || row.textContent.toLowerCase().includes(q);
       const matchCat = !cat || row.dataset.category === cat;
       const ok = matchSearch && matchCat;
       row.style.display = ok ? "" : "none";
@@ -155,7 +157,18 @@
           const val = el.dataset.rt.split(".").reduce(function (o, k) {
             return o == null ? undefined : o[k];
           }, state);
-          if (val !== undefined) el.textContent = val;
+          if (val !== undefined) {
+            const prefix = el.dataset.rtI18nPrefix;
+            if (prefix) {
+              const i18nKey = prefix + val;
+              el.dataset.i18n = i18nKey;
+              el.textContent = window.EHubI18n && window.EHubI18n.t
+                ? window.EHubI18n.t(i18nKey, val)
+                : val;
+            } else {
+              el.textContent = val;
+            }
+          }
         });
         document.dispatchEvent(new CustomEvent("ehub:state", { detail: state }));
       } catch (err) {

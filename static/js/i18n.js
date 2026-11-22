@@ -7,6 +7,8 @@
 (function () {
   const KEY = "ehub-lang";
   const cache = {};
+  let currentLang = "vi";
+  let currentDict = {};
 
   async function loadDictionary(lang) {
     if (!cache[lang]) {
@@ -16,18 +18,56 @@
     return cache[lang];
   }
 
-  async function applyLanguage(lang) {
-    const dict = await loadDictionary(lang);
-    document.documentElement.lang = lang;
+  function t(key, fallback) {
+    if (key && currentDict && Object.prototype.hasOwnProperty.call(currentDict, key) && currentDict[key] !== "") {
+      return currentDict[key];
+    }
+    return fallback !== undefined ? fallback : key;
+  }
+
+  function getLang() {
+    return currentLang;
+  }
+
+  function applyDomTranslations(dict) {
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
-      if (dict[el.dataset.i18n]) el.textContent = dict[el.dataset.i18n];
+      const k = el.dataset.i18n;
+      if (k && Object.prototype.hasOwnProperty.call(dict, k) && dict[k]) {
+        el.textContent = dict[k];
+      }
     });
     document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
-      if (dict[el.dataset.i18nPlaceholder]) el.placeholder = dict[el.dataset.i18nPlaceholder];
+      const k = el.dataset.i18nPlaceholder;
+      if (k && Object.prototype.hasOwnProperty.call(dict, k) && dict[k]) {
+        el.placeholder = dict[k];
+      }
     });
+    document.querySelectorAll("[data-i18n-title]").forEach(function (el) {
+      const k = el.dataset.i18nTitle;
+      if (k && Object.prototype.hasOwnProperty.call(dict, k) && dict[k]) {
+        el.title = dict[k];
+        if (el.hasAttribute("aria-label")) {
+          el.setAttribute("aria-label", dict[k]);
+        }
+      }
+    });
+  }
+
+  async function applyLanguage(lang) {
+    const targetLang = lang === "en" ? "en" : "vi";
+    const dict = await loadDictionary(targetLang);
+    currentLang = targetLang;
+    currentDict = dict;
+    document.documentElement.lang = targetLang;
+    applyDomTranslations(dict);
     document.querySelectorAll("[data-lang-set]").forEach(function (btn) {
-      btn.classList.toggle("active", btn.dataset.langSet === lang);
+      btn.classList.toggle("active", btn.dataset.langSet === targetLang);
     });
+    document.dispatchEvent(
+      new CustomEvent("ehub:langchange", {
+        detail: { lang: targetLang, dict: dict },
+      })
+    );
   }
 
   let saved = null;
@@ -40,5 +80,9 @@
     applyLanguage(btn.dataset.langSet);
     try { localStorage.setItem(KEY, btn.dataset.langSet); } catch (e) {}
   });
-  window.EHubI18n = { applyLanguage: applyLanguage };
+  window.EHubI18n = {
+    applyLanguage: applyLanguage,
+    t: t,
+    getLang: getLang,
+  };
 })();

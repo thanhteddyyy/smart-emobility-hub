@@ -12901,7 +12901,7 @@
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "HIGH",
    "status": "IN_PROGRESS",
-   "operator": "Matthew",
+   "operator": "Thành",
    "createdAt": "2026-11-17T08:00:00"
   },
   {
@@ -12914,7 +12914,7 @@
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "LOW",
    "status": "RESOLVED",
-   "operator": "Liam",
+   "operator": "Kỳ",
    "createdAt": "2026-11-17T08:00:00"
   },
   {
@@ -12940,7 +12940,7 @@
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "LOW",
    "status": "RESOLVED",
-   "operator": "Liam",
+   "operator": "Phát",
    "createdAt": "2026-11-17T08:00:00"
   },
   {
@@ -12953,7 +12953,7 @@
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "MEDIUM",
    "status": "IN_PROGRESS",
-   "operator": "Jack",
+   "operator": "Phong",
    "createdAt": "2026-11-17T08:00:00"
   },
   {
@@ -12966,7 +12966,7 @@
    "fixingMethod": "Kiểm tra tài nguyên, thay thế linh kiện hoặc reconnect thiết bị.",
    "priority": "MEDIUM",
    "status": "RESOLVED",
-   "operator": "Jack",
+   "operator": "Phát",
    "createdAt": "2026-11-17T08:00:00"
   }
  ],
@@ -12980,7 +12980,7 @@
   },
   {
    "id": "OP001",
-   "name": "Matthew",
+   "name": "Thành",
    "email": "operator@ehub.vn",
    "password": "123456",
    "role": "OPERATOR"

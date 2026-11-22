@@ -25,7 +25,17 @@
 
       document.querySelectorAll("[data-rt]").forEach(function (el) {
         const value = pick(state, el.dataset.rt);
-        if (value !== undefined) el.textContent = value;
+        if (value === undefined) return;
+        const prefix = el.dataset.rtI18nPrefix;
+        if (prefix) {
+          const i18nKey = prefix + value;
+          el.dataset.i18n = i18nKey;
+          el.textContent = window.EHubI18n && window.EHubI18n.t
+            ? window.EHubI18n.t(i18nKey, value)
+            : value;
+        } else {
+          el.textContent = value;
+        }
       });
       document.dispatchEvent(new CustomEvent("ehub:state", { detail: state }));
     } catch (e) {
@@ -45,7 +55,10 @@
           floatingWarning.style.left = "50%";
           floatingWarning.style.transform = "translateX(-50%)";
           floatingWarning.style.zIndex = "9999";
-          floatingWarning.textContent = "Mất kết nối realtime. Đang thử cập nhật lại...";
+          floatingWarning.dataset.i18n = "tv.connection";
+          floatingWarning.textContent = window.EHubI18n && window.EHubI18n.t
+            ? window.EHubI18n.t("tv.connection", "Mất kết nối realtime. Đang thử cập nhật lại...")
+            : "Mất kết nối realtime. Đang thử cập nhật lại...";
           document.body.appendChild(floatingWarning);
         }
         floatingWarning.hidden = false;

@@ -64,8 +64,13 @@
 <script>
 let currentSchedule = [];
 
+function tr(key, fallback) {
+  return window.EHubI18n && window.EHubI18n.t ? window.EHubI18n.t(key, fallback) : fallback;
+}
+
 function isEnglish() {
-  return (document.documentElement.lang || "vi") === "en";
+  const lang = (window.EHubI18n && window.EHubI18n.getLang) ? window.EHubI18n.getLang() : (document.documentElement.lang || "vi");
+  return lang === "en";
 }
 
 async function generateSchedule() {
@@ -98,28 +103,34 @@ function renderSchedule() {
   tbody.innerHTML = "";
 
   if (currentSchedule.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted-2 py-4">${isEnglish() ? "No schedule items." : "Không có dữ liệu lịch sạc."}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted-2 py-4" data-i18n="schedule.empty">${escapeHTML(tr("schedule.empty", isEnglish() ? "No schedule items." : "Chưa có lịch sạc — chọn Hub và bấm \"Tạo lịch tự động\"."))}</td></tr>`;
     return;
   }
 
   currentSchedule.forEach((item, index) => {
     const row = document.createElement("tr");
     const statusChip = item.status === "APPROVED" ? "chip-soft-success" : "chip-soft-warning";
+    const statusKey = "enum.status." + String(item.status || "");
+    const statusText = tr(statusKey, item.status);
     row.innerHTML = `
       <td class="fw-semibold">${escapeHTML(item.vehicleId || "N/A")}</td>
       <td><input class="form-control form-control-sm" value="${escapeHTML(item.portId)}" onchange="editSchedule(${index}, 'portId', this.value)"></td>
       <td><input class="form-control form-control-sm" value="${escapeHTML(item.timeSlot)}" onchange="editSchedule(${index}, 'timeSlot', this.value)"></td>
       <td>${Number(item.batteryLevel)}%</td>
-      <td><span class="chip-x ${statusChip}">${escapeHTML(item.status)}</span></td>
+      <td><span class="chip-x ${statusChip}" data-i18n="${escapeHTML(statusKey)}">${escapeHTML(statusText)}</span></td>
       <td>
-        <button type="button" class="btn-outline-x btn-sm" onclick="validateCurrentSchedule()">
-          ${isEnglish() ? "Validate" : "Kiểm tra"}
+        <button type="button" class="btn-outline-x btn-sm" data-i18n="schedule.validateShort" onclick="validateCurrentSchedule()">
+          ${escapeHTML(tr("schedule.validateShort", isEnglish() ? "Validate" : "Kiểm tra"))}
         </button>
       </td>
     `;
     tbody.appendChild(row);
   });
 }
+
+document.addEventListener("ehub:langchange", function () {
+  if (currentSchedule.length > 0) renderSchedule();
+});
 
 async function editSchedule(index, field, value) {
   const changes = [{ id: currentSchedule[index].id, [field]: value }];

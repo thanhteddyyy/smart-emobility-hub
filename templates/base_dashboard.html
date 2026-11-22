@@ -37,8 +37,8 @@
     </div>
 
     <div class="dash-user-wrap">
-      {% set displayName = currentUser.name if currentUser and currentUser.name else 'Matthew' %}
-      {% set avatarInitial = (displayName[0] | upper) if displayName else 'M' %}
+      {% set displayName = currentUser.name if currentUser and currentUser.name else 'Thành' %}
+      {% set avatarInitial = (displayName[0] | upper) if displayName else 'T' %}
       <div class="dash-user-card">
         <div class="dash-user-info">
           <div class="avatar-initials" aria-hidden="true">{{ avatarInitial }}</div>
@@ -47,7 +47,7 @@
             <div class="dash-user-role" data-i18n="dash.roleOperator">Operator</div>
           </div>
         </div>
-        <a class="dash-logout-btn" href="{{ url_for('auth.logout', portal='operator') }}" title="Đăng xuất" aria-label="Đăng xuất">
+        <a class="dash-logout-btn" href="{{ url_for('auth.logout', portal='operator') }}" title="Đăng xuất" aria-label="Đăng xuất" data-i18n-title="tooltip.logout">
           <i class="bi bi-power"></i>
         </a>
       </div>
@@ -62,7 +62,7 @@
       </div>
       <div class="dash-topbar-right">
         {% include "_switches.html" %}
-        <a class="dash-bell-link" href="{{ url_for('operator.alerts') }}" title="Cảnh báo" aria-label="Cảnh báo">
+        <a class="dash-bell-link" href="{{ url_for('operator.alerts') }}" title="Cảnh báo" aria-label="Cảnh báo" data-i18n-title="tooltip.alerts">
           <i class="bi bi-bell"></i>
           <span class="notif-dot"></span>
         </a>

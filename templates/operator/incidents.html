@@ -23,9 +23,9 @@
     </select>
     <select id="incidentStatusFilter" class="form-select w-auto" aria-label="Status">
       <option value="" data-i18n="filter.allStatus">Tất cả trạng thái</option>
-      <option value="OPEN">OPEN</option>
-      <option value="IN_PROGRESS">IN_PROGRESS</option>
-      <option value="RESOLVED">RESOLVED</option>
+      <option value="OPEN" data-i18n="enum.status.OPEN">Đang mở</option>
+      <option value="IN_PROGRESS" data-i18n="enum.status.IN_PROGRESS">Đang xử lý</option>
+      <option value="RESOLVED" data-i18n="enum.status.RESOLVED">Đã xử lý</option>
     </select>
   </div>
 
@@ -51,12 +51,12 @@
             data-search="{{ inc.id | lower }} {{ inc.hubName | lower }} {{ inc.resourceId | lower }} {{ inc.resourceType | lower }} {{ inc.reason | lower }} {{ inc.description | lower }}">
           <td class="fw-semibold">{{ inc.hubName }}</td>
           <td>
-            <div class="fw-semibold">{{ inc.description }}</div>
+            <div class="fw-semibold" data-i18n="incidentDesc.{{ inc.id }}">{{ inc.description }}</div>
             <div class="small text-muted-2">{{ inc.id }} · {{ inc.resourceId }}</div>
           </td>
           <td>
-            <div class="fw-medium small">{{ inc.reason or '—' }}</div>
-            <span class="chip-x chip-soft-warning mt-1">{{ inc.resourceType }}</span>
+            <div class="fw-medium small"{% if inc.reason %} data-i18n="incidentReason.{{ inc.reason }}"{% endif %}>{{ inc.reason or '—' }}</div>
+            <span class="chip-x chip-soft-warning mt-1" data-i18n="enum.resourceType.{{ inc.resourceType }}">{{ inc.resourceType }}</span>
           </td>
           <td>
             <span class="chip-x {{ 'chip-soft-danger' if inc.priority == 'HIGH' else 'chip-soft-warning' if inc.priority == 'MEDIUM' else 'chip-soft-success' }}"
@@ -76,7 +76,9 @@
           </td>
           <td>
             <span class="chip-x {{ 'chip-soft-danger' if inc.status == 'OPEN' else 'chip-soft-warning' if inc.status == 'IN_PROGRESS' else 'chip-soft-success' }}"
-                  data-rt="network.incidents.{{ inc.id }}.status">
+                  data-rt="network.incidents.{{ inc.id }}.status"
+                  data-rt-i18n-prefix="enum.status."
+                  data-i18n="enum.status.{{ inc.status }}">
               {{ inc.status }}
             </span>
           </td>
@@ -113,7 +115,7 @@
     let visible = 0;
 
     document.querySelectorAll("#incidentsTable tbody tr.incident-row").forEach(function (row) {
-      const ok = (!q || row.dataset.search.includes(q)) &&
+      const ok = (!q || row.dataset.search.includes(q) || row.textContent.toLowerCase().includes(q)) &&
         (!prio || row.dataset.priority === prio) &&
         (!status || row.dataset.status === status);
       row.style.display = ok ? "" : "none";

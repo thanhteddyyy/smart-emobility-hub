@@ -19,7 +19,7 @@
   {% endif %}
   <p class="small mb-3" style="color: var(--color-muted);" data-i18n="returned.endedText">Phiên thuê xe của bạn đã kết thúc.</p>
   {% if vehicle %}
-  <p class="small mb-0" style="color: var(--color-muted);"><span data-i18n="returned.vehicleStatusLabel">Trạng thái xe:</span> <b>{{ vehicle.status }}</b></p>
+  <p class="small mb-0" style="color: var(--color-muted);"><span data-i18n="returned.vehicleStatusLabel">Trạng thái xe:</span> <b data-i18n="enum.status.{{ vehicle.status }}">{{ vehicle.status }}</b></p>
   {% endif %}
 </div>
 

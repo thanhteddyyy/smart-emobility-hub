@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="d-flex align-items-center gap-3">
-  <a class="back-icon-btn" href="{{ url_for('operator.overview') }}" title="Back" aria-label="Back">
+  <a class="back-icon-btn" href="{{ url_for('operator.overview') }}" title="Back" aria-label="Back" data-i18n-title="tooltip.back">
     <i class="bi bi-arrow-return-left"></i>
   </a>
   <h2 class="h4 fw-bold m-0" data-i18n="alerts.pageTitle">Tất cả cảnh báo</h2>
 </div>
 
 {% if error %}
-  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i>{{ error.message }}</div>
+  <div class="alert-x danger"><i class="bi bi-exclamation-circle me-2"></i><span{% if error.code %} data-i18n="err.{{ error.code }}"{% endif %}>{{ error.message }}</span></div>
 {% endif %}
 {% if resolved %}
   <div class="alert-x success"><i class="bi bi-check-circle me-2"></i><span data-i18n="alerts.resolvedSuccess">Đã đánh dấu xử lý cảnh báo thành công.</span></div>
@@ -39,7 +39,7 @@
                 <span class="chip-x chip-soft-success mt-1" data-i18n="alerts.statusResolved">Resolved</span>
               {% endif %}
             </td>
-            <td>{{ a.utilizationType }}: {{ a.utilization }}%</td>
+            <td><span data-i18n="alertType.{{ a.utilizationType }}">{{ a.utilizationType }}</span>: {{ a.utilization }}%</td>
             <td>
               {% if a.dangerLevel == 'HIGH' %}
                 <span class="chip-x chip-solid-danger" data-i18n="priority.high">High</span>
@@ -71,7 +71,7 @@
         </div>
         <div class="col-6">
           <div class="detail-field-label" data-i18n="alerts.utilizationType">Loại tài nguyên</div>
-          <div class="detail-field-value">{{ selectedAlert.utilizationType }}</div>
+          <div class="detail-field-value" data-i18n="alertType.{{ selectedAlert.utilizationType }}">{{ selectedAlert.utilizationType }}</div>
         </div>
         <div class="col-6">
           <div class="detail-field-label" data-i18n="table.usage">Mức sử dụng</div>
@@ -87,7 +87,7 @@
         </div>
         <div class="col-12">
           <div class="detail-field-label" data-i18n="alerts.expectedCause">Nguyên nhân dự kiến:</div>
-          <div class="detail-field-value">{{ selectedAlert.expectedCause }}</div>
+          <div class="detail-field-value" data-i18n="alertCause.{{ selectedAlert.expectedCause }}">{{ selectedAlert.expectedCause }}</div>
         </div>
       </div>
 

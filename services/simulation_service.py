@@ -206,7 +206,9 @@ def generateReport(impact):
         "maxVehicleDeficit": deficit,
         "recommendationText": recText,
         "sourceHubId": sourceHub["hubId"],
+        "sourceHubName": sourceHub["name"],
         "destHubId": destHub["hubId"],
+        "destHubName": destHub["name"],
         "recommendedCount": recommendedCount,
     }
     _REPORTS[reportId] = report
