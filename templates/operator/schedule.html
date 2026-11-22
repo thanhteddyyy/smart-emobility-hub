@@ -6,7 +6,7 @@
   <div class="d-flex flex-wrap justify-content-between align-items-end gap-3">
     <div style="min-width: 260px; flex: 1; max-width: 420px;">
       <label for="hubId" class="form-label fw-semibold small" data-i18n="schedule.selectHub">Chọn Hub</label>
-      <select id="hubId" class="form-select">
+      <select id="hubId" class="form-select" onchange="loadSavedSchedule()">
         {% for h in hubs %}
         <option value="{{ h.id }}">{{ h.id }} — {{ h.name }}</option>
         {% endfor %}
@@ -27,18 +27,34 @@
 </section>
 
 <section class="panel-card">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="panel-title" data-i18n="schedule.tableTitle">Bảng lịch sạc đề xuất</h2>
-    <button type="button" class="btn-primary-x" onclick="approveSchedule()" id="approveButton" disabled>
-      <i class="bi bi-patch-check"></i>
-      <span data-i18n="schedule.approveBtn">Phê duyệt lịch</span>
-    </button>
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h2 class="panel-title m-0" data-i18n="schedule.tableTitle">Bảng lịch sạc đề xuất</h2>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <button type="button" class="btn-outline-x" onclick="approveSelectedSchedule()" id="approveSelectedButton" disabled>
+        <i class="bi bi-check2-square"></i>
+        <span data-i18n="schedule.approveSelectedBtn">Duyệt đã chọn</span><span id="selectedApproveCount"></span>
+      </button>
+      <button type="button" class="btn btn-outline-danger btn-sm px-3" onclick="discardSelectedSchedule()" id="discardSelectedButton" disabled>
+        <i class="bi bi-trash"></i>
+        <span data-i18n="schedule.discardSelectedBtn">Bỏ đã chọn</span><span id="selectedDiscardCount"></span>
+      </button>
+      <button type="button" class="btn-primary-x" onclick="approveSchedule()" id="approveButton" disabled>
+        <i class="bi bi-patch-check"></i>
+        <span data-i18n="schedule.approveBtn">Duyệt tất cả</span>
+      </button>
+    </div>
   </div>
 
   <div class="table-responsive">
     <table class="table-x">
       <thead>
         <tr>
+          <th style="width: 42px;">
+            <input type="checkbox" class="form-check-input" id="selectAllSchedule"
+                   onchange="toggleSelectAll(this.checked)"
+                   title="Chọn tất cả lịch chờ duyệt" aria-label="Chọn tất cả lịch chờ duyệt"
+                   data-i18n-title="schedule.selectAllTitle" disabled>
+          </th>
           <th data-i18n="schedule.colVehicle">Xe</th>
           <th data-i18n="schedule.colPort">Cổng sạc</th>
           <th data-i18n="schedule.colSlot">Khung giờ</th>
@@ -49,7 +65,7 @@
       </thead>
       <tbody id="scheduleBody">
         <tr>
-          <td colspan="6" class="text-center text-muted-2 py-4" data-i18n="schedule.empty">
+          <td colspan="7" class="text-center text-muted-2 py-4" data-i18n="schedule.empty">
             Chưa có lịch sạc — chọn Hub và bấm "Tạo lịch tự động".
           </td>
         </tr>
@@ -58,11 +74,34 @@
   </div>
 
   <div id="message" class="mt-3"></div>
+  <datalist id="scheduleSlotOptions">
+    <option value="06:00-07:00"></option>
+    <option value="07:00-08:00"></option>
+    <option value="08:00-09:00"></option>
+    <option value="09:00-10:00"></option>
+    <option value="10:00-11:00"></option>
+    <option value="11:00-12:00"></option>
+    <option value="13:00-14:00"></option>
+    <option value="14:00-15:00"></option>
+    <option value="15:00-16:00"></option>
+    <option value="16:00-17:00"></option>
+    <option value="17:00-18:00"></option>
+    <option value="18:00-19:00"></option>
+    <option value="19:00-20:00"></option>
+    <option value="20:00-21:00"></option>
+    <option value="SLOT-1"></option>
+    <option value="SLOT-2"></option>
+    <option value="SLOT-3"></option>
+    <option value="SLOT-4"></option>
+  </datalist>
 </section>
 {% endblock %}
 {% block scripts %}
 <script>
 let currentSchedule = [];
+let availablePorts = [];
+let selectedIds = new Set();
+let savedIds = new Set();
 
 function tr(key, fallback) {
   return window.EHubI18n && window.EHubI18n.t ? window.EHubI18n.t(key, fallback) : fallback;
@@ -73,6 +112,118 @@ function isEnglish() {
   return lang === "en";
 }
 
+function updateToolbarButtons() {
+  const pendingItems = currentSchedule.filter(item => item.status !== "APPROVED");
+  const selectedPendingCount = pendingItems.filter(item => selectedIds.has(item.id)).length;
+
+  document.getElementById("validateButton").disabled = currentSchedule.length === 0;
+  document.getElementById("approveButton").disabled = pendingItems.length === 0;
+  document.getElementById("approveSelectedButton").disabled = selectedPendingCount === 0;
+  document.getElementById("discardSelectedButton").disabled = selectedPendingCount === 0;
+
+  const countSuffix = selectedPendingCount > 0 ? ` (${selectedPendingCount})` : "";
+  document.getElementById("selectedApproveCount").textContent = countSuffix;
+  document.getElementById("selectedDiscardCount").textContent = countSuffix;
+
+  const selectAllEl = document.getElementById("selectAllSchedule");
+  if (selectAllEl) {
+    selectAllEl.disabled = pendingItems.length === 0;
+    selectAllEl.checked = pendingItems.length > 0 && selectedPendingCount === pendingItems.length;
+    selectAllEl.indeterminate = selectedPendingCount > 0 && selectedPendingCount < pendingItems.length;
+  }
+}
+
+function toggleSelectAll(checked) {
+  currentSchedule.forEach(item => {
+    if (item.status === "APPROVED") return;
+    if (checked) selectedIds.add(item.id);
+    else selectedIds.delete(item.id);
+  });
+  renderSchedule();
+}
+
+function toggleScheduleRow(id, checked) {
+  if (checked) selectedIds.add(id);
+  else selectedIds.delete(id);
+  updateToolbarButtons();
+}
+
+function buildActionButtonsHtml(item) {
+  if (item.status === "APPROVED") {
+    const statusText = tr("enum.status.APPROVED", isEnglish() ? "Approved" : "Đã duyệt");
+    return `<div class="d-flex flex-wrap align-items-center gap-2">
+      <span class="small text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i><span data-i18n="enum.status.APPROVED">${escapeHTML(statusText)}</span></span>
+      <button type="button" class="btn btn-sm btn-outline-danger" data-i18n="schedule.discardBtn" onclick="discardScheduleItem('${escapeHTML(item.id)}')">
+        ${escapeHTML(tr("schedule.discardBtn", isEnglish() ? "Discard" : "Bỏ"))}
+      </button>
+    </div>`;
+  }
+  return `<div class="d-flex flex-wrap gap-1">
+    <button type="button" class="btn btn-sm btn-success" data-i18n="schedule.acceptBtn" onclick="acceptScheduleItem('${escapeHTML(item.id)}')">
+      ${escapeHTML(tr("schedule.acceptBtn", isEnglish() ? "Accept" : "Chấp nhận"))}
+    </button>
+    <button type="button" class="btn btn-sm btn-outline-danger" data-i18n="schedule.discardBtn" onclick="discardScheduleItem('${escapeHTML(item.id)}')">
+      ${escapeHTML(tr("schedule.discardBtn", isEnglish() ? "Discard" : "Bỏ"))}
+    </button>
+  </div>`;
+}
+
+function buildPortSelectHtml(item) {
+  const ports = new Set(availablePorts);
+  if (item.portId) ports.add(item.portId);
+  const options = Array.from(ports).map(portId => {
+    const selected = portId === item.portId ? "selected" : "";
+    return `<option value="${escapeHTML(portId)}" ${selected}>${escapeHTML(portId)}</option>`;
+  }).join("");
+  return `<select class="form-select form-select-sm" onchange="updateLocalField('${escapeHTML(item.id)}', 'portId', this.value, true)">${options}</select>`;
+}
+
+function updateLocalField(id, field, value, shouldRenderRow) {
+  const item = currentSchedule.find(entry => entry.id === id);
+  if (!item) return;
+  const cleaned = String(value ?? "").trim();
+  if (item[field] === cleaned) return;
+  item[field] = cleaned;
+
+  const wasApproved = item.status === "APPROVED";
+  if (wasApproved) {
+    item.status = "PENDING";
+    const row = document.querySelector(`tr[data-schedule-row="${CSS.escape(id)}"]`);
+    if (row) {
+      const checkEl = row.querySelector(`input[data-schedule-check]`);
+      if (checkEl) checkEl.disabled = false;
+      const chipEl = row.querySelector(`[data-schedule-status]`);
+      if (chipEl) {
+        chipEl.className = "chip-x chip-soft-warning";
+        chipEl.dataset.i18n = "enum.status.PENDING";
+        chipEl.textContent = tr("enum.status.PENDING", isEnglish() ? "Pending" : "Chờ xử lý");
+      }
+      const actionsCell = row.querySelector(`[data-schedule-actions]`);
+      if (actionsCell) actionsCell.innerHTML = buildActionButtonsHtml(item);
+    }
+  }
+  updateToolbarButtons();
+  if (shouldRenderRow && wasApproved) renderSchedule();
+}
+
+async function loadSavedSchedule() {
+  const hubId = document.getElementById("hubId").value.trim();
+  if (!hubId) return;
+  try {
+    const response = await fetch(`/api/hubs/${encodeURIComponent(hubId)}/charging-schedule`);
+    const result = await response.json();
+    if (!response.ok || !result.ok) return;
+
+    availablePorts = result.availablePorts || [];
+    currentSchedule = result.data || [];
+    savedIds = new Set(currentSchedule.map(item => item.id));
+    selectedIds.clear();
+    renderSchedule();
+  } catch (error) {
+    console.warn("Load saved schedule failed:", error);
+  }
+}
+
 async function generateSchedule() {
   const hubId = document.getElementById("hubId").value.trim();
   if (!hubId) {
@@ -81,17 +232,28 @@ async function generateSchedule() {
   }
 
   try {
-    const response = await fetch(`/api/hubs/${encodeURIComponent(hubId)}/charging-schedule/generate`, { method: "POST" });
-    const result = await response.json();
-    if (!response.ok || !result.ok) {
+    const [savedRes, genRes] = await Promise.all([
+      fetch(`/api/hubs/${encodeURIComponent(hubId)}/charging-schedule`),
+      fetch(`/api/hubs/${encodeURIComponent(hubId)}/charging-schedule/generate`, { method: "POST" })
+    ]);
+    const savedJson = await savedRes.json().catch(() => ({}));
+    const result = await genRes.json();
+    if (!genRes.ok || !result.ok) {
       showMessage(result.message || (isEnglish() ? "Unable to generate schedule." : "Không thể tạo lịch."), "danger");
       return;
     }
 
-    currentSchedule = result.data || [];
+    if (savedRes.ok && savedJson.ok) {
+      availablePorts = savedJson.availablePorts || [];
+    }
+    const savedApproved = (savedJson.ok && Array.isArray(savedJson.data)) ? savedJson.data : [];
+    savedIds = new Set(savedApproved.map(item => item.id));
+    const savedVehicles = new Set(savedApproved.map(item => item.vehicleId));
+    const generatedPending = (result.data || []).filter(item => !savedVehicles.has(item.vehicleId));
+
+    currentSchedule = [...savedApproved, ...generatedPending];
+    selectedIds.clear();
     renderSchedule();
-    document.getElementById("approveButton").disabled = currentSchedule.length === 0;
-    document.getElementById("validateButton").disabled = currentSchedule.length === 0;
     showMessage(isEnglish() ? "Charging schedule generated." : "Đã tạo lịch sạc tự động (ưu tiên xe pin thấp).", "success");
   } catch (error) {
     showMessage(isEnglish() ? "API connection error." : "Lỗi kết nối API.", "danger");
@@ -103,57 +265,53 @@ function renderSchedule() {
   tbody.innerHTML = "";
 
   if (currentSchedule.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted-2 py-4" data-i18n="schedule.empty">${escapeHTML(tr("schedule.empty", isEnglish() ? "No schedule items." : "Chưa có lịch sạc — chọn Hub và bấm \"Tạo lịch tự động\"."))}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted-2 py-4" data-i18n="schedule.empty">${escapeHTML(tr("schedule.empty", isEnglish() ? "No schedule items." : "Chưa có lịch sạc — chọn Hub và bấm \"Tạo lịch tự động\"."))}</td></tr>`;
+    updateToolbarButtons();
     return;
   }
 
-  currentSchedule.forEach((item, index) => {
+  currentSchedule.forEach((item) => {
     const row = document.createElement("tr");
-    const statusChip = item.status === "APPROVED" ? "chip-soft-success" : "chip-soft-warning";
+    row.dataset.scheduleRow = item.id;
+    const isApproved = item.status === "APPROVED";
+    const statusChip = isApproved ? "chip-soft-success" : "chip-soft-warning";
     const statusKey = "enum.status." + String(item.status || "");
     const statusText = tr(statusKey, item.status);
+    const isChecked = !isApproved && selectedIds.has(item.id);
+
     row.innerHTML = `
-      <td class="fw-semibold">${escapeHTML(item.vehicleId || "N/A")}</td>
-      <td><input class="form-control form-control-sm" value="${escapeHTML(item.portId)}" onchange="editSchedule(${index}, 'portId', this.value)"></td>
-      <td><input class="form-control form-control-sm" value="${escapeHTML(item.timeSlot)}" onchange="editSchedule(${index}, 'timeSlot', this.value)"></td>
-      <td>${Number(item.batteryLevel)}%</td>
-      <td><span class="chip-x ${statusChip}" data-i18n="${escapeHTML(statusKey)}">${escapeHTML(statusText)}</span></td>
       <td>
-        <button type="button" class="btn-outline-x btn-sm" data-i18n="schedule.validateShort" onclick="validateCurrentSchedule()">
-          ${escapeHTML(tr("schedule.validateShort", isEnglish() ? "Validate" : "Kiểm tra"))}
-        </button>
+        <input type="checkbox" class="form-check-input" data-schedule-check="${escapeHTML(item.id)}"
+               ${isChecked ? "checked" : ""} ${isApproved ? "disabled" : ""}
+               onchange="toggleScheduleRow('${escapeHTML(item.id)}', this.checked)"
+               aria-label="Select ${escapeHTML(item.vehicleId || item.id)}">
       </td>
+      <td class="fw-semibold">${escapeHTML(item.vehicleId || "N/A")}</td>
+      <td>${buildPortSelectHtml(item)}</td>
+      <td>
+        <input class="form-control form-control-sm" list="scheduleSlotOptions"
+               value="${escapeHTML(item.timeSlot)}"
+               oninput="updateLocalField('${escapeHTML(item.id)}', 'timeSlot', this.value, false)"
+               onchange="updateLocalField('${escapeHTML(item.id)}', 'timeSlot', this.value, false)">
+      </td>
+      <td>${Number(item.batteryLevel)}%</td>
+      <td><span class="chip-x ${statusChip}" data-schedule-status data-i18n="${escapeHTML(statusKey)}">${escapeHTML(statusText)}</span></td>
+      <td data-schedule-actions>${buildActionButtonsHtml(item)}</td>
     `;
     tbody.appendChild(row);
   });
+
+  updateToolbarButtons();
 }
 
 document.addEventListener("ehub:langchange", function () {
   if (currentSchedule.length > 0) renderSchedule();
+  else updateToolbarButtons();
 });
 
-async function editSchedule(index, field, value) {
-  const changes = [{ id: currentSchedule[index].id, [field]: value }];
-  try {
-    const response = await fetch("/api/charging-schedule/edit", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ schedule: currentSchedule, changes: changes })
-    });
-    const result = await response.json();
-    if (!response.ok || !result.ok) {
-      showMessage(result.message || (isEnglish() ? "Invalid schedule change." : "Chỉnh sửa không hợp lệ."), "danger");
-      renderSchedule();
-      return;
-    }
-    currentSchedule = result.data;
-    renderSchedule();
-    showMessage(isEnglish() ? "Schedule updated." : "Đã cập nhật lịch sạc.", "success");
-  } catch (error) {
-    showMessage(isEnglish() ? "API connection error." : "Lỗi kết nối API.", "danger");
-    renderSchedule();
-  }
-}
+document.addEventListener("DOMContentLoaded", function () {
+  loadSavedSchedule();
+});
 
 async function validateCurrentSchedule() {
   try {
@@ -174,26 +332,133 @@ async function validateCurrentSchedule() {
   }
 }
 
-async function approveSchedule() {
-  if (currentSchedule.length === 0) return;
+function hasConflictWithApproved(targetItems) {
+  const targetIds = new Set(targetItems.map(item => item.id));
+  const used = new Set(
+    currentSchedule
+      .filter(item => item.status === "APPROVED" && !targetIds.has(item.id))
+      .map(item => `${item.portId}::${item.timeSlot}`)
+  );
+  for (const item of targetItems) {
+    if (!item.portId || !item.timeSlot) return true;
+    const key = `${item.portId}::${item.timeSlot}`;
+    if (used.has(key)) return true;
+    used.add(key);
+  }
+  return false;
+}
+
+async function approveSubset(itemsToApprove, successMsgEn, successMsgVi) {
+  if (!itemsToApprove.length) return;
+  if (hasConflictWithApproved(itemsToApprove)) {
+    showMessage(
+      isEnglish() ? "Schedule conflict or empty slot: check port/time slot for duplicates." : "Bị trùng cổng/khung giờ hoặc đang để trống khung giờ.",
+      "danger"
+    );
+    return;
+  }
+
   try {
     const response = await fetch("/api/charging-schedule/approve", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ schedule: currentSchedule })
+      body: JSON.stringify({ schedule: itemsToApprove })
     });
     const result = await response.json();
     if (!response.ok || !result.ok) {
-      showMessage(result.message || (isEnglish() ? "Unable to approve schedule." : "Không thể phê duyệt lịch."), "danger");
+      showMessage(result.message || (isEnglish() ? "Unable to approve schedule." : "Không thể lưu lịch sạc (kiểm tra trùng cổng & khung giờ)."), "danger");
       return;
     }
-    currentSchedule = result.data;
+
+    const approvedMap = new Map((result.data || []).map(item => [item.id, item]));
+    currentSchedule = currentSchedule.map(item => approvedMap.get(item.id) || item);
+    itemsToApprove.forEach(item => {
+      selectedIds.delete(item.id);
+      savedIds.add(item.id);
+    });
     renderSchedule();
-    document.getElementById("approveButton").disabled = true;
-    showMessage(isEnglish() ? "Schedule approved and saved." : "Đã phê duyệt và lưu lịch sạc.", "success");
+    showMessage(isEnglish() ? successMsgEn : successMsgVi, "success");
   } catch (error) {
     showMessage(isEnglish() ? "API connection error." : "Lỗi kết nối API.", "danger");
   }
+}
+
+function acceptScheduleItem(id) {
+  const target = currentSchedule.find(item => item.id === id && item.status !== "APPROVED");
+  if (!target) return;
+  approveSubset(
+    [target],
+    `Saved customized schedule for ${target.vehicleId || target.id}.`,
+    `Đã chấp nhận và lưu lịch sạc cho xe ${target.vehicleId || target.id}.`
+  );
+}
+
+async function discardScheduleItem(id) {
+  const target = currentSchedule.find(item => item.id === id);
+  if (!target) return;
+  if (savedIds.has(id)) {
+    try {
+      await fetch(`/api/charging-schedule/${encodeURIComponent(id)}`, { method: "DELETE" });
+      savedIds.delete(id);
+    } catch (error) {
+      showMessage(isEnglish() ? "API connection error." : "Lỗi kết nối API.", "danger");
+      return;
+    }
+  }
+  currentSchedule = currentSchedule.filter(item => item.id !== id);
+  selectedIds.delete(id);
+  renderSchedule();
+  showMessage(
+    isEnglish()
+      ? `Discarded schedule for ${target.vehicleId || target.id}.`
+      : `Đã bỏ lịch sạc của xe ${target.vehicleId || target.id}.`,
+    "success"
+  );
+}
+
+function approveSelectedSchedule() {
+  const selectedItems = currentSchedule.filter(item => item.status !== "APPROVED" && selectedIds.has(item.id));
+  if (!selectedItems.length) return;
+  approveSubset(
+    selectedItems,
+    `Saved ${selectedItems.length} selected schedule item(s).`,
+    `Đã duyệt và lưu ${selectedItems.length} lịch sạc đã chọn.`
+  );
+}
+
+async function discardSelectedSchedule() {
+  const selectedItems = currentSchedule.filter(item => item.status !== "APPROVED" && selectedIds.has(item.id));
+  if (!selectedItems.length) return;
+  const discardSet = new Set(selectedItems.map(item => item.id));
+  for (const id of discardSet) {
+    if (savedIds.has(id)) {
+      try {
+        await fetch(`/api/charging-schedule/${encodeURIComponent(id)}`, { method: "DELETE" });
+        savedIds.delete(id);
+      } catch (error) {
+        console.warn("Delete saved item failed:", id, error);
+      }
+    }
+  }
+  currentSchedule = currentSchedule.filter(item => !discardSet.has(item.id));
+  discardSet.forEach(id => selectedIds.delete(id));
+  renderSchedule();
+  showMessage(
+    isEnglish()
+      ? `Discarded ${selectedItems.length} selected schedule item(s).`
+      : `Đã bỏ ${selectedItems.length} lịch sạc đã chọn.`,
+    "success"
+  );
+}
+
+function approveSchedule() {
+  const pendingItems = currentSchedule.filter(item => item.status !== "APPROVED");
+  if (pendingItems.length === 0) return;
+  approveSubset(
+    pendingItems,
+    "All pending schedules approved and saved.",
+    "Đã duyệt tất cả và lưu lịch sạc."
+  );
 }
 
 function showMessage(message, type) {

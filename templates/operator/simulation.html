@@ -71,7 +71,7 @@
     <section class="sim-card d-flex flex-column gap-3">
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
         <h2 class="h4 fw-bold m-0" data-i18n="sim.resultsTitle">Kết quả mô phỏng</h2>
-        {% if report.maxVehicleDeficit < 0 %}
+        {% if report.maxVehicleDeficit > 0 %}
           <span class="sim-critical-badge">
             <span>⚠️</span>
             <span data-i18n="sim.criticalShortage">Critical Shortage</span>
@@ -86,7 +86,7 @@
 
       <div class="text-center small text-muted-2">
         <span data-i18n="sim.forecastTitle">Dự báo thiếu hụt phương tiện theo giờ</span>
-        ({{ report.hours | length }}h · {{ params.timeFrame }})
+        ({{ report.hours | length }}h · {{ report.hours[0] }} – {{ report.hours[-1] }})
       </div>
     </section>
 
@@ -98,13 +98,13 @@
 
       <div class="sim-metric-card sim-metric-deficit">
         <div class="small fw-bold text-muted-2" data-i18n="sim.maxDeficit">Mức thiếu hụt tối đa</div>
-        <div class="sim-metric-value-danger">{{ report.maxVehicleDeficit }} <span data-i18n="unit.vehiclesShort">xe</span></div>
+        <div class="{{ 'sim-metric-value-danger' if report.maxVehicleDeficit > 0 else 'fs-3 fw-bold text-success' }}">{{ '+' if report.maxVehicleDeficit > 0 else '' }}{{ report.maxVehicleDeficit }} <span data-i18n="unit.vehiclesShort">xe</span></div>
       </div>
 
       <div class="sim-metric-card sim-metric-rec">
         <div class="small fw-bold text-muted-2" data-i18n="sim.recommendation">Khuyến nghị hệ thống</div>
         <div class="small fw-semibold">
-          {% if report.maxVehicleDeficit < 0 %}
+          {% if report.maxVehicleDeficit > 0 %}
             <span data-i18n="sim.recDispatchPrefix">Điều phối trước</span>
             <strong>{{ report.recommendedCount }}</strong>
             <span data-i18n="unit.vehiclesShort">xe</span>
@@ -216,8 +216,8 @@
           tooltip: {
             callbacks: {
               afterLabel: function (item) {
-                if (item.datasetIndex === 1 && item.dataIndex === report.peakShortageIndex && report.maxVehicleDeficit < 0) {
-                  return tr("sim.chartPeakShortage", "Critical Shortage") + " (" + report.maxVehicleDeficit + " " + tr("unit.vehiclesShort", "EVs") + ")";
+                if (item.datasetIndex === 1 && item.dataIndex === report.peakShortageIndex && report.maxVehicleDeficit > 0) {
+                  return tr("sim.chartPeakShortage", "Critical Shortage") + " (+" + report.maxVehicleDeficit + " " + tr("unit.vehiclesShort", "EVs") + ")";
                 }
                 return "";
               }

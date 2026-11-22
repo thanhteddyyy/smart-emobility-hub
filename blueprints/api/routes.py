@@ -243,6 +243,33 @@ def isolateDisconnectedHub(hubId):
         return jsonify(e.toDict()), status_code 
 
 #---------- UC13: Lịch sạc thông minh ----------
+@bp.route("/hubs/<hubId>/charging-schedules", methods=["GET"])
+@bp.route("/hubs/<hubId>/charging-schedule", methods=["GET"])
+def getSavedSchedule(hubId):
+    try:
+        result = schedule_service.getSavedSchedule(hubId)
+        return jsonify({
+            "ok": True,
+            "data": result["schedule"],
+            "availablePorts": result["availablePorts"],
+        })
+    except ServiceError as e:
+        status_code = 404 if e.code in ("HUB_NOT_FOUND", "RESOURCE_NOT_FOUND") else 400
+        return jsonify(e.toDict()), status_code
+
+
+@bp.route("/charging-schedules/<registrationId>", methods=["DELETE"])
+@bp.route("/charging-schedule/<registrationId>", methods=["DELETE"])
+def deleteSavedScheduleItem(registrationId):
+    user = session.get("user")
+    if not user:
+        return jsonify({"ok": False, "error": "LOGIN_REQUIRED", "message": "Cần đăng nhập."}), 401
+    if user["role"] != "OPERATOR":
+        return jsonify({"ok": False, "error": "FORBIDDEN", "message": "Không có quyền truy cập."}), 403
+    removed = schedule_service.deleteSavedScheduleItem(user["id"], registrationId)
+    return jsonify({"ok": True, "removed": removed})
+
+
 @bp.route("/hubs/<hubId>/charging-schedules/generate", methods=["POST"])
 @bp.route("/hubs/<hubId>/charging-schedule/generate", methods=["POST"])
 def generateSchedule(hubId):

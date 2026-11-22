@@ -76,3 +76,83 @@ def test_api_state_endpoint(client):
     payload = res.get_json()
     assert payload["ok"] is True
     assert "hubs" in payload
+
+
+def test_simulation_uses_24h_labels_and_positive_deficit_sign():
+    """UC14 – Trục thời gian 24h (không AM/PM) và dấu mức thiếu hụt = demand - available."""
+    for tf in ("09:00-18:00", "06:00-12:00", "12:00-18:00"):
+        shortage_report = simulation_service.runSimulation({
+            "studentDemandPercent": 80,
+            "availableEvDelta": -50,
+            "weather": "HEAVY_RAIN",
+            "timeFrame": tf,
+        })
+        assert all("AM" not in h and "PM" not in h for h in shortage_report["hours"])
+        assert "AM" not in shortage_report["peakShortageTime"]
+        assert "PM" not in shortage_report["peakShortageTime"]
+
+        expected_max = max(
+            dem - avail
+            for avail, dem in zip(shortage_report["availableSeries"], shortage_report["demandSeries"])
+        )
+        assert shortage_report["maxVehicleDeficit"] == expected_max
+        assert shortage_report["maxVehicleDeficit"] > 0
+        assert shortage_report["recommendedCount"] > 0
+
+    surplus_report = simulation_service.runSimulation({
+        "studentDemandPercent": -50,
+        "availableEvDelta": 100,
+        "weather": "CLEAR",
+        "timeFrame": "09:00-18:00",
+    })
+    assert surplus_report["maxVehicleDeficit"] < 0
+    assert surplus_report["recommendedCount"] == 0
+
+
+def test_schedule_single_item_approve_keeps_unselected_pending():
+    """UC13 – Duyệt đơn lẻ 1 phần tử chỉ lưu phần tử đó, không ghi đè toàn bộ lịch."""
+    from services import schedule_service
+
+    schedule = schedule_service.generateSchedule("H1")
+    assert len(schedule) >= 2
+    before_len = len(db.CHARGING_REGISTRATIONS)
+    approved_single = schedule_service.approveSchedule("OP001", [schedule[0]])
+    assert len(approved_single) == 1
+    assert approved_single[0]["id"] == schedule[0]["id"]
+    assert approved_single[0]["status"] == "APPROVED"
+    assert len(db.CHARGING_REGISTRATIONS) == before_len + 1
+
+
+def test_schedule_custom_edit_overwrite_and_reload(client):
+    """UC13 – Cho phép tùy chỉnh cổng/khung giờ, lưu đè đúng bản ghi, nạp lại và xóa qua API."""
+    from services import schedule_service
+
+    with client.session_transaction() as sess:
+        sess["user"] = {"id": "OP001", "name": "Thành", "email": "op@bk.edu.vn", "role": "OPERATOR"}
+
+    schedule = schedule_service.generateSchedule("H1")
+    item = dict(schedule[0])
+    item["timeSlot"] = "14:00-15:00"
+    res1 = client.post("/api/charging-schedule/approve", json={"schedule": [item]})
+    assert res1.status_code == 200
+    assert res1.get_json()["ok"] is True
+
+    # Operator chỉnh sửa lại khung giờ cho chính item đó rồi lưu lại -> không nhân bản
+    item["timeSlot"] = "16:00-17:00"
+    res2 = client.post("/api/charging-schedule/approve", json={"schedule": [item]})
+    assert res2.status_code == 200
+
+    res_get = client.get("/api/hubs/H1/charging-schedule")
+    assert res_get.status_code == 200
+    payload = res_get.get_json()
+    assert payload["ok"] is True
+    assert len(payload["availablePorts"]) > 0
+    matched = [r for r in payload["data"] if r["id"] == item["id"]]
+    assert len(matched) == 1
+    assert matched[0]["timeSlot"] == "16:00-17:00"
+
+    res_del = client.delete(f"/api/charging-schedule/{item['id']}")
+    assert res_del.status_code == 200
+    assert res_del.get_json()["removed"] is True
+    res_get2 = client.get("/api/hubs/H1/charging-schedule")
+    assert all(r["id"] != item["id"] for r in res_get2.get_json()["data"])

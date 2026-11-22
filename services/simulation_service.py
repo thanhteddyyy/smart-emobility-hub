@@ -68,7 +68,7 @@ def validateParameters(params):
 def _selectCurveProfile(timeFrame, weather, scenario):
     """Chọn nhãn giờ và đường cong tỷ trọng nhu cầu/cung biến thiên theo khung giờ, thời tiết và kịch bản."""
     if timeFrame == "06:00-12:00":
-        hours = ["06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM"]
+        hours = ["06:00", "07:00", "08:00", "09:00", "10:00", "11:00"]
         supplyRatios = [0.04, 0.02, -0.02, -0.04, 0.00, 0.03]
         byScenario = {
             "HUB_FULL": [0.50, 0.68, 0.80, 0.86, 0.90, 0.96],
@@ -85,7 +85,7 @@ def _selectCurveProfile(timeFrame, weather, scenario):
         return hours, demandRatios, supplyRatios
 
     if timeFrame == "12:00-18:00":
-        hours = ["12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"]
+        hours = ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
         supplyRatios = [-0.04, -0.02, 0.01, 0.02, -0.01, -0.03]
         byScenario = {
             "HUB_FULL": [0.96, 0.86, 0.74, 0.70, 0.82, 0.88],
@@ -101,10 +101,10 @@ def _selectCurveProfile(timeFrame, weather, scenario):
         demandRatios = byScenario.get(scenario) or byWeather[weather]
         return hours, demandRatios, supplyRatios
 
-    # Mặc định khung 9 giờ (08:00 AM - 04:00 PM)
+    # Mặc định khung 9 giờ (08:00 - 16:00)
     hours = [
-        "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
-        "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM",
+        "08:00", "09:00", "10:00", "11:00",
+        "12:00", "13:00", "14:00", "15:00", "16:00",
     ]
     supplyRatios = [0.05, 0.03, 0.01, -0.02, -0.04, -0.03, 0.01, 0.02, 0.00]
     byScenario = {
@@ -144,10 +144,10 @@ def calculateImpact(virtualData, params):
 
     demandSeries = [max(0, round(baseAvailable * ratio * demandMultiplier)) for ratio in demandRatios]
     availableSeries = [max(0, effectiveSupplyBase + round(baseAvailable * off)) for off in supplyRatios]
-    gaps = [avail - dem for avail, dem in zip(availableSeries, demandSeries)]
+    deficits = [dem - avail for avail, dem in zip(availableSeries, demandSeries)]
 
-    peakShortageIdx = gaps.index(min(gaps))
-    maxDeficit = gaps[peakShortageIdx]
+    peakShortageIdx = deficits.index(max(deficits))
+    maxDeficit = deficits[peakShortageIdx]
 
     hubMetrics = []
     for h in hubs:
@@ -183,11 +183,11 @@ def generateReport(impact):
     """Tạo báo cáo kết quả mô phỏng cho Chart.js và lưu tạm phục vụ Apply to Dispatch."""
     reportId = f"SIM-{len(_REPORTS) + 1:03d}"
     deficit = impact["maxVehicleDeficit"]
-    recommendedCount = min(30, max(5, abs(deficit) // 4)) if deficit < 0 else 0
+    recommendedCount = min(30, max(5, deficit // 4)) if deficit > 0 else 0
     sourceHub = impact["sourceHub"]
     destHub = impact["destHub"]
 
-    if deficit < 0:
+    if deficit > 0:
         recText = (
             f"Pre-dispatch {recommendedCount} EVs from {sourceHub['name']} "
             f"to {destHub['name']} before {impact['peakShortageTime']}"

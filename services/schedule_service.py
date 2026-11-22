@@ -92,13 +92,56 @@ def approveSchedule(operatorId, schedule):
 
 
 def saveSchedule(schedule):
-    """TODO(UC13): Lưu lịch đã duyệt."""
+    """TODO(UC13): Lưu lịch đã duyệt (cập nhật nếu đã tồn tại cùng id)."""
     with db.DATA_LOCK:
         if not validateSchedule(schedule):
             raise ServiceError("INVALID_SCHEDULE")
         for item in schedule:
             if item["status"] != "APPROVED":
                 raise ServiceError("INVALID_SCHEDULE")
+        existingById = {r.get("id"): idx for idx, r in enumerate(db.CHARGING_REGISTRATIONS) if r.get("id")}
         for item in schedule:
-            db.CHARGING_REGISTRATIONS.append(item.copy())
+            copyItem = item.copy()
+            itemId = copyItem.get("id")
+            if itemId in existingById:
+                db.CHARGING_REGISTRATIONS[existingById[itemId]] = copyItem
+            else:
+                db.CHARGING_REGISTRATIONS.append(copyItem)
+                if itemId:
+                    existingById[itemId] = len(db.CHARGING_REGISTRATIONS) - 1
         return schedule
+
+
+def getSavedSchedule(hubId):
+    """Lấy lịch sạc đã lưu của Hub cùng danh sách cổng khả dụng."""
+    with db.DATA_LOCK:
+        hub = db.getHub(hubId)
+        if not hub:
+            raise ServiceError("HUB_NOT_FOUND")
+        saved = [
+            r.copy() for r in db.CHARGING_REGISTRATIONS
+            if r.get("hubId") == hubId and r.get("status") == "APPROVED" and r.get("vehicleId")
+        ]
+        availablePorts = [
+            p["id"] for p in db.CHARGING_PORTS
+            if p.get("hubId") == hubId and p.get("status") == "AVAILABLE"
+        ]
+        return {"schedule": saved, "availablePorts": availablePorts}
+
+
+def deleteSavedScheduleItem(operatorId, registrationId):
+    """Xóa một mục lịch sạc đã lưu khỏi danh sách đăng ký của hệ thống."""
+    with db.DATA_LOCK:
+        before = len(db.CHARGING_REGISTRATIONS)
+        db.CHARGING_REGISTRATIONS[:] = [
+            r for r in db.CHARGING_REGISTRATIONS if r.get("id") != registrationId
+        ]
+        removed = len(db.CHARGING_REGISTRATIONS) < before
+        if removed:
+            audit_service.record(
+                operatorId,
+                "DELETE_CHARGING_SCHEDULE_ITEM",
+                registrationId,
+                f"Operator {operatorId} removed schedule item {registrationId}"
+            )
+        return removed
